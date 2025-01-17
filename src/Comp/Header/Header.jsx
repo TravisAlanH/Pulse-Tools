@@ -1,6 +1,6 @@
 import React from "react";
 import Logo from "../../assets/logo-dark-no-tag.svg";
-import HomeLogo from "../../assets/logo.png";
+import HomeLogo from "../../assets/Logo.png";
 import { RoutingStore } from "../../../Store/Store";
 import { UserStore } from "../../../Store/Store";
 import { auth } from "../../../Firebase/Firebase";
