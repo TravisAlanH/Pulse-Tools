@@ -4,7 +4,7 @@ import { MdCompareArrows } from "react-icons/md";
 import { MdCompare } from "react-icons/md";
 import { AiOutlineColumnHeight, AiOutlinePython } from "react-icons/ai";
 import { RoutingStore } from "../Store/Store";
-import MagGlass from "./Assets/magnifying-glass.png";
+import MagGlass from "./assets/magnifying-glass.png";
 import { BsHddRackFill } from "react-icons/bs";
 // 375,000
 
