@@ -1,0 +1,57 @@
+h1 {
+  font-family: sans-serif;
+  margin: 0 0 3rem 0;
+}
+
+.prism {
+  margin: auto;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 1 / 1;
+}
+
+.side {
+  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  backface-visibility: hidden; /* Add this to hide the backside of the sides */
+}
+
+/* CRITICAL */
+
+.prism {
+  margin: auto;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 1 / 1;
+  transform-style: preserve-3d;
+}
+
+.side {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+
+.side.one {
+  transform: rotateY(0deg) translateZ(70px);
+}
+
+.side.two {
+  transform: rotateY(120deg) translateZ(70px);
+}
+
+.side.three {
+  transform: rotateY(240deg) translateZ(70px);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .prism {
+    transition: transform 0.5s linear;
+  }
+}

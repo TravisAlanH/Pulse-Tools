@@ -1,0 +1,126 @@
+.body {
+  font-family: "Nimbus", Arial, Helvetica, "Nimbus Sans L", sans-serif;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none; /* For Chrome, Safari, and Opera */
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none; /* For Internet Explorer and Edge */
+  scrollbar-width: none; /* For Firefox */
+}
+
+.Question {
+  background-color: #f0f0f0;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  /* border radius left only */
+}
+
+.Inputs {
+  background-color: #ffffff;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  /* border radius right only */
+  border-bottom: 0.4rem solid #f0f0f0;
+}
+
+.OrangeButton {
+  background-color: #f59439;
+  color: #ffffff;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  display: block;
+  border-radius: 0.5rem;
+  font-weight: 500;
+}
+
+.LableMain {
+  background-color: #f2ece6;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
+  border-bottom: 0.2rem solid #f2ece6;
+}
+.LableInputMain {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
+  border-bottom: 0.2rem solid #f2ece6;
+}
+
+.LableInputMainBelow {
+  height: 2rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
+  border-bottom: 0.2rem solid #f2ece6;
+  border-left: 0.2rem solid #f2ece6;
+}
+
+.ButtonMain {
+  background-color: #ffffff;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
+  display: block;
+  /* shadow */
+  box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.1);
+}
+
+:hover.ButtonMain {
+  background-color: #f2ece6;
+}
+
+.ButtonMainNonWhite {
+  background-color: #f2ece6;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
+  display: block;
+  /* shadow */
+  box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.1);
+}
+
+.ButtonMain,
+.ButtonMainNonWhite {
+  transition: all 0.2s ease;
+}
+
+/* FLASH BORDER */
+
+@keyframes flash-border {
+  0%,
+  100% {
+    border-color: transparent;
+  }
+  50% {
+    border-color: #f59439;
+  }
+}
+
+.flash-border {
+  border-width: 2px;
+  animation: flash-border 0.6s ease-in-out;
+}
+
+.vertical-text {
+  writing-mode: vertical-rl;
+  /* text-orientation: upright; */
+}

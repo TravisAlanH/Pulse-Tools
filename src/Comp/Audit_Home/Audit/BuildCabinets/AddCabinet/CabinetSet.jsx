@@ -1,0 +1,152 @@
+import React from "react";
+import { CurrentLocation } from "../../../../../../Store/Store";
+import { ObjectListing } from "../../../../../../dcT_Objects/ObjectsArrays";
+import { MLTStore } from "../../../../../../Store/Store";
+
+export default function CabinetSet() {
+  const AllItems = CurrentLocation((state) => state.data.AllItems);
+  const CabinetCount = CurrentLocation((state) => state.data.Counts.Cabinet);
+  const counts = CurrentLocation((state) => state.data.Counts);
+  const setHoldItem = CurrentLocation((state) => state.setHoldItem);
+  const Location = CurrentLocation((state) => state.data.Location);
+  const setActive = CurrentLocation((state) => state.setActive);
+  const setFilters = MLTStore((state) => state.setFilters);
+  const HoldMLTITem = MLTStore((state) => state.data.holdMLTItem);
+  const setHoldMLTItem = MLTStore((state) => state.setHoldMLTItem);
+  const holdMLTItem = MLTStore((state) => state.data.holdMLTItem);
+  const cabinetUUID = CurrentLocation((state) => state.data.Cabinet);
+  const setCabinetActive = CurrentLocation((state) => state.setCabinet);
+  const setHoldItemTrigger = CurrentLocation((state) => state.setHoldItemTrigger);
+  const [cabinets, setCabinets] = React.useState([]);
+  const resetSortsFiltersSearches = MLTStore((state) => state.resetSortsFiltersSearches);
+
+  React.useEffect(() => {
+    let cabinetList = [];
+    Object.keys(AllItems).forEach((key) => {
+      if (AllItems[key]["Object *"] === "Cabinet") {
+        cabinetList.push(key);
+      }
+    });
+    setCabinets(cabinetList);
+  }, [AllItems, CabinetCount]);
+
+  if (Location === 0) {
+    return (
+      <div>
+        <div>
+          <p>Location Not Built</p>
+        </div>
+        <div>
+          <button
+            onClick={() => {
+              setHoldItem(ObjectListing.Location);
+            }}
+          >
+            Build Location
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+
+  //   {
+  //     "Make": "Geist",
+  //     "Model": "BRDN10-1536TL",
+  //     "RUHeight": 1,
+  //     "Height": "1.70",
+  //     "Width": "17.32",
+  //     "Depth": "13.78",
+  //     "Class": "Rack PDU",
+  //     "Subclass": "AC Power",
+  //     "Mounting": "Rackable",
+  //     "DataPortsCount": 0,
+  //     "PowerPortsCount": 9,
+  //     "FrontSlotsCount": 0,
+  //     "BackSlotsCount": 0,
+  //     "Object": "Location",
+  //     "index": 1
+  // }
+
+  // Location: {
+  //   "# Operation *": "ADD",
+  //   "Object *": "Location",
+  //   "dcTrack Location Code*": "",
+  //   "dcTrack Location Name*": "",
+  //   "dcTrack Location Hierarchy*": "",
+  //   "dcTrack Location Parent": "",
+  //   "Can Contain Assets": "",
+  //   "Data Center Area*": "",
+  //   "Country*": "",
+  //   "Enable AC Virtual Power Chain": "",
+  //   "Enable DC Virtual Power Chain": "",
+  //   "Is Default Location": "",
+  //   "Capacity(kW)": "",
+  // },
+
+  return (
+    <div>
+      <div className="flex flex-row gap-3 h-[1.5rem] items-center">
+        <p>Current Cabinet:</p>
+        <p className="text-[#00B188]">{cabinetUUID === 0 ? "None Selected" : AllItems[cabinetUUID]["Name *"]}</p>
+      </div>
+      <div className="flex flex-row justify-between h-[2rem] w-full text-sm">
+        {CabinetSelections()}
+        {AddCabinet()}
+      </div>
+    </div>
+  );
+
+  function AddCabinet() {
+    return (
+      <div>
+        <button
+          className="ButtonMainNonWhite"
+          onClick={() => {
+            resetSortsFiltersSearches();
+            const Payload = {
+              type: "Object",
+              value: "Cabinet",
+            };
+            setFilters(Payload);
+            setHoldItem(ObjectListing.Cabinet);
+            setHoldMLTItem({});
+            setActive(0);
+            setCabinetActive(0);
+            setHoldItemTrigger();
+          }}
+        >
+          +
+        </button>
+      </div>
+    );
+  }
+
+  function CabinetSelections() {
+    return (
+      <div>
+        <label className="LableMain">Cabinets</label>
+        <select
+          className="LableInputMain"
+          onChange={(e) => {
+            setActive(e.target.value);
+            setCabinetActive(e.target.value);
+          }}
+          value={cabinetUUID}
+        >
+          {CabinetCount === undefined ? (
+            <option value={0}>No Cabinets Listed</option>
+          ) : (
+            <>
+              {cabinets.map((cabinetUUID, index) => (
+                <option key={index} value={cabinetUUID}>
+                  {AllItems[cabinetUUID]["Name *"]}
+                </option>
+              ))}
+            </>
+          )}
+        </select>
+      </div>
+    );
+  }
+}
