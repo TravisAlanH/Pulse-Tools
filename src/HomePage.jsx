@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import Logo from "./Assets/Logo.png";
-import { MdCompareArrows } from "react-icons/md";
-import { MdCompare } from "react-icons/md";
-import { AiOutlineColumnHeight, AiOutlinePython } from "react-icons/ai";
+// import Logo from "./Assets/Logo.png";
+// import { MdCompareArrows } from "react-icons/md";
+// import { MdCompare } from "react-icons/md";
+// import { AiOutlineColumnHeight, AiOutlinePython } from "react-icons/ai";
 import { RoutingStore } from "../Store/Store";
 import MagGlass from "./assets/magnifying-glass.png";
 import { BsHddRackFill } from "react-icons/bs";
