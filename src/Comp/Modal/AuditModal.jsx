@@ -3,12 +3,13 @@ import "./Modal.css";
 import { RoutingStore } from "../../../Store/Store";
 import AccountVarified from "../Login/AccountVarified";
 import MLT from "../Audit_Home/Audit/Modal/MLT";
+import HoldQuestions from "../Audit_Home/Audit/BuildCabinets/AuditQuestions/HoldQuestions";
 
 export default function LoginModal() {
   const Modal = RoutingStore((state) => state.data.AuditModal);
   const setAuditModal = RoutingStore((state) => state.setAuditModal);
 
-  const pages = [<MLT />];
+  const pages = [<MLT />, <HoldQuestions />];
   const Header = ["Varify Your Email", "Varify Account Information"];
 
   return (

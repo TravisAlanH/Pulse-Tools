@@ -2,13 +2,14 @@ import React from "react";
 import { CurrentLocation } from "../../../../../../Store/Store";
 import { Questions } from "../../../../../../dcT_Objects/ObjectQuestions";
 import { MLTStore } from "../../../../../../Store/Store";
+import { RoutingStore } from "../../../../../../Store/Store";
 import { ReserseHeaderConversions } from "../../../../../../dcT_Objects/Data/HeaderConversions";
 import { HeaderConversions } from "../../../../../../dcT_Objects/Data/HeaderConversions";
 import { AllLocationsStore } from "../../../../../../Store/Store";
 import { UniqueOrder } from "../../../../../../dcT_Objects/ObjectsArrays";
 import { ObjectListing } from "../../../../../../dcT_Objects/ObjectsArrays";
 
-export default function () {
+export default function HoldQuestions() {
   const holdItem = CurrentLocation((state) => state.data.HoldItem);
   const setHoldItem = CurrentLocation((state) => state.setHoldItem);
   const holdMLTItem = MLTStore((state) => state.data.holdMLTItem);
@@ -25,6 +26,7 @@ export default function () {
   const setActiveItems = CurrentLocation((state) => state.setActive);
   const PriorMLTHoldItem = React.useRef({});
   const setCheckedIndex = MLTStore((state) => state.setCheckedIndex);
+  const setAuditModal = RoutingStore((state) => state.setAuditModal);
 
   React.useEffect(() => {
     if (AllItems.hasOwnProperty(ActiveUUID)) {
@@ -95,6 +97,7 @@ export default function () {
     setHoldItem({});
     setActiveItems(0);
     setCheckedIndex(-1);
+    setAuditModal(-1);
   }
 
   function handleSubmitEdit(e) {
@@ -105,6 +108,7 @@ export default function () {
       UUID: ActiveUUID,
     };
     editItemByUUID(Payload);
+    setAuditModal(-1);
   }
 
   if (Object.keys(holdItem).length === 0 || Object.keys(holdMLTItem) === undefined) {
@@ -114,8 +118,8 @@ export default function () {
   console.log("hold item", holdItem);
 
   return (
-    <div className="h-full">
-      <div className="h-[1.5rem]">
+    <div className="h-full w-[95%] flex flex-col items-center gap-4">
+      <div className="h-[1.5rem] flex flex-col items-start w-full">
         {AllItems.hasOwnProperty(ActiveUUID) ? (
           <div className="flex flex-row gap-3">
             <p>Edit:</p> <p className="text-[#00B188]">{holdItem["Name *"]}</p>
@@ -124,7 +128,7 @@ export default function () {
           <h1 className="text-2xl">Add {holdItem["Object *"].length < 16 ? holdItem["Object *"] : `${holdItem["Object *"].slice(0, 12)}...`}</h1>
         )}
       </div>
-      <div className="flex flex-row justify-between h-[2rem] items-center mb-2">
+      <div className="flex flex-row justify-between h-[2rem] items-center mb-2 w-full">
         <span className="flex flex-row gap-3">
           <p>Showing: </p>
           <p className="text-[#00B188]">{hideNonRequired ? "Required Fields" : "All Fields"}</p>
@@ -134,7 +138,7 @@ export default function () {
         </button>
       </div>
       <form
-        className="flex flex-col gap-2 h-full"
+        className="flex flex-col gap-2 h-full w-full"
         onSubmit={(e) => {
           if (AllItems.hasOwnProperty(ActiveUUID)) {
             handleSubmitEdit(e);

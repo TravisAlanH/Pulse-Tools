@@ -21,6 +21,8 @@ export default function FiltersView({ ShownCount, OriginRowsCount, setSpliceEnd,
     });
   }
 
+  const ShownOptions = [10, 15, 20, 50, 100];
+
   return (
     <div className=" flex flex-col items-start gap-5 w-full h-[5rem] mb-2">
       <div className="flex flex-row gap-4 text-sm text-[#00B188]">
@@ -45,14 +47,26 @@ export default function FiltersView({ ShownCount, OriginRowsCount, setSpliceEnd,
         )}
         <select
           className="text-black text-sm"
+          defaultValue={SpliceEnd}
           onChange={(e) => {
             setSpliceEnd(parseInt(e.target.value));
           }}
         >
-          <option>10</option>
-          <option>20</option>
-          <option>50</option>
-          <option>100</option>
+          {ShownOptions.map((option) => {
+            if (option === SpliceEnd) {
+              return (
+                <option key={option} value={option} selected>
+                  {option}
+                </option>
+              );
+            } else {
+              return (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              );
+            }
+          })}
         </select>
       </div>
       <div className="h-[2rem] flex flex-row justify-between gap-3">

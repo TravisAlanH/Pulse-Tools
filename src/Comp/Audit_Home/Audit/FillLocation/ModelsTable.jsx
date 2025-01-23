@@ -2,6 +2,7 @@
 import React from "react";
 import { MLTStore } from "../../../../../Store/Store";
 import { CurrentLocation } from "../../../../../Store/Store";
+import { RoutingStore } from "../../../../../Store/Store";
 
 import FiltersView from "../FiltersViewer/FiltersView";
 import SortFinishedTable from "../MLTView/SortFinishedTable";
@@ -19,13 +20,14 @@ export default function ModelsTable() {
   const Active = CurrentLocation((state) => state.data.Active);
   const AllItems = CurrentLocation((state) => state.data.AllItems);
   const setHoldMLTItem = MLTStore((state) => state.setHoldMLTItem);
+  const setAuditModal = RoutingStore((state) => state.setAuditModal);
 
   const headerStyle = "border-2 border-[#F2ECE6] px-2 h-[2.5rem] bg-[#F2ECE6] text-nowrap font-normal text-sm";
   const rowStyle = "border-2 border-[#F2ECE6] px-2 w-[12rem] h-[2rem] text-nowrap overflow-clip";
   const checkboxStyle = "px-2 h-[1.5rem] w-[1.5rem] ActiveItemCheckbox";
 
-  const [trOrder, setTrOrder] = React.useState(["Object", "Make", "Model", "RUHeight", "Height", "Width", "Depth", "Class", "Subclass", "Mounting", "DataPortsCount", "PowerPortsCount", "FrontSlotsCount", "BackSlotsCount"]);
-  const [thOrder, setThOrder] = React.useState(["Object", "Make", "Model", "RUHeight", "Height", "Width", "Depth", "Class", "Subclass", "Mounting", "DataPortsCount", "PowerPortsCount", "FrontSlotsCount", "BackSlotsCount"]);
+  const [trOrder, setTrOrder] = React.useState(["Make", "Model", "RUHeight", "Object", "Height", "Width", "Depth", "Class", "Subclass", "Mounting", "DataPortsCount", "PowerPortsCount", "FrontSlotsCount", "BackSlotsCount"]);
+  const [thOrder, setThOrder] = React.useState(["Make", "Model", "RUHeight", "Object", "Height", "Width", "Depth", "Class", "Subclass", "Mounting", "DataPortsCount", "PowerPortsCount", "FrontSlotsCount", "BackSlotsCount"]);
   const [SelectedHoldItem, setSelectedHoldItem] = React.useState({});
   const [SpliceEnd, setSpliceEnd] = React.useState(15);
 
@@ -174,6 +176,7 @@ export default function ModelsTable() {
           className={` text-white font-bold py-2 px-4 rounded-lg ${Object.keys(SelectedHoldItem).length === 0 || setCheckedIndex === null ? "bg-[#757575]" : "bg-[#00B188]"}`}
           onClick={() => {
             setHoldMLTItem(SelectedHoldItem);
+            setAuditModal(1);
             console.log(SelectedHoldItem);
           }}
         >
