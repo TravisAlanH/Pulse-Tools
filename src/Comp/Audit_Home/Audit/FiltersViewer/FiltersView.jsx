@@ -1,12 +1,11 @@
 import React from "react";
 import { MLTStore } from "../../../../../Store/Store";
 
-export default function FiltersView({ ShownCount, OriginRowsCount }) {
+export default function FiltersView({ ShownCount, OriginRowsCount, setSpliceEnd, SpliceEnd }) {
   const sortType = MLTStore((state) => state.data.sortType);
   const sortDirection = MLTStore((state) => state.data.sortDirection);
   const searchInput = MLTStore((state) => state.data.searchInput);
   const filters = MLTStore((state) => state.data.filters);
-  const [SpliceEnd, setSpliceEnd] = React.useState(20);
   const [CommonMLTSelected, setCommonMLTSelected] = React.useState(false);
   const [StandardMLTSelected, setStandardMLTSelected] = React.useState(true);
   const [CustomMLTSelected, setCustomMLTSelected] = React.useState(false);
@@ -23,11 +22,11 @@ export default function FiltersView({ ShownCount, OriginRowsCount }) {
   }
 
   return (
-    <div className=" flex flex-row justify-between gap-5 items-center w-full h-[2rem] mb-2">
-      <div className="text-sm text-[#00B188]">
+    <div className=" flex flex-col items-start gap-5 w-full h-[5rem] mb-2">
+      <div className="flex flex-row gap-4 text-sm text-[#00B188]">
         <div className="flex flex-row gap-1">
           <span className="text-black">Showing:</span>
-          <span>{ShownCount}</span>
+          <span>{SpliceEnd}</span>
           <span className="text-black">of</span>
           <span>{OriginRowsCount}</span>
         </div>
@@ -44,9 +43,8 @@ export default function FiltersView({ ShownCount, OriginRowsCount }) {
             <span>{Object.keys(searchInput).filter((key) => searchInput[key] !== "").length}</span>
           </div>
         )}
-      </div>
-      <div className="h-[2rem] flex flex-row justify-between gap-3">
         <select
+          className="text-black text-sm"
           onChange={(e) => {
             setSpliceEnd(parseInt(e.target.value));
           }}
@@ -56,6 +54,8 @@ export default function FiltersView({ ShownCount, OriginRowsCount }) {
           <option>50</option>
           <option>100</option>
         </select>
+      </div>
+      <div className="h-[2rem] flex flex-row justify-between gap-3">
         <div className="flex flex-row gap-3">
           <button
             className={` ${StandardMLTSelected ? "ButtonMainNonWhite" : "ButtonMain"}`}

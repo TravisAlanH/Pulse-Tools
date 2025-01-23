@@ -6,7 +6,7 @@ import { CurrentLocation } from "../../../../../Store/Store";
 import FiltersView from "../FiltersViewer/FiltersView";
 import SortFinishedTable from "../MLTView/SortFinishedTable";
 
-export default function ModelsTable({ SpliceEnd = 10 }) {
+export default function ModelsTable() {
   // const [checkedIndex, setCheckedIndex] = React.useState(null);
   const checkedIndex = MLTStore((state) => state.data.checkedIndex);
   const setCheckedIndex = MLTStore((state) => state.setCheckedIndex);
@@ -26,6 +26,8 @@ export default function ModelsTable({ SpliceEnd = 10 }) {
 
   const [trOrder, setTrOrder] = React.useState(["Object", "Make", "Model", "RUHeight", "Height", "Width", "Depth", "Class", "Subclass", "Mounting", "DataPortsCount", "PowerPortsCount", "FrontSlotsCount", "BackSlotsCount"]);
   const [thOrder, setThOrder] = React.useState(["Object", "Make", "Model", "RUHeight", "Height", "Width", "Depth", "Class", "Subclass", "Mounting", "DataPortsCount", "PowerPortsCount", "FrontSlotsCount", "BackSlotsCount"]);
+  const [SelectedHoldItem, setSelectedHoldItem] = React.useState({});
+  const [SpliceEnd, setSpliceEnd] = React.useState(15);
 
   const OriginRowsCount = React.useRef(Object.keys(rows).length);
 
@@ -107,59 +109,77 @@ export default function ModelsTable({ SpliceEnd = 10 }) {
     // <div className="flex-grow flex flex-col justify-start items-start w-full h-full">
     //   <div className="flex-grow flex flex-col items-start  w-full h-full">
 
-    <div className="min-h-full">
+    <div className="max-h-full flex flex-col gap-2 items-start w-full h-full">
       <div className="flex flex-row justify-start w-full">
-        <FiltersView ShownCount={filteredCount} OriginRowsCount={OriginRowsCount.current} />
+        <FiltersView ShownCount={filteredCount} OriginRowsCount={OriginRowsCount.current} setSpliceEnd={setSpliceEnd} SpliceEnd={SpliceEnd} />
       </div>
       {/* <div class=" overflow-y-auto w-full max-h-[90%]" id="tableDiv"> */}
-      <table className="border-0 border-[#F2ECE6]">
-        <thead>
-          <tr>
-            <th className={headerStyle}>Select</th>
-            {thOrder.map((header, index) => {
+
+      <div className="max-h-[90%] overflow-y-auto">
+        <table className="border-0 border-[#F2ECE6]">
+          <thead>
+            <tr>
+              <th className={headerStyle}>Select</th>
+              {thOrder.map((header, index) => {
+                return (
+                  <th key={index} className={headerStyle}>
+                    {HeaderFunction(header, thOrder, setThOrder, trOrder, setTrOrder, index)}
+                  </th>
+                );
+              })}
+            </tr>
+          </thead>
+          <tbody>
+            {filteredRows.map((row, index) => {
               return (
-                <th key={index} className={headerStyle}>
-                  {HeaderFunction(header, thOrder, setThOrder, trOrder, setTrOrder, index)}
-                </th>
+                <tr key={index} className={` border-[#F2ECE6] text-sm border-2 px-2 ${clicked === row.index ? "bg-[#F2ECE6]" : ""}`} onClick={() => setClicked(row.index)}>
+                  <td className=" flex flex-row justify-center items-center h-[3rem]">
+                    <input
+                      key={index}
+                      id={"CheckBox" + index}
+                      type="checkbox"
+                      className={`${checkboxStyle} border-0`}
+                      checked={checkedIndex === row.index}
+                      onChange={() => {
+                        if (checkedIndex === row.index) {
+                          setCheckedIndex(null);
+                          setHoldMLTItem({});
+                          setSelectedHoldItem({});
+                        } else {
+                          setCheckedIndex(row.index);
+                          setSelectedHoldItem(row);
+                        }
+                      }}
+                    />
+                  </td>
+                  {trOrder.map((header, index) => {
+                    return (
+                      <td key={index} className={rowStyle}>
+                        {row[header]}
+                      </td>
+                    );
+                  })}
+                </tr>
               );
             })}
-          </tr>
-        </thead>
-        <tbody>
-          {filteredRows.map((row, index) => {
-            return (
-              <tr key={index} className={` border-[#F2ECE6] text-sm border-2 px-2 ${clicked === row.index ? "bg-[#F2ECE6]" : ""}`} onClick={() => setClicked(row.index)}>
-                <td className=" flex flex-row justify-center items-center h-[3rem]">
-                  <input
-                    key={index}
-                    id={"CheckBox" + index}
-                    type="checkbox"
-                    className={`${checkboxStyle} border-0`}
-                    checked={checkedIndex === row.index}
-                    onChange={() => {
-                      if (checkedIndex === row.index) {
-                        setCheckedIndex(null);
-                        setHoldMLTItem({});
-                      } else {
-                        setCheckedIndex(row.index);
-                        setHoldMLTItem(row);
-                        console.log("row", row);
-                      }
-                    }}
-                  />
-                </td>
-                {trOrder.map((header, index) => {
-                  return (
-                    <td key={index} className={rowStyle}>
-                      {row[header]}
-                    </td>
-                  );
-                })}
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+      </div>
+      <div className="flex flex-row justify-between gap-[10rem]">
+        <button className="bg-[#f76565] text-white font-bold py-2 px-4 rounded-lg" onClick={() => setClicked(null)}>
+          Clear
+        </button>
+        <button
+          disabled={Object.keys(SelectedHoldItem).length === 0 || setCheckedIndex === null}
+          className={` text-white font-bold py-2 px-4 rounded-lg ${Object.keys(SelectedHoldItem).length === 0 || setCheckedIndex === null ? "bg-[#757575]" : "bg-[#00B188]"}`}
+          onClick={() => {
+            setHoldMLTItem(SelectedHoldItem);
+            console.log(SelectedHoldItem);
+          }}
+        >
+          Select
+        </button>
+      </div>
     </div>
   );
 
