@@ -133,6 +133,7 @@ export default function CabFront() {
                             setHoldItem(assetsInCabinet[cabinetView["RUHeight"] - iCopy]);
                             setActive(Object.entries(AllItems).find(([_, value]) => value === assetsInCabinet[cabinetView["RUHeight"] - iCopy])?.[0]);
                             setHoldItemTrigger();
+                            setAuditModal(1);
                           }}
                         >
                           <PiNotePencil />

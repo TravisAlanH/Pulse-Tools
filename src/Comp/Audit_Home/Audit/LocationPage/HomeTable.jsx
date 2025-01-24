@@ -29,6 +29,7 @@ export default function HomeTable({ LocationsList }) {
   const CurrentLocationData = CurrentLocation((state) => state.data);
   const replaceCurrentLocation = CurrentLocation((state) => state.replaceCurrentLocation);
   const setAuditPage = RoutingStore((state) => state.setAuditPage);
+  const setAuditModal = RoutingStore((state) => state.setAuditModal);
 
   console.log(currentLocationData);
 
@@ -89,9 +90,10 @@ export default function HomeTable({ LocationsList }) {
   }, [SearchInput, MLTFilterAndSort, LocationsList, rows]);
 
   async function handleDownload(uuid) {
-    console.log("hold", HoldLocation);
-    console.log("current", CurrentLocationData);
-    console.log(HoldLocation != CurrentLocationData);
+    // console.log("hold", HoldLocation);
+    // console.log("current", CurrentLocationData);
+    // console.log(HoldLocation != CurrentLocationData);
+    // ! FIX THIS
     if (HoldLocation == CurrentLocationData) {
       alert("Save your Data first");
       return;
@@ -101,7 +103,7 @@ export default function HomeTable({ LocationsList }) {
     if (docSnap.exists()) {
       replaceCurrentLocation(docSnap.data()[uuid]);
       setHoldLocation(docSnap.data()[uuid]);
-      setAuditPage(1);
+      // setAuditPage(1);
     } else {
       console.log("No such document!");
     }
@@ -179,7 +181,7 @@ export default function HomeTable({ LocationsList }) {
                           <button onClick={() => handleSaveData(row)}>
                             <FaSave className={ActionButtonStyle} />
                           </button>
-                          <button>
+                          <button onClick={() => setAuditModal(2)}>
                             <FaEllipsisH className={ActionButtonStyle} />
                           </button>
                         </div>
