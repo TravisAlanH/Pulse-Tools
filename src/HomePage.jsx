@@ -19,34 +19,6 @@ export default function HomePage() {
       icon: <BsHddRackFill className="text-[3.5rem] text-[#4B4F54]" />,
       index: 0,
     },
-    // "Model Compare": {
-    //   page: 2,
-    //   title: "Model Compare and Objects",
-    //   discription: "Generates Model Compare with Accuracy and Object typing from .xlsx data and dcTrack Model Libary.",
-    //   icon: <MdCompareArrows className="text-[3.5rem] text-white" />,
-    //   index: 1,
-    // },
-    // "Multiple Sheet": {
-    //   page: 3,
-    //   title: "Multiple Sheet Compare",
-    //   discription: "Generate Multiple Sheet Compare output from old and New .xlsx data. Provides Adds, Removes, and Changes in single file output.",
-    //   icon: <MdCompare className="text-[3.5rem] text-white" />,
-    //   index: 2,
-    // },
-    // "Duplicates Compare": {
-    //   page: 4,
-    //   title: "Duplicates in Column Compare",
-    //   discription: "Generates Duplicate comparisons between Single, Multiple, and Combined Columns from .xlsx data.",
-    //   icon: <AiOutlineColumnHeight className="text-[3.5rem] text-white" />,
-    //   index: 3,
-    // },
-    // "Python Input": {
-    //   page: 5,
-    //   title: "**** Python Input **** (Work in Progress)",
-    //   discription: "Create and Use Python tools from .py provided files.",
-    //   icon: <AiOutlinePython className="text-[3.5rem] text-white" />,
-    //   index: 4,
-    // },
   });
 
   const handleSearchChange = (e) => {

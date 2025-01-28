@@ -4,13 +4,14 @@ import AuditPanels from "./Audit/AuditPanels";
 import { RoutingStore } from "../../../Store/Store";
 import AuditModal from "../Modal/AuditModal";
 import Cabinet from "./Audit/FillLocation/Cabinet";
+import AuditActions from "./AuditActions";
 
 export default function AuditHome() {
   const AuditPage = RoutingStore((state) => state.data.AuditPage);
   const AuditModalValue = RoutingStore((state) => state.data.AuditModal);
   const setAuditModal = RoutingStore((state) => state.setAuditModal);
   const setAuditPage = RoutingStore((state) => state.setAuditPage);
-  const Pages = [<LocationList />, <Cabinet />, <AuditPanels />];
+  const Pages = [<LocationList />, <Cabinet />, <AuditActions />, <AuditPanels />];
 
   const [ModalShow, setModalShow] = React.useState(false);
 

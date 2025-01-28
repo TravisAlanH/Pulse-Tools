@@ -9,6 +9,7 @@ import { v4 as uuidv4 } from "uuid";
 import HomeTable from "./HomeTable";
 import { BlankCurrentLocation } from "../../../../../Store/Init_State";
 import { HoldLocationStore } from "../../../../../Store/Store";
+import { RoutingStore } from "../../../../../Store/Store";
 
 export default function LocationList() {
   const setHold = CurrentLocation((state) => state.setHoldItem);
@@ -16,7 +17,7 @@ export default function LocationList() {
   const addToItems = CurrentLocation((state) => state.addToItems);
   const holdItemTrigger = CurrentLocation((state) => state.data.HoldItemTrigger);
   const setHoldItemTrigger = CurrentLocation((state) => state.setHoldItemTrigger);
-
+  const setAuditModal = RoutingStore((state) => state.setAuditModal);
   const [locationCode, setLocationCode] = React.useState("");
   const [LocationsList, setLocationsList] = React.useState();
 
@@ -49,45 +50,45 @@ export default function LocationList() {
       });
     }
     if (!LocationExists) {
-      document.getElementById("setLocationModal").style.display = "block";
+      setAuditModal(3);
       let holdLocation = { ...ObjectListing["Location"] };
       holdLocation["dcTrack Location Code*"] = locationCode;
       setHold(holdLocation);
     }
   }
 
-  async function handleVarifyLocation(e) {
-    e.preventDefault();
-    document.getElementById("setLocationModal").style.display = "none";
-    // !This will have to be removed after testing
-    const UUID = uuidv4().replace(/[\/[\]~*.]/g, "_");
+  // async function handleVarifyLocation(e) {
+  //   e.preventDefault();
+  //   document.getElementById("setLocationModal").style.display = "none";
+  //   // !This will have to be removed after testing
+  //   const UUID = uuidv4().replace(/[\/[\]~*.]/g, "_");
 
-    const LocationsList = doc(db, "Users", auth.currentUser.uid, "LocationData", "LocationsSnapshot");
-    await setDoc(
-      LocationsList,
-      {
-        [`${UUID}`]: holdItem,
-      },
-      { merge: true }
-    )
-      .then(() => {
-        const LocationsList = doc(db, "Users", auth.currentUser.uid, "LocationData", "LocationsFullData");
-        let InicialStateCopy = { ...BlankCurrentLocation };
-        InicialStateCopy.Location = UUID;
-        InicialStateCopy.AllItems[UUID] = holdItem;
-        setDoc(
-          LocationsList,
-          {
-            [`${UUID}`]: InicialStateCopy,
-          },
-          { merge: true }
-        );
-      })
-      .then(() => {
-        setHoldItemTrigger();
-      });
-    setHold({});
-  }
+  //   const LocationsList = doc(db, "Users", auth.currentUser.uid, "LocationData", "LocationsSnapshot");
+  //   await setDoc(
+  //     LocationsList,
+  //     {
+  //       [`${UUID}`]: holdItem,
+  //     },
+  //     { merge: true }
+  //   )
+  //     .then(() => {
+  //       const LocationsList = doc(db, "Users", auth.currentUser.uid, "LocationData", "LocationsFullData");
+  //       let InicialStateCopy = { ...BlankCurrentLocation };
+  //       InicialStateCopy.Location = UUID;
+  //       InicialStateCopy.AllItems[UUID] = holdItem;
+  //       setDoc(
+  //         LocationsList,
+  //         {
+  //           [`${UUID}`]: InicialStateCopy,
+  //         },
+  //         { merge: true }
+  //       );
+  //     })
+  //     .then(() => {
+  //       setHoldItemTrigger();
+  //     });
+  //   setHold({});
+  // }
 
   return (
     <div className="mb-6">
@@ -101,7 +102,7 @@ export default function LocationList() {
         </div>
         {LocationsList !== undefined ? <HomeTable LocationsList={LocationsList} /> : null}
       </div>
-      {/* MODAL */}
+      {/* MODAL
       <div id="setLocationModal" className="modal">
         <div className="modal-content-sop flex flex-col">
           <div className="flex flex-row justify-end">
@@ -115,10 +116,10 @@ export default function LocationList() {
             </span>
           </div>
           <form onSubmit={(e) => handleVarifyLocation(e)}>
-            <div className="grid grid-cols-2 p-4 gap-4">
+            <div className="flex flex-col">
               {Object.keys(holdItem).map((key, index) => {
                 return (
-                  <div key={index} className="grid grid-cols-2 h-[2.5rem] gap-y-4">
+                  <div key={index} className="flex flex-row">
                     {key.includes("*") ? (
                       <label className="Question flex flex-row items-center gap-3">
                         <p className="text-red-500">*</p>
@@ -127,7 +128,6 @@ export default function LocationList() {
                     ) : (
                       <label className="Question flex flex-col justify-center">{key}</label>
                     )}
-                    {/* <lable className="Question flex flex-col justify-center">{key}</lable> */}
                     {Questions.Items[key].type === "text" ? TextInput(key) : Questions.Items[key].type === "number" ? NumberInput(key) : Questions.Items[key].type === "date" ? DateInput(key) : Questions.Items[key].type === "select" ? SelectInput(key) : TextInput(key)}
                   </div>
                 );
@@ -136,7 +136,7 @@ export default function LocationList() {
             </div>
           </form>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 

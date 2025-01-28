@@ -98,6 +98,18 @@
   box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.1);
 }
 
+.ButtonMainRed {
+  background-color: #bd2020;
+  color: #ffffff;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
+  display: block;
+  /* shadow */
+  box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.1);
+}
+
 .ButtonMain,
 .ButtonMainNonWhite {
   transition: all 0.2s ease;

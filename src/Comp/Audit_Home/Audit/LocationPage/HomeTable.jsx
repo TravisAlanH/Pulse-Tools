@@ -11,8 +11,6 @@ import FiltersView from "../FiltersViewer/FiltersView";
 export default function HomeTable({ LocationsList }) {
   // set LocationsList Location Area values to Numbers
 
-  console.log("Location List", LocationsList);
-
   const [checkedIndex, setCheckedIndex] = React.useState(null);
   let rows = LocationsList;
   const MLTFilterAndSort = MLTStore((state) => state.data);
@@ -30,8 +28,7 @@ export default function HomeTable({ LocationsList }) {
   const replaceCurrentLocation = CurrentLocation((state) => state.replaceCurrentLocation);
   const setAuditPage = RoutingStore((state) => state.setAuditPage);
   const setAuditModal = RoutingStore((state) => state.setAuditModal);
-
-  console.log(currentLocationData);
+  const HoldItemTrigger = CurrentLocation((state) => state.data.HoldItemTrigger);
 
   const headerStyle = "border-2 px-2 h-[2.5rem] bg-[#F2ECE6] text-nowrap font-normal text-sm";
   const rowStyle = "border-2 px-2 w-[8rem] h-[2rem] text-nowrap overflow-clip";
@@ -45,6 +42,10 @@ export default function HomeTable({ LocationsList }) {
   const [thOrder, setThOrder] = React.useState(["Location Name", "Location Code"]);
 
   const OriginRowsCount = React.useRef(Object.keys(rows).length);
+
+  React.useEffect(() => {
+    console.log("Refresh Location List");
+  }, [HoldItemTrigger]);
 
   React.useEffect(() => {
     if (LocationsList === undefined) {
@@ -144,25 +145,6 @@ export default function HomeTable({ LocationsList }) {
             {filteredRows.map((row, index) => {
               return (
                 <tr key={index} className={`text-sm border-2 px-2 h-full ${clicked === row ? "bg-gray-300" : ""}`} onClick={() => setClicked(row)}>
-                  {/* <td className="flex flex-row justify-center items-center h-[3rem]">
-                    <input
-                      key={index}
-                      id={"CheckBox" + index + row}
-                      type="checkbox"
-                      className={`${checkboxStyle}`}
-                      checked={checkedIndex === row}
-                      onChange={() => {
-                        if (checkedIndex === row) {
-                          setCheckedIndex(null);
-                          setHoldMLTItem({});
-                        } else {
-                          setCheckedIndex(row);
-                          setHoldMLTItem(row);
-                          console.log("row", row);
-                        }
-                      }}
-                    />
-                  </td> */}
                   {trOrder.map((header, index) => {
                     return (
                       <td key={index} className={rowStyle}>
