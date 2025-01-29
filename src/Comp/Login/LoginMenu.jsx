@@ -57,6 +57,7 @@ export default function LoginMenu() {
           }
         }
       } else {
+        setLoginModal(2)
         setUser(user);
       }
       // Handle success case (e.g., navigate to another page or show success message)

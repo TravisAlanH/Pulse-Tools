@@ -32,14 +32,12 @@ export default function CreateAccountMenu() {
     UnvarifiedUser(payload);
 
     try {
-      // Create a new user using Firebase authentication
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
       console.log(user);
       await updateProfile(auth.currentUser, { displayName: fullName }).catch((error) => {
         console.log(error);
       });
-      // ! This is where the users other creds are inicialized in the firestore database
       await setDoc(doc(db, "Users", user.uid), {
         AccountInformation: {
           Status: "Pending",
@@ -52,12 +50,10 @@ export default function CreateAccountMenu() {
         setLoginModal(0);
       });
 
-      // Handle success case (e.g., navigate to another page or show success message)
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
       console.error(errorCode, errorMessage);
-      // Handle error case (e.g., show error message to the user)
     }
   };
 
@@ -67,11 +63,11 @@ export default function CreateAccountMenu() {
 
   return (
     <div className="w-full h-full flex flex-row justify-center items-center ">
-      <div className="flex flex-col gap-6  p-8 bg-[#F5F5F5] border-[1px] border-[#DCDCDC] rounded-[.7rem]">
+      <div className="w-full flex flex-col gap-6 m-4 p-4 bg-[#F5F5F5] border-[1px] border-[#DCDCDC] rounded-[.7rem]">
         <div>
           <p className="text-[2rem] font-bold">Sign up for your project tools account</p>
         </div>
-        <form onSubmit={handleSighUp} className="flex flex-col gap-6">
+        <form onSubmit={() => handleSighUp()} className="flex flex-col gap-6">
           {InputNames.map((_, index) => {
             return <div className="flex flex-col gap-2">{Inputs(clickActions[index], InputNames[index], InputTypes[index])}</div>;
           })}

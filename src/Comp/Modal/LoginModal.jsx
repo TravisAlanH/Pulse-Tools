@@ -3,12 +3,13 @@ import "./Modal.css";
 import { RoutingStore } from "../../../Store/Store";
 import VarifyEmail from "../Login/LoginModals/VarifyEmail";
 import AccountVarified from "../Login/AccountVarified";
+import PendingAccounts from "../AdminUser/PendingAccounts"
 
 export default function LoginModal() {
   const LoginModal = RoutingStore((state) => state.data.LoginModal);
   const setLoginModal = RoutingStore((state) => state.setLoginModal);
 
-  const pages = [<VarifyEmail />, <AccountVarified />];
+  const pages = [<VarifyEmail />, <AccountVarified />, <PendingAccounts />];
   const Header = ["Varify Your Email", "Varify Account Information"];
 
   return (

@@ -45,7 +45,7 @@ export default function AccountVarified() {
   return (
     <div className="pt-4 w-[30rem]">
       {confirm ? (
-        <form className="flex flex-col gap-4" onSubmit={handleSendVarification}>
+        <form className="flex flex-col gap-4" onSubmit={() => handleSendVarification}>
           {target.map((item, index) => {
             return (
               <div className="flex flex-col gap-2">
@@ -68,7 +68,7 @@ export default function AccountVarified() {
           })}
           <div className="flex flex-row gap-2">
             <input type="submit" value="Register" className="border-2 py-[.375rem] px-[.75rem]" />
-            <button type="button" onClick={() => setLoginModal(-1)} className="border-2 py-[.375rem] px-[.75rem]">
+            <button type="button" onClick={() => setLoginModal(-1)} classNamfe="border-2 py-[.375rem] px-[.75rem]">
               Cancel
             </button>
           </div>
