@@ -7,10 +7,22 @@ import { doc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 export default function AccountVarified() {
   const userData = UserStore((state) => state.data);
   const [confirm, setConfirm] = React.useState(false);
-  const [InputPayload, setInputPayload] = React.useState({});
+  const [InputPayload, setInputPayload] = React.useState({
+    id: userData.ID,
+    Name: userData.Name,
+    Email: userData.Email,
+    status: "Pending",
+    Company: "",
+    PhoneNumber: "",
+    Role: "",
+    "Sunbird Point Of Contact": "",
+    "Sunbird Point Of Contact Email": "",
+  });
   const UserID = UserStore((state) => state.data.ID);
   const UserStatus = UserStore((state) => state.data["Status"]);
   const setLoginModal = RoutingStore((state) => state.setLoginModal);
+
+  console.log(InputPayload, "Accunt V")
 
   React.useEffect(() => {
     setInputPayload({
@@ -45,7 +57,7 @@ export default function AccountVarified() {
   return (
     <div className="pt-4 w-[30rem]">
       {confirm ? (
-        <form className="flex flex-col gap-4" onSubmit={() => handleSendVarification}>
+        <form className="flex flex-col gap-4" onSubmit={handleSendVarification}>
           {target.map((item, index) => {
             return (
               <div className="flex flex-col gap-2">

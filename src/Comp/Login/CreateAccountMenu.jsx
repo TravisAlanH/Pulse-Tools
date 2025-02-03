@@ -16,9 +16,9 @@ export default function CreateAccountMenu() {
   const UnvarifiedUser = UserStore((state) => state.UnvarifiedUser);
   // const LoginPage = RoutingStore((state) => state.LoginPage);
 
-  const handleSighUp = async (e) => {
+  const handleSignUp = async (e) => {
+    console.log("Building")
     e.preventDefault();
-
     // Check if the passwords match before proceeding
     if (password !== confirmPassword) {
       alert("Passwords do not match");
@@ -67,7 +67,7 @@ export default function CreateAccountMenu() {
         <div>
           <p className="text-[2rem] font-bold">Sign up for your project tools account</p>
         </div>
-        <form onSubmit={() => handleSighUp()} className="flex flex-col gap-6">
+        <form onSubmit={handleSignUp} className="flex flex-col gap-6">
           {InputNames.map((_, index) => {
             return <div className="flex flex-col gap-2">{Inputs(clickActions[index], InputNames[index], InputTypes[index])}</div>;
           })}

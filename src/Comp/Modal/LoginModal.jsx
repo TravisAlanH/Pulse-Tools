@@ -13,7 +13,7 @@ export default function LoginModal() {
   const Header = ["Varify Your Email", "Varify Account Information"];
 
   return (
-    <div id="LoginModal" className="MainModalClass">
+    <div id="LoginModal" className="MainModalClass w-full">
       <div className="ModalContent flex flex-col px-8">
         <div className="flex flex-row justify-between items-start gap-8">
           <h1 className="text-[2rem] font-bold">{Header[LoginModal]}</h1>

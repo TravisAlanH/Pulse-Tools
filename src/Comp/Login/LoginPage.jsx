@@ -28,7 +28,7 @@ export default function LoginPage() {
     <div className="h-full">
       {pages[LoginPage]}
       {ModalShow ? (
-        <div>
+        <div className="">
           <LoginModal />
         </div>
       ) : null}
