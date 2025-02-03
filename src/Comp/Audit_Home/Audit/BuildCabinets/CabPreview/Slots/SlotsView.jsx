@@ -1,8 +1,19 @@
 import React from "react";
 import { CurrentLocation } from "../../../../../../../Store/Store";
+import { MLTStore } from "../../../../../../../Store/Store";
+import { ObjectListing } from "../../../../../../../dcT_Objects/ObjectsArrays";
+import { RoutingStore } from "../../../../../../../Store/Store";
 
 export default function SlotsView({ Front, Back }) {
   const AllItems = CurrentLocation((state) => state.data.AllItems);
+  const resetSortsFiltersSearches = MLTStore((state) => state.resetSortsFiltersSearches);
+  const setFilters = MLTStore((state) => state.setFilters);
+  const setHoldItem = CurrentLocation((state) => state.setHoldItem);
+  const setActive = CurrentLocation((state) => state.setActive);
+  const setHoldItemTrigger = CurrentLocation((state) => state.setHoldItemTrigger);
+  const setAuditModal = RoutingStore((state) => state.setAuditModal);
+  const setHoldMLTItem = MLTStore((state) => state.setHoldMLTItem);
+
   const [viewing, setViewing] = React.useState("Front");
 
   const AllBlades = Object.keys(AllItems).filter((item) => AllItems[item]["Object *"] === "DEVICE-BLADE");
@@ -41,7 +52,22 @@ export default function SlotsView({ Front, Back }) {
 
     function SlotEmpty(Slot) {
       return (
-        <button className="border-2 border-[#f2ece6] rounded-lg px-3 w-[2rem] h-[7rem] vertical-text flex flex-row justify-center items-center" onClick={() => ""}>
+        <button
+          className="border-2 border-[#f2ece6] rounded-lg px-3 w-[2rem] h-[7rem] vertical-text flex flex-row justify-center items-center"
+          onClick={() => {
+            resetSortsFiltersSearches();
+            const Payload = {
+              type: "Object",
+              value: "DEVICE-BLADE",
+            };
+            setFilters(Payload);
+            setHoldItem(ObjectListing["DEVICE-BLADE"]);
+            setHoldMLTItem({});
+            setActive(0);
+            setHoldItemTrigger();
+            setAuditModal(0);
+          }}
+        >
           <p>Add to {Slot}</p>
         </button>
       );

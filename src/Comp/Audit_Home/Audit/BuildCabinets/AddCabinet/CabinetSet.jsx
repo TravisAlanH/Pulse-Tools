@@ -2,6 +2,7 @@ import React from "react";
 import { CurrentLocation } from "../../../../../../Store/Store";
 import { ObjectListing } from "../../../../../../dcT_Objects/ObjectsArrays";
 import { MLTStore } from "../../../../../../Store/Store";
+import { RoutingStore } from "../../../../../../Store/Store";
 
 export default function CabinetSet() {
   const AllItems = CurrentLocation((state) => state.data.AllItems);
@@ -19,6 +20,7 @@ export default function CabinetSet() {
   const setHoldItemTrigger = CurrentLocation((state) => state.setHoldItemTrigger);
   const [cabinets, setCabinets] = React.useState([]);
   const resetSortsFiltersSearches = MLTStore((state) => state.resetSortsFiltersSearches);
+  const setAuditModal = RoutingStore((state) => state.setAuditModal);
 
   React.useEffect(() => {
     let cabinetList = [];
@@ -48,7 +50,6 @@ export default function CabinetSet() {
       </div>
     );
   }
-
 
   //   {
   //     "Make": "Geist",
@@ -83,6 +84,7 @@ export default function CabinetSet() {
   //   "Is Default Location": "",
   //   "Capacity(kW)": "",
   // },
+  console.log(cabinetUUID, "cabinetUUID");
 
   return (
     <div>
@@ -114,6 +116,7 @@ export default function CabinetSet() {
             setActive(0);
             setCabinetActive(0);
             setHoldItemTrigger();
+            setAuditModal(0);
           }}
         >
           +
@@ -138,6 +141,7 @@ export default function CabinetSet() {
             <option value={0}>No Cabinets Listed</option>
           ) : (
             <>
+              {cabinetUUID === 0 ? <option value={0}>Select Cabinet</option> : null}
               {cabinets.map((cabinetUUID, index) => (
                 <option key={index} value={cabinetUUID}>
                   {AllItems[cabinetUUID]["Name *"]}
