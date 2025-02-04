@@ -115,8 +115,6 @@ export default function HoldQuestions() {
     return <div></div>;
   }
 
-  console.log("hold item", holdItem);
-
   return (
     <div className="h-full w-[95%] flex flex-col items-center gap-4">
       <div className="h-[1.5rem] flex flex-col items-start w-full">

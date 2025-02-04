@@ -6,18 +6,19 @@ import MLT from "../Audit_Home/Audit/Modal/MLT";
 import HoldQuestions from "../Audit_Home/Audit/BuildCabinets/AuditQuestions/HoldQuestions";
 import LocationOptions from "../Audit_Home/Audit/LocationPage/LocationOptions";
 import CreateLocationInputs from "../Audit_Home/Audit/LocationPage/CreateLocationInputs";
+import DeleteModal from "../Audit_Home/Audit/BuildCabinets/Modal/DeleteModal";
 
 export default function LoginModal() {
   const Modal = RoutingStore((state) => state.data.AuditModal);
   const setAuditModal = RoutingStore((state) => state.setAuditModal);
 
-  const pages = [<MLT />, <HoldQuestions />, <LocationOptions />, <CreateLocationInputs />];
+  const pages = [<MLT />, <HoldQuestions />, <LocationOptions />, <CreateLocationInputs />, <DeleteModal />];
   const Header = ["Models List", "Fill in Headers", "Location Options", "Create Location"];
 
   return (
     <div id="AuditModal" className="MainModalClass">
-      <div className="ModalContent flex flex-col w-full py-6">
-        <div className="flex flex-row justify-between items-center gap-8 px-6 mb-6">
+      <div className="ModalContent flex flex-col w-full py-4">
+        <div className="flex flex-row justify-between items-center gap-8 px-4 ">
           <h1 className="text-[1rem] font-bold">{Header[Modal]}</h1>
           <span
             className="close"

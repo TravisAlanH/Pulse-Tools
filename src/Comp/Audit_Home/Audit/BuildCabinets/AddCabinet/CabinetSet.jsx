@@ -21,6 +21,10 @@ export default function CabinetSet() {
   const [cabinets, setCabinets] = React.useState([]);
   const resetSortsFiltersSearches = MLTStore((state) => state.resetSortsFiltersSearches);
   const setAuditModal = RoutingStore((state) => state.setAuditModal);
+  const Active = CurrentLocation((state) => state.data.Active);
+
+  console.log(AllItems, "AllItems");
+  console.log(Active, "Active");
 
   React.useEffect(() => {
     let cabinetList = [];

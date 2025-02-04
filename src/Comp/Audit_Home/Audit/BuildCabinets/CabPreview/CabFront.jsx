@@ -2,13 +2,14 @@ import React from "react";
 import { CurrentLocation, RoutingStore } from "../../../../../../Store/Store";
 import { ObjectListing } from "../../../../../../dcT_Objects/ObjectsArrays";
 import { MLTStore } from "../../../../../../Store/Store";
-import { PiNotePencil, PiRowsPlusBottom, PiRowsPlusBottomThin } from "react-icons/pi";
+import { PiNotePencil, PiRowsPlusBottom, PiXSquare } from "react-icons/pi";
 import SlotsView from "./Slots/SlotsView";
 
 export default function CabFront() {
+  const Orintation = "Front";
+
   const Cabinet = CurrentLocation((state) => state.data.Cabinet);
   const AllItems = CurrentLocation((state) => state.data.AllItems);
-  console.log(Cabinet, "Cabinet");
 
   const [cabinetView, setCabinetView] = React.useState(Cabinet);
   const [assetsInCabinet, setAssetsInCabinet] = React.useState();
@@ -130,7 +131,6 @@ export default function CabFront() {
                         <button
                           className="text-[1.5rem]"
                           onClick={() => {
-                            console.log("newHoldItem", assetsInCabinet[cabinetView["RUHeight"] - iCopy]);
                             setHoldMLTItem({ MLTRow });
                             setHoldItem(assetsInCabinet[cabinetView["RUHeight"] - iCopy]);
                             setActive(Object.entries(AllItems).find(([_, value]) => value === assetsInCabinet[cabinetView["RUHeight"] - iCopy])?.[0]);
@@ -140,11 +140,21 @@ export default function CabFront() {
                         >
                           <PiNotePencil />
                         </button>
+                        <button
+                          className="text-[1.5rem]"
+                          onClick={() => {
+                            setActive(Object.entries(AllItems).find(([_, value]) => value === assetsInCabinet[cabinetView["RUHeight"] - iCopy])?.[0]);
+                            setHoldItemTrigger();
+                            setAuditModal(4);
+                          }}
+                        >
+                          <PiXSquare />
+                        </button>
                       </span>
                     </div>
                     <div className="border-2 w-full h-full flex flex-col justify-between">
                       <div className="flex flex-row justify-between h-full">
-                        <SlotsView Back={MLTRow.BackSlotsCount} Front={MLTRow.FrontSlotsCount} chassis={assetsInCabinet[cabinetView["RUHeight"] - iCopy]["Name *"]} cabinet={AllItems[Cabinet]["Name *"]} location={AllItems[Cabinet]["Location *"]} />
+                        <SlotsView Back={MLTRow.BackSlotsCount} Front={MLTRow.FrontSlotsCount} chassis={assetsInCabinet[cabinetView["RUHeight"] - iCopy]["Name *"]} cabinet={AllItems[Cabinet]["Name *"]} location={AllItems[Cabinet]["Location *"]} orintation={Orintation} />
                       </div>
                     </div>
                   </div>
