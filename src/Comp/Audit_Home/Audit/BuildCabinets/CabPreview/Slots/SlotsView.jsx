@@ -4,7 +4,7 @@ import { MLTStore } from "../../../../../../../Store/Store";
 import { ObjectListing } from "../../../../../../../dcT_Objects/ObjectsArrays";
 import { RoutingStore } from "../../../../../../../Store/Store";
 
-export default function SlotsView({ Front, Back }) {
+export default function SlotsView({ Front, Back, chassis, cabinet, location }) {
   const AllItems = CurrentLocation((state) => state.data.AllItems);
   const resetSortsFiltersSearches = MLTStore((state) => state.resetSortsFiltersSearches);
   const setFilters = MLTStore((state) => state.setFilters);
@@ -16,8 +16,12 @@ export default function SlotsView({ Front, Back }) {
 
   const [viewing, setViewing] = React.useState("Front");
 
-  const AllBlades = Object.keys(AllItems).filter((item) => AllItems[item]["Object *"] === "DEVICE-BLADE");
-  const AllBlaesInChassis = AllBlades.filter((blade) => AllBlades[blade]["Chassis"] === "Chassis1");
+  const AllBlades = Object.keys(AllItems)
+    .filter((item) => AllItems[item]["Object *"] === "DEVICE-BLADE")
+    .map((key) => AllItems[key]);
+  const AllBladesInChassis = Object.keys(AllBlades)
+    .filter((blade) => AllBlades[blade]["Chassis **"] === chassis)
+    .map((key) => AllBlades[key]);
 
   return (
     <div className="w-full h-full flex flex-col">
@@ -29,26 +33,66 @@ export default function SlotsView({ Front, Back }) {
           Back
         </button>
       </div>
-      <div className="overflow-auto flex-grow">{viewing === "Front" ? SlotsViewInRow(Front) : SlotsViewInRow(Back)}</div>
+      <div className="overflow-auto flex-grow">{viewing === "Front" ? SlotsViewInRow(Front, "Front") : SlotsViewInRow(Back, "Back")}</div>
     </div>
   );
 
-  function SlotsViewInRow(Slots) {
+  function SlotsViewInRow(Slots, View) {
     return (
       <div className="w-full h-full flex flex-row justify-start">
         {Array(Slots)
           .fill(0)
           .map((_, index) => {
             const slot = index + 1;
+            const indexOfSlottedItem = AllBladesInChassis.findIndex((blade) => parseInt(blade["Slot Position **"]) === slot && blade["Chassis Face **"] === View);
+
             return (
               <div className="flex flex-col" key={`Slot-${index}`}>
                 <div className="min-w-[2.5rem] h-8 bg-[#f2ece6] border border-[#f2ece6] flex flex-row justify-center items-center">{slot}</div>
-                <div className="min-w-[2.5rem] h-full  border border-[#f2ece6] flex flex-row justify-center items-center">{SlotEmpty(slot)}</div>
+                <div className="min-w-[2.5rem] h-full  border border-[#f2ece6] flex flex-row justify-center items-center">{indexOfSlottedItem !== -1 ? SlotFilled(AllBladesInChassis[indexOfSlottedItem]) : SlotEmpty(slot)}</div>
               </div>
             );
           })}
       </div>
     );
+
+    // AllBladesInChassis.filter((blade) => blade["Slot Position **"] === slot)
+
+    function SlotFilled(slot) {
+      return (
+        <div className="w-full h-full flex flex-col justify-between p-2">
+          <div className="flex flex-col justify-center items-start">
+            <p>{slot["Name *"]}</p>
+            <p>{slot["Make *"]}</p>
+            <p>{slot["Model *"]}</p>
+          </div>
+          <div className="flex flex-row justify-center items-center">
+            <button
+              className="text-[1.5rem] rotate-90 font-bold"
+              onClick={() => {
+                // handleCloseAllOpenSelected();
+                // handleOpenSelection(iCopy);
+              }}
+            >
+              +
+            </button>
+            <button
+              className="text-[1.5rem]"
+              onClick={() => {
+                console.log("newHoldItem", slot);
+                setHoldMLTItem({ MLTRow });
+                setHoldItem(slot);
+                setActive(Object.entries(AllItems).find(([_, value]) => value === slot)?.[0]);
+                setHoldItemTrigger();
+                setAuditModal(1);
+              }}
+            >
+              P
+            </button>
+          </div>
+        </div>
+      );
+    }
 
     function SlotEmpty(Slot) {
       return (
@@ -61,7 +105,13 @@ export default function SlotsView({ Front, Back }) {
               value: "DEVICE-BLADE",
             };
             setFilters(Payload);
-            setHoldItem(ObjectListing["DEVICE-BLADE"]);
+            let holdItemCopy = { ...ObjectListing["DEVICE-BLADE"] };
+            holdItemCopy["Chassis **"] = chassis;
+            holdItemCopy["Slot Position **"] = Slot;
+            holdItemCopy["Chassis Face **"] = viewing;
+            holdItemCopy["Cabinet **"] = cabinet;
+            holdItemCopy["Location *"] = location;
+            setHoldItem(holdItemCopy);
             setHoldMLTItem({});
             setActive(0);
             setHoldItemTrigger();

@@ -84,7 +84,6 @@ export default function CabinetSet() {
   //   "Is Default Location": "",
   //   "Capacity(kW)": "",
   // },
-  console.log(cabinetUUID, "cabinetUUID");
 
   return (
     <div>

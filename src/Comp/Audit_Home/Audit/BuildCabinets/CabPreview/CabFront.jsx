@@ -8,6 +8,7 @@ import SlotsView from "./Slots/SlotsView";
 export default function CabFront() {
   const Cabinet = CurrentLocation((state) => state.data.Cabinet);
   const AllItems = CurrentLocation((state) => state.data.AllItems);
+  console.log(Cabinet, "Cabinet");
 
   const [cabinetView, setCabinetView] = React.useState(Cabinet);
   const [assetsInCabinet, setAssetsInCabinet] = React.useState();
@@ -103,6 +104,7 @@ export default function CabFront() {
               // console.log("inCab", Object.entries(AllItems).find(([_, value]) => value === assetsInCabinet[cabinetView["RUHeight"] - iCopy])?.[0]);
               // ! ITEM IN CABINET
               const MLTRow = rows[rows.findIndex((obj) => obj.Model === assetsInCabinet[cabinetView["RUHeight"] - iCopy]["Model *"])];
+
               return (
                 <div id={`CabU-${iCopy}`} key={iCopy} className="flex flex-row min-h-[4rem] CabUFilled" style={TransitionStyle}>
                   <div className="w-1/12   border border-[#f2ece6]  flex flex-row justify-center items-center">{cabinetView["RUHeight"] - parseInt(assetsInCabinet[cabinetView["RUHeight"] - iCopy]["RUHeight"]) - iCopy + 1}</div>
@@ -142,7 +144,7 @@ export default function CabFront() {
                     </div>
                     <div className="border-2 w-full h-full flex flex-col justify-between">
                       <div className="flex flex-row justify-between h-full">
-                        <SlotsView Back={MLTRow.BackSlotsCount} Front={MLTRow.FrontSlotsCount} />
+                        <SlotsView Back={MLTRow.BackSlotsCount} Front={MLTRow.FrontSlotsCount} chassis={assetsInCabinet[cabinetView["RUHeight"] - iCopy]["Name *"]} cabinet={AllItems[Cabinet]["Name *"]} location={AllItems[Cabinet]["Location *"]} />
                       </div>
                     </div>
                   </div>

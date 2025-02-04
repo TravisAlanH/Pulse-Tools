@@ -152,7 +152,6 @@ export default function HoldQuestions() {
           {/* {Object.keys(holdItem) */}
           {UniqueOrder.filter((key) => holdItem.hasOwnProperty(key))
             .filter((key) => {
-              console.log(OrderedHoldItem, "OrderedHoldItem");
               if (hideNonRequired) {
                 return Questions.Items[key].required;
               } else {
