@@ -7,12 +7,13 @@ import SlotsView from "./Slots/SlotsView";
 
 export default function CabFront() {
   const Orintation = "Front";
+  const OpOrintation = "Back";
 
   const Cabinet = CurrentLocation((state) => state.data.Cabinet);
   const AllItems = CurrentLocation((state) => state.data.AllItems);
 
-  const [cabinetView, setCabinetView] = React.useState(Cabinet);
-  const [assetsInCabinet, setAssetsInCabinet] = React.useState();
+  // const [cabinetView, setCabinetView] = React.useState(Cabinet);
+  // const [assetsInCabinet, setAssetsInCabinet] = React.useState();
   const setAuditModal = RoutingStore((state) => state.setAuditModal);
   const isLoading = RoutingStore((state) => state.isLoading);
   const Loading = RoutingStore((state) => state.data.Loading);
@@ -25,18 +26,30 @@ export default function CabFront() {
   const [infoSlots, setInfoSlots] = React.useState(false);
   const rows = MLTStore((state) => state.data.rows);
 
-  React.useEffect(() => {
-    setCabinetView(AllItems[Cabinet]);
-    let holdAssetsInCabinet = {};
-    Object.keys(AllItems).forEach((item) => {
-      if (AllItems[item].hasOwnProperty("Cabinet **")) {
-        if (AllItems[item]["Cabinet **"] === AllItems[Cabinet]["Name *"]) {
-          holdAssetsInCabinet[parseInt(AllItems[item]["U Position **"]) + parseInt(AllItems[item]["RUHeight"]) - 1] = AllItems[item];
-        }
+  let assetsInCabinet = [];
+  let cabinetView = AllItems[Cabinet];
+  // setCabinetView(AllItems[Cabinet]);
+  let holdAssetsInCabinet = {};
+  Object.keys(AllItems).forEach((item) => {
+    if (AllItems[item].hasOwnProperty("Cabinet **")) {
+      if (AllItems[item]["Cabinet **"] === AllItems[Cabinet]["Name *"]) {
+        holdAssetsInCabinet[parseInt(AllItems[item]["U Position **"]) + parseInt(AllItems[item]["RUHeight"]) - 1] = AllItems[item];
       }
-    });
-    setAssetsInCabinet(holdAssetsInCabinet);
-  }, [Cabinet, AllItems]);
+    }
+  });
+  assetsInCabinet = holdAssetsInCabinet;
+  // React.useEffect(() => {
+  //   setCabinetView(AllItems[Cabinet]);
+  //   let holdAssetsInCabinet = {};
+  //   Object.keys(AllItems).forEach((item) => {
+  //     if (AllItems[item].hasOwnProperty("Cabinet **")) {
+  //       if (AllItems[item]["Cabinet **"] === AllItems[Cabinet]["Name *"]) {
+  //         holdAssetsInCabinet[parseInt(AllItems[item]["U Position **"]) + parseInt(AllItems[item]["RUHeight"]) - 1] = AllItems[item];
+  //       }
+  //     }
+  //   });
+  //   setAssetsInCabinet(holdAssetsInCabinet);
+  // }, [Cabinet, AllItems]);
 
   async function handleAddToCab(RU) {
     await isLoading(true);
@@ -53,6 +66,8 @@ export default function CabFront() {
     let holdItemCopy = { ...ObjectListing["DEVICE-RACKABLE"] };
     holdItemCopy["Cabinet **"] = cabinetView["Name *"];
     holdItemCopy["U Position **"] = RU;
+    holdItemCopy["Rails Used **"] = "Both";
+    holdItemCopy["Orientation **"] = `Front Faces Cabinet ${Orintation}`;
     setHoldItem(holdItemCopy);
     setActive(0);
     setHoldItemTrigger();
@@ -100,7 +115,11 @@ export default function CabFront() {
               return null;
             }
             if (assetsInCabinet.hasOwnProperty(cabinetView["RUHeight"] - iCopy)) {
+              if (assetsInCabinet[cabinetView["RUHeight"] - iCopy]["Rails Used **"] !== Orintation && assetsInCabinet[cabinetView["RUHeight"] - iCopy]["Rails Used **"] !== "Both") {
+                return otherSideView(iCopy);
+              }
               const ruHeightToSkip = parseInt(assetsInCabinet[cabinetView["RUHeight"] - iCopy]["RUHeight"]);
+              const rails = assetsInCabinet[cabinetView["RUHeight"] - iCopy]["Rails Used **"];
               skipRUs = ruHeightToSkip - 1;
               // console.log("inCab", Object.entries(AllItems).find(([_, value]) => value === assetsInCabinet[cabinetView["RUHeight"] - iCopy])?.[0]);
               // ! ITEM IN CABINET
@@ -119,7 +138,7 @@ export default function CabFront() {
                       <span className="flex flex-row gap-3">
                         {MLTRow.BackSlotsCount !== 0 || MLTRow.FrontSlotsCount !== 0 ? (
                           <button
-                            className="text-[1.5rem] rotate-90 font-bold"
+                            className="text-[1.5rem] rotate-90 font-bold text-blue-700"
                             onClick={() => {
                               handleCloseAllOpenSelected();
                               handleOpenSelection(iCopy);
@@ -141,7 +160,7 @@ export default function CabFront() {
                           <PiNotePencil />
                         </button>
                         <button
-                          className="text-[1.5rem]"
+                          className="text-[1.5rem] text-red-700"
                           onClick={() => {
                             setActive(Object.entries(AllItems).find(([_, value]) => value === assetsInCabinet[cabinetView["RUHeight"] - iCopy])?.[0]);
                             setHoldItemTrigger();
@@ -177,4 +196,26 @@ export default function CabFront() {
         })()}
     </div>
   );
+
+  function otherSideView(iCopy) {
+    return (
+      <div key={iCopy} className="flex flex-row">
+        <div className="w-1/12 border border-[#f2ece6] flex flex-row justify-center items-center">{cabinetView["RUHeight"] - iCopy}</div>
+        <div
+          id="stripes"
+          className="w-11/12 border border-[#f2ece6] px-4 flex flex-row justify-between items-center min-h-[4rem]"
+          style={{
+            // backgroundImage: "linear-gradient(45deg, #000 25%, transparent 25%, transparent 50%, #000 50%, #000 75%, transparent 75%, #fff)",
+            // backgroundSize: "50px 50px",
+            backgroundImage: "linear-gradient(45deg, #f2ece6 12.5%, transparent 12.5%, transparent 37.5%, #f2ece6 37.5%, #f2ece6 62.5%, transparent 62.5%, transparent 87.5%, #f2ece6 87.5%)",
+            backgroundSize: "5px 5px",
+          }}
+        >
+          <div className="flex flex-row justify-center items-center w-full">
+            <p>{OpOrintation} Rails Used</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 }

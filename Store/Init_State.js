@@ -41,6 +41,7 @@ export const initState = {
     Cabinet: 0,
     Asset: 0,
     Counts: {
+      Location: 0,
       Cabinet: 0,
       "Rackable Assets": 0,
       "NonRackable Assets": 0,

@@ -225,6 +225,43 @@ export const CurrentLocation = create(
         },
       }));
     },
+    removeItemByUUID: (data) => {
+      console.log(data);
+      const uuid = data.UUID;
+      const itemToBeRemoved = data.Item;
+      const Name = itemToBeRemoved["Name *"];
+      const type = itemToBeRemoved["Object *"];
+      let AllItems = data.AllItems;
+      delete AllItems[uuid];
+      let AllChildren = Object.keys(AllItems).filter((item) => AllItems[item]["Cabinet *"] === Name || AllItems[item]["Cabinet **"] === Name || AllItems[item]["Location *"] === Name || AllItems[item]["Chassis **"] === Name);
+      AllChildren.forEach((key) => {
+        delete AllItems[key];
+      });
+      set((state) => ({
+        data: {
+          ...state.data,
+          AllItems: AllItems,
+        },
+      }));
+      if (type === "Location" || type === "Cabinet") {
+        set((state) => ({
+          data: {
+            ...state.data,
+            [type]: 0,
+            Active: 0,
+          },
+        }));
+        set((state) => ({
+          data: {
+            ...state.data,
+            Counts: {
+              ...state.data.Counts,
+              [type]: state.data.Counts[type] - 1,
+            },
+          },
+        }));
+      }
+    },
   }))
 );
 

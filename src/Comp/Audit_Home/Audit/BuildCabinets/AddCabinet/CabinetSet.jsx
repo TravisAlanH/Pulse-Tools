@@ -3,6 +3,7 @@ import { CurrentLocation } from "../../../../../../Store/Store";
 import { ObjectListing } from "../../../../../../dcT_Objects/ObjectsArrays";
 import { MLTStore } from "../../../../../../Store/Store";
 import { RoutingStore } from "../../../../../../Store/Store";
+import { PiXSquare } from "react-icons/pi";
 
 export default function CabinetSet() {
   const AllItems = CurrentLocation((state) => state.data.AllItems);
@@ -18,23 +19,13 @@ export default function CabinetSet() {
   const cabinetUUID = CurrentLocation((state) => state.data.Cabinet);
   const setCabinetActive = CurrentLocation((state) => state.setCabinet);
   const setHoldItemTrigger = CurrentLocation((state) => state.setHoldItemTrigger);
+  const holdItemTrigger = CurrentLocation((state) => state.data.holdItemTrigger);
   const [cabinets, setCabinets] = React.useState([]);
   const resetSortsFiltersSearches = MLTStore((state) => state.resetSortsFiltersSearches);
   const setAuditModal = RoutingStore((state) => state.setAuditModal);
   const Active = CurrentLocation((state) => state.data.Active);
 
-  console.log(AllItems, "AllItems");
-  console.log(Active, "Active");
-
-  React.useEffect(() => {
-    let cabinetList = [];
-    Object.keys(AllItems).forEach((key) => {
-      if (AllItems[key]["Object *"] === "Cabinet") {
-        cabinetList.push(key);
-      }
-    });
-    setCabinets(cabinetList);
-  }, [AllItems, CabinetCount]);
+  console.log("AllItems", AllItems);
 
   if (Location === 0) {
     return (
@@ -55,40 +46,6 @@ export default function CabinetSet() {
     );
   }
 
-  //   {
-  //     "Make": "Geist",
-  //     "Model": "BRDN10-1536TL",
-  //     "RUHeight": 1,
-  //     "Height": "1.70",
-  //     "Width": "17.32",
-  //     "Depth": "13.78",
-  //     "Class": "Rack PDU",
-  //     "Subclass": "AC Power",
-  //     "Mounting": "Rackable",
-  //     "DataPortsCount": 0,
-  //     "PowerPortsCount": 9,
-  //     "FrontSlotsCount": 0,
-  //     "BackSlotsCount": 0,
-  //     "Object": "Location",
-  //     "index": 1
-  // }
-
-  // Location: {
-  //   "# Operation *": "ADD",
-  //   "Object *": "Location",
-  //   "dcTrack Location Code*": "",
-  //   "dcTrack Location Name*": "",
-  //   "dcTrack Location Hierarchy*": "",
-  //   "dcTrack Location Parent": "",
-  //   "Can Contain Assets": "",
-  //   "Data Center Area*": "",
-  //   "Country*": "",
-  //   "Enable AC Virtual Power Chain": "",
-  //   "Enable DC Virtual Power Chain": "",
-  //   "Is Default Location": "",
-  //   "Capacity(kW)": "",
-  // },
-
   return (
     <div>
       <div className="flex flex-row gap-3 h-[1.5rem] items-center">
@@ -97,10 +54,31 @@ export default function CabinetSet() {
       </div>
       <div className="flex flex-row justify-between h-[2rem] w-full text-sm">
         {CabinetSelections()}
-        {AddCabinet()}
+        <div className="flex flex-row gap-3">
+          {AddCabinet()}
+          {DeleteButton()}
+        </div>
       </div>
     </div>
   );
+
+  function DeleteButton() {
+    return (
+      <div>
+        <button
+          className={`${cabinetUUID === 0 ? `ButtonMainRedSmallDisabled` : `ButtonMainRedSmall`} text-[1.5rem]`}
+          disabled={cabinetUUID === 0}
+          onClick={() => {
+            setActive(cabinetUUID);
+            setHoldItemTrigger();
+            setAuditModal(4);
+          }}
+        >
+          <PiXSquare />
+        </button>
+      </div>
+    );
+  }
 
   function AddCabinet() {
     return (
@@ -129,6 +107,13 @@ export default function CabinetSet() {
   }
 
   function CabinetSelections() {
+    let cabinetList = [];
+    Object.keys(AllItems).forEach((key) => {
+      if (AllItems[key]["Object *"] === "Cabinet") {
+        cabinetList.push(key);
+      }
+    });
+    // setCabinets(cabinetList);
     return (
       <div>
         <label className="LableMain">Cabinets</label>
@@ -145,11 +130,13 @@ export default function CabinetSet() {
           ) : (
             <>
               {cabinetUUID === 0 ? <option value={0}>Select Cabinet</option> : null}
-              {cabinets.map((cabinetUUID, index) => (
-                <option key={index} value={cabinetUUID}>
-                  {AllItems[cabinetUUID]["Name *"]}
-                </option>
-              ))}
+              {cabinetList.map((cabinetUUID, index) => {
+                return (
+                  <option key={index} value={cabinetUUID}>
+                    {AllItems[cabinetUUID]["Name *"]}
+                  </option>
+                );
+              })}
             </>
           )}
         </select>
