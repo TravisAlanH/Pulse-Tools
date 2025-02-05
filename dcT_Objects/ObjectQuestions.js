@@ -95,7 +95,7 @@ export const Questions = {
       placeholder: "Cabinet",
     },
     "U Position **": {
-      type: "number",
+      type: "text",
       required: true,
       placeholder: "U Position",
     },

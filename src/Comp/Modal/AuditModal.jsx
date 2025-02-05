@@ -7,13 +7,15 @@ import HoldQuestions from "../Audit_Home/Audit/BuildCabinets/AuditQuestions/Hold
 import LocationOptions from "../Audit_Home/Audit/LocationPage/LocationOptions";
 import CreateLocationInputs from "../Audit_Home/Audit/LocationPage/CreateLocationInputs";
 import DeleteModal from "../Audit_Home/Audit/BuildCabinets/Modal/DeleteModal";
+import Above from "../Audit_Home/Audit/BuildCabinets/CabPreview/Above";
+import Below from "../Audit_Home/Audit/BuildCabinets/CabPreview/Below";
 
 export default function LoginModal() {
   const Modal = RoutingStore((state) => state.data.AuditModal);
   const setAuditModal = RoutingStore((state) => state.setAuditModal);
 
-  const pages = [<MLT />, <HoldQuestions />, <LocationOptions />, <CreateLocationInputs />, <DeleteModal />];
-  const Header = ["Models List", "Fill in Headers", "Location Options", "Create Location"];
+  const pages = [<MLT />, <HoldQuestions />, <LocationOptions />, <CreateLocationInputs />, <DeleteModal />, <Above />, <Below />];
+  const Header = ["Models List", "Fill in Headers", "Location Options", "Create Location", "Delete", "Above", "Below"];
 
   return (
     <div id="AuditModal" className="MainModalClass">

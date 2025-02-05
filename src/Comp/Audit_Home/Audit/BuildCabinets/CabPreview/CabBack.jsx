@@ -2,7 +2,7 @@ import React from "react";
 import { CurrentLocation, RoutingStore } from "../../../../../../Store/Store";
 import { ObjectListing } from "../../../../../../dcT_Objects/ObjectsArrays";
 import { MLTStore } from "../../../../../../Store/Store";
-import { PiNotePencil, PiRowsPlusBottom, PiXSquare } from "react-icons/pi";
+import { PiListMagnifyingGlassDuotone, PiNotePencil, PiRowsPlusBottom, PiXSquare } from "react-icons/pi";
 import SlotsView from "./Slots/SlotsView";
 
 export default function CabBack() {
@@ -33,11 +33,36 @@ export default function CabBack() {
   Object.keys(AllItems).forEach((item) => {
     if (AllItems[item].hasOwnProperty("Cabinet **")) {
       if (AllItems[item]["Cabinet **"] === AllItems[Cabinet]["Name *"]) {
-        holdAssetsInCabinet[parseInt(AllItems[item]["U Position **"]) + parseInt(AllItems[item]["RUHeight"]) - 1] = AllItems[item];
+        if (AllItems[item]["U Position **"] !== "Above" && AllItems[item]["U Position **"] !== "Below") {
+          holdAssetsInCabinet[parseInt(AllItems[item]["U Position **"]) + parseInt(AllItems[item]["RUHeight"]) - 1] = AllItems[item];
+        }
       }
     }
   });
   assetsInCabinet = holdAssetsInCabinet;
+
+  // let aboveInCabinet = {};
+  // Object.keys(AllItems).forEach((item) => {
+  //   if (AllItems[item].hasOwnProperty("Cabinet **")) {
+  //     if (AllItems[item]["Cabinet **"] === AllItems[Cabinet]["Name *"]) {
+  //       if (AllItems[item]["U Position **"] === "Above") {
+  //         aboveInCabinet[parseInt(AllItems[item]["RUHeight"]) - 1] = AllItems[item];
+  //       }
+  //     }
+  //   }
+  // });
+
+  // let belowInCabinet = {};
+  // Object.keys(AllItems).forEach((item) => {
+  //   if (AllItems[item].hasOwnProperty("Cabinet **")) {
+  //     if (AllItems[item]["Cabinet **"] === AllItems[Cabinet]["Name *"]) {
+  //       if (AllItems[item]["U Position **"] === "Below") {
+  //         belowInCabinet[parseInt(AllItems[item]["RUHeight"]) - 1] = AllItems[item];
+  //       }
+  //     }
+  //   }
+  // });
+
   // React.useEffect(() => {
   //   setCabinetView(AllItems[Cabinet]);
   //   let holdAssetsInCabinet = {};
@@ -103,6 +128,7 @@ export default function CabBack() {
 
   return (
     <div className=" h-full w-full flex flex-col">
+      {AboveBelow("Above")}
       {cabinetView["RUHeight"] &&
         (() => {
           let skipRUs = 0;
@@ -194,6 +220,7 @@ export default function CabBack() {
             );
           });
         })()}
+      {AboveBelow("Below")}
     </div>
   );
 
@@ -214,6 +241,23 @@ export default function CabBack() {
           <div className="flex flex-row justify-center items-center w-full">
             <p>{OpOrintation} Rails Used</p>
           </div>
+        </div>
+      </div>
+    );
+  }
+
+  function AboveBelow(Loc) {
+    return (
+      <div className="flex flex-row">
+        <div className="w-1/12 h-10 bg-[#f2ece6] border border-[#f2ece6] flex flex-row justify-center items-center">{Loc[0]}</div>
+        <div className="w-11/12 h-10  border border-[#f2ece6]   flex flex-row justify-between items-center px-4">
+          <button className="border-2 border-[#f2ece6] rounded-lg px-3 h-7" onClick={() => handleAddToCab(Loc)}>
+            Add {Loc}
+          </button>
+
+          <button className="text-[1.5rem]" onClick={() => setAuditModal(Loc === "Above" ? 5 : 6)}>
+            <PiListMagnifyingGlassDuotone />
+          </button>
         </div>
       </div>
     );
