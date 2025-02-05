@@ -141,15 +141,15 @@ export default function CabBack() {
               return null;
             }
             if (assetsInCabinet.hasOwnProperty(cabinetView["RUHeight"] - iCopy)) {
-              if (assetsInCabinet[cabinetView["RUHeight"] - iCopy]["Rails Used **"] !== Orintation && assetsInCabinet[cabinetView["RUHeight"] - iCopy]["Rails Used **"] !== "Both") {
-                return otherSideView(iCopy);
-              }
               const ruHeightToSkip = parseInt(assetsInCabinet[cabinetView["RUHeight"] - iCopy]["RUHeight"]);
               const rails = assetsInCabinet[cabinetView["RUHeight"] - iCopy]["Rails Used **"];
               skipRUs = ruHeightToSkip - 1;
               // console.log("inCab", Object.entries(AllItems).find(([_, value]) => value === assetsInCabinet[cabinetView["RUHeight"] - iCopy])?.[0]);
               // ! ITEM IN CABINET
               const MLTRow = rows[rows.findIndex((obj) => obj.Model === assetsInCabinet[cabinetView["RUHeight"] - iCopy]["Model *"])];
+              if (assetsInCabinet[cabinetView["RUHeight"] - iCopy]["Rails Used **"] !== Orintation && assetsInCabinet[cabinetView["RUHeight"] - iCopy]["Rails Used **"] !== "Both") {
+                return otherSideView(cabinetView["RUHeight"] - parseInt(assetsInCabinet[cabinetView["RUHeight"] - iCopy]["RUHeight"]) - iCopy + 1);
+              }
 
               return (
                 <div id={`CabU-${iCopy}`} key={iCopy} className="flex flex-row min-h-[4rem] CabUFilled" style={TransitionStyle}>
@@ -227,7 +227,7 @@ export default function CabBack() {
   function otherSideView(iCopy) {
     return (
       <div key={iCopy} className="flex flex-row">
-        <div className="w-1/12 border border-[#f2ece6] flex flex-row justify-center items-center">{cabinetView["RUHeight"] - iCopy}</div>
+        <div className="w-1/12 border border-[#f2ece6] flex flex-row justify-center items-center">{iCopy}</div>
         <div
           id="stripes"
           className="w-11/12 border border-[#f2ece6] px-4 flex flex-row justify-between items-center min-h-[4rem]"

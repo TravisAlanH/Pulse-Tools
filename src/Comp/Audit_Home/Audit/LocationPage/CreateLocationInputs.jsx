@@ -14,8 +14,6 @@ export default function CreateLocationInputs() {
 
   async function handleVarifyLocation(e) {
     e.preventDefault();
-    document.getElementById("setLocationModal").style.display = "none";
-    // !This will have to be removed after testing
     const UUID = uuidv4().replace(/[\/[\]~*.]/g, "_");
 
     const LocationsList = doc(db, "Users", auth.currentUser.uid, "LocationData", "LocationsSnapshot");
@@ -43,43 +41,34 @@ export default function CreateLocationInputs() {
         setHoldItemTrigger();
       });
     setHold({});
+    setAuditModal(-1);
   }
 
+  console.log(holdItem);
+
   return (
-    <div>
-      <div id="setLocationModal" className="modal">
-        <div className="modal-content-sop flex flex-col">
-          <div className="flex flex-row justify-end">
-            <span
-              className="close"
-              onClick={() => {
-                setAuditModal(-1);
-              }}
-            >
-              &times;
-            </span>
-          </div>
-          <form onSubmit={(e) => handleVarifyLocation(e)}>
-            <div className="flex flex-col">
-              {Object.keys(holdItem).map((key, index) => {
-                return (
-                  <div key={index} className="flex flex-row">
-                    {key.includes("*") ? (
-                      <label className="Question flex flex-row items-center gap-3">
-                        <p className="text-red-500">*</p>
-                        {key.replace("*", "")}
-                      </label>
-                    ) : (
-                      <label className="Question flex flex-col justify-center">{key}</label>
-                    )}
-                    {Questions.Items[key].type === "text" ? TextInput(key) : Questions.Items[key].type === "number" ? NumberInput(key) : Questions.Items[key].type === "date" ? DateInput(key) : Questions.Items[key].type === "select" ? SelectInput(key) : TextInput(key)}
-                  </div>
-                );
-              })}
-              <input className="OrangeButton" type="submit" value="Save" />
-            </div>
-          </form>
-        </div>
+    <div className="h-full w-full">
+      <div className="">
+        <form className="flex flex-col gap-2" onSubmit={(e) => handleVarifyLocation(e)}>
+          {Object.keys(holdItem).map((key, index) => {
+            return (
+              <div key={index} className="flex flex-col">
+                <label className="LableMain w-[100%]">
+                  {key.split("*").length - 1 === 1 ? (
+                    <div className="flex flex-row gap-3">
+                      <p className="text-red-500">*</p>
+                      {key.replace("*", "")}
+                    </div>
+                  ) : (
+                    key
+                  )}
+                </label>
+                {Questions.Items[key].type === "text" ? TextInput(key) : Questions.Items[key].type === "number" ? NumberInput(key) : Questions.Items[key].type === "date" ? DateInput(key) : Questions.Items[key].type === "select" ? SelectInput(key) : TextInput(key)}
+              </div>
+            );
+          })}
+          <input className="OrangeButton" type="submit" value="Save" />
+        </form>
       </div>
     </div>
   );
@@ -87,7 +76,7 @@ export default function CreateLocationInputs() {
   function SelectInput(key) {
     return (
       <select
-        className="Inputs"
+        className="w-full LableInputMainBelow"
         value={holdItem[key]}
         id={key}
         required={Questions.Items[key].required}
@@ -110,7 +99,7 @@ export default function CreateLocationInputs() {
   function DateInput(key) {
     return (
       <input
-        className="Inputs"
+        className="w-full LableInputMainBelow"
         type="date"
         value={holdItem[key]}
         id={key}
@@ -128,7 +117,7 @@ export default function CreateLocationInputs() {
   function NumberInput(key) {
     return (
       <input
-        className="Inputs"
+        className="w-full LableInputMainBelow"
         type="number"
         value={holdItem[key]}
         id={key}
@@ -146,7 +135,7 @@ export default function CreateLocationInputs() {
   function TextInput(key) {
     return (
       <input
-        className="Inputs"
+        className="w-full LableInputMainBelow"
         type="text"
         value={holdItem[key]}
         id={key}
