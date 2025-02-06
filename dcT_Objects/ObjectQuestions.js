@@ -191,14 +191,16 @@ export const Questions = {
       placeholder: "VM Cluster",
     },
     "Depth Position **": {
-      type: "text",
+      type: "select",
       required: true,
       placeholder: "Depth Position",
+      options: ["Front", "Center", "Back"],
     },
     "Cabinet Side **": {
-      type: "text",
+      type: "select",
       required: true,
       placeholder: "Cabinet Side",
+      options: ["Left", "Right"],
     },
     "IP Address": {
       type: "text",

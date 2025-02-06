@@ -5,6 +5,7 @@ import { RoutingStore } from "../../../Store/Store";
 import AuditModal from "../Modal/AuditModal";
 import Cabinet from "./Audit/FillLocation/Cabinet";
 import AuditActions from "./AuditActions";
+import AuditTopMenu from "./AuditTopMenu";
 
 export default function AuditHome() {
   const AuditPage = RoutingStore((state) => state.data.AuditPage);
@@ -27,8 +28,8 @@ export default function AuditHome() {
 
   return (
     <div class="flex-grow flex flex-col justify-start items-center mb-2">
-      <button onClick={() => setAuditModal(0)}>Open Modal</button>
-      <button onClick={() => setAuditPage(0)}>Location</button>
+      <AuditTopMenu />
+      {/* <button onClick={() => setAuditPage(0)}>Location</button> */}
       <div className="h-full w-full">{Pages[AuditPage]}</div>
       <div>{ModalShow ? <AuditModal /> : null}</div>
     </div>

@@ -93,6 +93,7 @@ export const initState = {
     },
     holdMLTItem: BlankCurrentLocation,
     checkedIndex: -1,
+    OpenUP: -1,
   },
   Routing: {
     Loading: false,

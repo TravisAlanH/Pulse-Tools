@@ -25,8 +25,6 @@ export default function CabinetSet() {
   const setAuditModal = RoutingStore((state) => state.setAuditModal);
   const Active = CurrentLocation((state) => state.data.Active);
 
-  console.log("AllItems", AllItems);
-
   if (Location === 0) {
     return (
       <div>

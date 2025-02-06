@@ -54,6 +54,16 @@
   padding-bottom: 0.2rem;
   border-bottom: 0.2rem solid #f2ece6;
 }
+
+.LableMainVertical {
+  background-color: #f2ece6;
+  padding-left: 0.2rem;
+  padding-right: 0.2rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 0.2rem solid #f2ece6;
+}
+
 .LableInputMain {
   padding-left: 0.5rem;
   padding-right: 0.5rem;

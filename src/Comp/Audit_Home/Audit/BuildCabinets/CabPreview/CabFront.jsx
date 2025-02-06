@@ -24,6 +24,7 @@ export default function CabFront() {
   const setFilters = MLTStore((state) => state.setFilters);
   const resetSortsFiltersSearches = MLTStore((state) => state.resetSortsFiltersSearches);
   const setHoldMLTItem = MLTStore((state) => state.setHoldMLTItem);
+  const setOpenUP = MLTStore((state) => state.setOpenUP);
   const [infoSlots, setInfoSlots] = React.useState(false);
   const rows = MLTStore((state) => state.data.rows);
 
@@ -42,42 +43,26 @@ export default function CabFront() {
   });
   assetsInCabinet = holdAssetsInCabinet;
 
-  // let aboveInCabinet = {};
-  // Object.keys(AllItems).forEach((item) => {
-  //   if (AllItems[item].hasOwnProperty("Cabinet **")) {
-  //     if (AllItems[item]["Cabinet **"] === AllItems[Cabinet]["Name *"]) {
-  //       if (AllItems[item]["U Position **"] === "Above") {
-  //         aboveInCabinet[parseInt(AllItems[item]["RUHeight"]) - 1] = AllItems[item];
-  //       }
-  //     }
-  //   }
-  // });
-
-  // let belowInCabinet = {};
-  // Object.keys(AllItems).forEach((item) => {
-  //   if (AllItems[item].hasOwnProperty("Cabinet **")) {
-  //     if (AllItems[item]["Cabinet **"] === AllItems[Cabinet]["Name *"]) {
-  //       if (AllItems[item]["U Position **"] === "Below") {
-  //         belowInCabinet[parseInt(AllItems[item]["RUHeight"]) - 1] = AllItems[item];
-  //       }
-  //     }
-  //   }
-  // });
-
-  // React.useEffect(() => {
-  //   setCabinetView(AllItems[Cabinet]);
-  //   let holdAssetsInCabinet = {};
-  //   Object.keys(AllItems).forEach((item) => {
-  //     if (AllItems[item].hasOwnProperty("Cabinet **")) {
-  //       if (AllItems[item]["Cabinet **"] === AllItems[Cabinet]["Name *"]) {
-  //         holdAssetsInCabinet[parseInt(AllItems[item]["U Position **"]) + parseInt(AllItems[item]["RUHeight"]) - 1] = AllItems[item];
-  //       }
-  //     }
-  //   });
-  //   setAssetsInCabinet(holdAssetsInCabinet);
-  // }, [Cabinet, AllItems]);
-
   async function handleAddToCab(RU) {
+    const FilledSlots = [];
+    let OpenPositions = -1;
+    // Determine Open Posistion Over Selected RU
+    Object.keys(assetsInCabinet).map((key) => {
+      Array.from({ length: assetsInCabinet[key]["RUHeight"] }, (_, i) => assetsInCabinet[key]["U Position **"] + i).forEach((RU) => {
+        {
+          FilledSlots.push(RU);
+        }
+      });
+    });
+    const SortedFilledSlots = [...FilledSlots].sort((a, b) => a - b);
+    const index = SortedFilledSlots.findIndex((n) => n > RU);
+    if (index !== -1) {
+      OpenPositions = SortedFilledSlots[SortedFilledSlots.indexOf(SortedFilledSlots[index])] - RU;
+    }
+    console.log(SortedFilledSlots);
+    console.log("OpenPositions", OpenPositions);
+    setOpenUP(OpenPositions);
+
     await isLoading(true);
     resetSortsFiltersSearches();
     const FilterList = ["RACK PDU-RACKABLE", "DATA PANEL-RACKABLE", "DEVICE-RACKABLE", "DEVICE-BLADE CHASSIS-RACKABLE", "NETWORK-RACKABLE"];

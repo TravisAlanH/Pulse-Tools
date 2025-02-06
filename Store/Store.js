@@ -388,6 +388,14 @@ export const MLTStore = create(
         },
       }));
     },
+    setOpenUP: (data) => {
+      set((state) => ({
+        data: {
+          ...state.data,
+          OpenUP: data,
+        },
+      }));
+    },
   }))
 );
 

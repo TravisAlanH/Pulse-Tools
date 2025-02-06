@@ -92,7 +92,7 @@ export default function LocationList() {
 
   return (
     <div className="mb-6">
-      <div className="pt-6 flex flex-col gap-4">
+      <div className="pt-3 flex flex-col gap-4">
         <div className="flex flex-row justify-center items-center text-sm">
           <label className="LableMain  justify-center items-center">Create Location</label>
           <form className="flex flex-row gap-2  justify-center items-center" onSubmit={(e) => handleCreateLocation(e)}>
