@@ -4,7 +4,7 @@ import { MLTStore } from "../../../../../../../Store/Store";
 import { ObjectListing } from "../../../../../../../dcT_Objects/ObjectsArrays";
 import { RoutingStore } from "../../../../../../../Store/Store";
 import ScrollCheckInput from "../../../../../Imputs/ScrollCheckInput";
-import { PiNotePencil } from "react-icons/pi";
+import { PiNotePencil, PiXSquare } from "react-icons/pi";
 
 export default function SlotsView({ Front, Back, chassis, cabinet, location, orintation }) {
   const AllItems = CurrentLocation((state) => state.data.AllItems);
@@ -68,16 +68,17 @@ export default function SlotsView({ Front, Back, chassis, cabinet, location, ori
             <ScrollCheckInput text={slot["Make *"]} rem={6} count={10} />
             <ScrollCheckInput text={slot["Model *"]} rem={6} count={10} />
           </div>
-          <div className="flex flex-row justify-center items-center">
-            {/* <button
-              className="text-[1.5rem] rotate-90 font-bold"
+          <div className="flex flex-row gap-4 justify-center items-center">
+            <button
+              className="text-[1.5rem]  text-red-700"
               onClick={() => {
-                // handleCloseAllOpenSelected();
-                // handleOpenSelection(iCopy);
+                setActive(Object.entries(AllItems).find(([_, value]) => value["Name *"] === slot["Name *"])?.[0]);
+                setHoldItemTrigger();
+                setAuditModal(4);
               }}
             >
-              +
-            </button> */}
+              <PiXSquare />
+            </button>
             <button
               className="text-[1.5rem]"
               onClick={() => {

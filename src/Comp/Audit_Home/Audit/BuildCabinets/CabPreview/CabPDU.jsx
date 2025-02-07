@@ -105,7 +105,7 @@ export default function CabPDU() {
               <PiNotePencil />
             </button>
             <button
-              className="text-[1.5rem]"
+              className="text-[1.5rem]  text-red-700"
               onClick={() => {
                 setActive(Object.entries(AllItems).find(([_, objectValue]) => objectValue["Name *"] === item["Name *"])?.[0]);
                 setHoldItemTrigger();
