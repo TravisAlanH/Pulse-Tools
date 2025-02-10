@@ -4,11 +4,14 @@ import "./LoadingSpinner.css";
 const LoadingSpinner = () => {
   return (
     <div className="flex flex-col justify-center items-center z-50 w-screen h-screen fixed top-0 left-0 overflow-visible bg-[#ffffff38]">
-      <div className="rounded-full bg-[#00000092] h-[14rem] w-[14rem] flex flex-row items-center justify-center overflow-visible">
+      {/* <div className="rounded-full bg-[#00000092] h-[14rem] w-[14rem] flex flex-row items-center justify-center overflow-visible"> */}
+      <div>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           version="1.1"
-          width="355px"
+          // width="355px"
+          // height="172px"
+          width={`355px`}
           height="172px"
           className="spinner-image overflow-visible"
           //style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
