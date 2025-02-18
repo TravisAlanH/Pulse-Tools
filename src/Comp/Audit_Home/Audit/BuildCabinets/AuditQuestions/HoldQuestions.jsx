@@ -30,8 +30,6 @@ export default function HoldQuestions() {
   const setOpenUP = MLTStore((state) => state.setOpenUP);
   const OpenUP = MLTStore((state) => state.data.OpenUP);
 
-  console.log("OpenUP", OpenUP);
-
   React.useEffect(() => {
     if (AllItems.hasOwnProperty(ActiveUUID)) {
       setHoldItem({ ...AllItems[ActiveUUID] });

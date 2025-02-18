@@ -13,9 +13,9 @@ export default function AuditTopMenu() {
   const CurrentLocationData = CurrentLocation((state) => state.data);
   const LocationUUID = CurrentLocation((state) => state.data.Location);
 
-  console.log(LocationUUID.toString(), "LocationUUID");
-  console.log(CurrentLocationData, "CurrentLocationData");
-  console.log(auth.currentUser.uid, "auth.currentUser.uid");
+  // console.log(LocationUUID.toString(), "LocationUUID");
+  // console.log(CurrentLocationData, "CurrentLocationData");
+  // console.log(auth.currentUser.uid, "auth.currentUser.uid");
 
   async function handleSaveData() {
     console.log("saveing");

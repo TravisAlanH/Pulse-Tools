@@ -30,6 +30,8 @@ export default function CabPDU() {
 
   const orderedLeftSide = ["Front", "Center", "Back"].map((position) => LeftSide.find((item) => item["Depth Position **"] === position) || {});
 
+  console.log(orderedLeftSide, "orderedLeftSide");
+
   const rightOrder = ["Back", "Center", "Front"];
   const leftOrder = ["Front", "Center", "Back"];
 

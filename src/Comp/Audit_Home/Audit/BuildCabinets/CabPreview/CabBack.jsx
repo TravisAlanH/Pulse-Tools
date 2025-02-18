@@ -34,13 +34,15 @@ export default function CabBack() {
   Object.keys(AllItems).forEach((item) => {
     if (AllItems[item].hasOwnProperty("Cabinet **")) {
       if (AllItems[item]["Cabinet **"] === AllItems[Cabinet]["Name *"]) {
-        if (AllItems[item]["U Position **"] !== "Above" && AllItems[item]["U Position **"] !== "Below") {
+        if (AllItems[item]["U Position **"] !== "Above" && AllItems[item]["U Position **"] !== "Below" && AllItems[item]["Object *"] !== "RACK PDU-ZERO U") {
           holdAssetsInCabinet[parseInt(AllItems[item]["U Position **"]) + parseInt(AllItems[item]["RUHeight"]) - 1] = AllItems[item];
         }
       }
     }
   });
   assetsInCabinet = holdAssetsInCabinet;
+
+  console.log(assetsInCabinet, "assetsInCabinet");
 
   async function handleAddToCab(RU) {
     const FilledSlots = [];
