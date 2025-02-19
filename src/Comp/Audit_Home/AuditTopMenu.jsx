@@ -4,6 +4,7 @@ import { CurrentLocation } from "../../../Store/Store";
 import { PiFloppyDiskBack } from "react-icons/pi";
 import { db, auth } from "../../../Firebase/Firebase";
 import { doc, updateDoc } from "firebase/firestore";
+import { trueLoad, falseLoad } from "../../../Store/Store";
 
 export default function AuditTopMenu() {
   const AllItems = RoutingStore((state) => state.data.AllItems);
@@ -18,6 +19,7 @@ export default function AuditTopMenu() {
   // console.log(auth.currentUser.uid, "auth.currentUser.uid");
 
   async function handleSaveData() {
+    trueLoad();
     console.log("saveing");
     try {
       // Ensure all necessary values exist before proceeding
@@ -47,6 +49,7 @@ export default function AuditTopMenu() {
       // Optionally, display an error message to the user (if using a UI framework like React)
       alert(`Failed to save data: ${error.message}`);
     }
+    falseLoad();
   }
 
   return (

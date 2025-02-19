@@ -42,8 +42,6 @@ export default function CabBack() {
   });
   assetsInCabinet = holdAssetsInCabinet;
 
-  console.log(assetsInCabinet, "assetsInCabinet");
-
   async function handleAddToCab(RU) {
     const FilledSlots = [];
     let OpenPositions = -1;

@@ -118,6 +118,7 @@ export default function HoldQuestions() {
       type: holdItem["Object *"],
       value: holdItem,
       UUID: ActiveUUID,
+      AllItems: AllItems,
     };
     editItemByUUID(Payload);
     setAuditModal(-1);

@@ -5,6 +5,16 @@ import { v4 as uuidv4 } from "uuid";
 import { doc, setDoc } from "firebase/firestore";
 import { auth, db } from "../Firebase/Firebase";
 
+export function trueLoad() {
+  const { setLoading } = RoutingStore.getState();
+  setLoading(true); // Set loading to true before the timeout
+}
+
+export function falseLoad() {
+  const { setLoading } = RoutingStore.getState();
+  setLoading(false); // Set loading to false after the timeout
+}
+
 export const UserStore = create(
   devtools((set) => ({
     data: initState.User,
@@ -215,6 +225,37 @@ export const CurrentLocation = create(
       const type = data.type;
       const uuid = data.UUID;
       const value = data.value;
+      trueLoad();
+      console.log(data.AllItems);
+      const currentName = data.AllItems[`${uuid}`]["Name *"];
+      Object.keys(data.AllItems).forEach((key) => {
+        const item = data.AllItems[key];
+
+        const matches = [];
+
+        if (item["Cabinet *"] === currentName) matches.push("Cabinet *");
+        if (item["Cabinet **"] === currentName) matches.push("Cabinet **");
+        if (item["dcTrack Location Code*"] === currentName) matches.push("dcTrack Location Code*");
+        if (item["Chassis **"] === currentName) matches.push("Chassis **");
+
+        if (matches.length > 0) {
+          matches.forEach((match) => {
+            set((state) => ({
+              data: {
+                ...state.data,
+                AllItems: {
+                  ...state.data.AllItems,
+                  [key]: {
+                    ...state.data.AllItems[key],
+                    [match]: value["Name *"],
+                  },
+                },
+              },
+            }));
+          });
+        }
+      });
+      console.log("currentName", currentName);
       set((state) => ({
         data: {
           ...state.data,
@@ -224,6 +265,8 @@ export const CurrentLocation = create(
           },
         },
       }));
+      console.log("newName", value["Name *"]);
+      falseLoad();
     },
     removeItemByUUID: (data) => {
       console.log(data);
@@ -494,6 +537,14 @@ export const HoldLocationStore = create(
 export const RoutingStore = create(
   devtools((set) => ({
     data: initState.Routing,
+    setLoading: (value) => {
+      set((state) => ({
+        data: {
+          ...state.data,
+          Loading: value,
+        },
+      }));
+    },
     isLoading: (data) => {
       set((state) => ({
         data: {
@@ -501,6 +552,7 @@ export const RoutingStore = create(
           Loading: data,
         },
       }));
+      console.log(data);
     },
     setLoginPage: (data) => {
       set((state) => ({

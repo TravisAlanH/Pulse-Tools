@@ -25,16 +25,6 @@ function App() {
   const userStatus = UserStore((state) => state.data.Status);
   // ! THIS WILL BE CHANGES TO THE ROUTEING IN THE STORE
 
-  React.useEffect(() => {
-    if (Loading) {
-      console.log("Showing Loading");
-      setIsLoadingShow(true);
-    } else {
-      console.log("Hiding Loading");
-      setIsLoadingShow(false);
-    }
-  }, [Loading]);
-
   console.log(Loading, "Loading");
 
   const CurrentPage = [

@@ -3,10 +3,11 @@ import { CurrentLocation } from "../../../../../../Store/Store";
 import { ObjectListing } from "../../../../../../dcT_Objects/ObjectsArrays";
 import { MLTStore } from "../../../../../../Store/Store";
 import { RoutingStore } from "../../../../../../Store/Store";
-import { PiXSquare } from "react-icons/pi";
+import { PiNotePencil, PiXSquare } from "react-icons/pi";
 
 export default function CabinetSet() {
   const AllItems = CurrentLocation((state) => state.data.AllItems);
+  const rows = MLTStore((state) => state.data.rows);
   const CabinetCount = CurrentLocation((state) => state.data.Counts.Cabinet);
   const counts = CurrentLocation((state) => state.data.Counts);
   const setHoldItem = CurrentLocation((state) => state.setHoldItem);
@@ -54,11 +55,36 @@ export default function CabinetSet() {
         {CabinetSelections()}
         <div className="flex flex-row gap-3">
           {AddCabinet()}
+          {EditButton()}
           {DeleteButton()}
         </div>
       </div>
     </div>
   );
+
+  function EditButton() {
+    return (
+      <div>
+        <button
+          className={`${cabinetUUID === 0 ? `ButtonMainEditDisabled` : `ButtonMainEdit`} text-[1.5rem]`}
+          disabled={cabinetUUID === 0}
+          onClick={() => {
+            const MLTRow = rows[rows.findIndex((obj) => obj.Model === AllItems[cabinetUUID]["Model *"])];
+            console.log("AllItems[cabinetUUID]", AllItems[cabinetUUID]);
+            console.log("uuid", cabinetUUID);
+            setHoldMLTItem({ MLTRow });
+            setHoldItem(AllItems[cabinetUUID]);
+            setActive(cabinetUUID);
+
+            setHoldItemTrigger();
+            setAuditModal(1);
+          }}
+        >
+          <PiNotePencil />
+        </button>
+      </div>
+    );
+  }
 
   function DeleteButton() {
     return (
