@@ -13,6 +13,8 @@ export default function AuditTopMenu() {
   const setAuditPage = RoutingStore((state) => state.setAuditPage);
   const CurrentLocationData = CurrentLocation((state) => state.data);
   const LocationUUID = CurrentLocation((state) => state.data.Location);
+  const AuditPage = RoutingStore((state) => state.data.AuditPage);
+  const setAuditModal = RoutingStore((state) => state.setAuditModal);
 
   // console.log(LocationUUID.toString(), "LocationUUID");
   // console.log(CurrentLocationData, "CurrentLocationData");
@@ -59,9 +61,15 @@ export default function AuditTopMenu() {
           <button className="ButtonMain" onClick={() => setCurrentPage(0)}>
             Tools
           </button>
-          <button className="ButtonMain" onClick={() => setAuditPage(0)}>
-            Locations
-          </button>
+          {AuditPage === 0 ? (
+            <button className="ButtonMain" onClick={() => setAuditModal(7)}>
+              Import Locations
+            </button>
+          ) : (
+            <button className="ButtonMain" onClick={() => setAuditPage(0)}>
+              Locations
+            </button>
+          )}
         </div>
 
         <div className="flex flex-row justify-center items-center h-full">

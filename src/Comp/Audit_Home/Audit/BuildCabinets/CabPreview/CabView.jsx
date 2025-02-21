@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { CurrentLocation } from "../../../../../../Store/Store";
+import { RoutingStore } from "../../../../../../Store/Store";
 import CabFront from "./CabFront";
 import CabBack from "./CabBack";
 import CabPDU from "./CabPDU";
 
 export default function CabView() {
   const Cabinet = CurrentLocation((state) => state.data.Cabinet);
+  const setAuditModal = RoutingStore((state) => state.setAuditModal);
 
   const [view, setView] = React.useState(1);
 
@@ -15,8 +17,15 @@ export default function CabView() {
 
   if (Cabinet === 0) {
     return (
-      <div className="flex flex-col justify-center items-center mt-[50%]">
-        <p className="LableMain">No Cabinet Selected or Built</p>
+      <div className="flex flex-col gap-4 justify-center items-center mt-[50%]">
+        <p>No Cabinet Built</p>
+        <div className="flex flex-col gap-2 p-3 rounded-lg items-center bg-[#cacaca]">
+          <p>Add a Cabinet Above</p>
+          <p>or</p>
+          <button className="ButtonMain" onClick={() => setAuditModal(8)}>
+            Import All Location Assets
+          </button>
+        </div>
       </div>
     );
   }

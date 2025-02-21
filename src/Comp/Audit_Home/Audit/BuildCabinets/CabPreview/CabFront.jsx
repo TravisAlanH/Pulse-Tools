@@ -112,6 +112,8 @@ export default function CabFront() {
     transition: "all 0.5s",
   };
 
+  console.log(cabinetView);
+
   return (
     <div className=" h-full w-full flex flex-col">
       {AboveBelow("Above")}
@@ -133,6 +135,7 @@ export default function CabFront() {
               // console.log("inCab", Object.entries(AllItems).find(([_, value]) => value === assetsInCabinet[cabinetView["RUHeight"] - iCopy])?.[0]);
               // ! ITEM IN CABINET
               const MLTRow = rows[rows.findIndex((obj) => obj.Model === assetsInCabinet[cabinetView["RUHeight"] - iCopy]["Model *"])];
+              console.log(MLTRow);
               if (assetsInCabinet[cabinetView["RUHeight"] - iCopy]["Rails Used **"] !== Orintation && assetsInCabinet[cabinetView["RUHeight"] - iCopy]["Rails Used **"] !== "Both") {
                 return otherSideView(cabinetView["RUHeight"] - parseInt(assetsInCabinet[cabinetView["RUHeight"] - iCopy]["RUHeight"]) - iCopy + 1);
               }

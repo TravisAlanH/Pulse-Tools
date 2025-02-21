@@ -17,15 +17,16 @@ export default function CabPDU() {
   const location = CurrentLocation((state) => state.data.Location);
 
   const ObjectType = "RACK PDU-ZERO U";
+  const cabinetName = AllItems[cabinet]["Name *"];
 
   const RightSide = Object.keys(AllItems)
-    .filter((item) => AllItems[item]["Object *"] === ObjectType && AllItems[item]["Cabinet Side **"] === "Right")
+    .filter((item) => AllItems[item]["Object *"] === ObjectType && AllItems[item]["Cabinet Side **"] === "Right" && AllItems[item]["Cabinet **"] === cabinetName)
     .map((key) => AllItems[key]);
 
   const orderedRightSide = ["Back", "Center", "Front"].map((position) => RightSide.find((item) => item["Depth Position **"] === position) || {});
 
   const LeftSide = Object.keys(AllItems)
-    .filter((item) => AllItems[item]["Object *"] === ObjectType && AllItems[item]["Cabinet Side **"] === "Left")
+    .filter((item) => AllItems[item]["Object *"] === ObjectType && AllItems[item]["Cabinet Side **"] === "Left" && AllItems[item]["Cabinet **"] === cabinetName)
     .map((key) => AllItems[key]);
 
   const orderedLeftSide = ["Front", "Center", "Back"].map((position) => LeftSide.find((item) => item["Depth Position **"] === position) || {});

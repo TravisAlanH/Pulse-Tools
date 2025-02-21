@@ -132,11 +132,13 @@ export default function CabinetSet() {
 
   function CabinetSelections() {
     let cabinetList = [];
+    console.log("AllItems", AllItems);
     Object.keys(AllItems).forEach((key) => {
       if (AllItems[key]["Object *"] === "Cabinet") {
         cabinetList.push(key);
       }
     });
+    console.log(cabinetList);
     // setCabinets(cabinetList);
     return (
       <div>
@@ -149,7 +151,7 @@ export default function CabinetSet() {
           }}
           value={cabinetUUID}
         >
-          {CabinetCount === undefined ? (
+          {cabinetList.length === 0 ? (
             <option value={0}>No Cabinets Listed</option>
           ) : (
             <>

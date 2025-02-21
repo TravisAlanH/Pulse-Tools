@@ -26,7 +26,7 @@ export default function CreateLocationInputs() {
     )
       .then(() => {
         const LocationsList = doc(db, "Users", auth.currentUser.uid, "LocationData", "LocationsFullData");
-        let InicialStateCopy = { ...BlankCurrentLocation };
+        let InicialStateCopy = JSON.parse(JSON.stringify(BlankCurrentLocation));
         InicialStateCopy.Location = UUID;
         InicialStateCopy.AllItems[UUID] = holdItem;
         setDoc(

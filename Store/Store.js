@@ -101,6 +101,7 @@ export const CurrentLocation = create(
   devtools((set) => ({
     data: initState.CurrentLocation,
     replaceCurrentLocation: (data) => {
+      console.log(data);
       set((state) => ({
         data: {
           ...state.data,
@@ -115,6 +116,14 @@ export const CurrentLocation = create(
           CustomQuestions: data.CustomQuestions,
           CustomNaming: data.CustomNaming,
           HoldItemTrigger: data.HoldItemTrigger,
+        },
+      }));
+    },
+    setImportAllLocations: (data) => {
+      set((state) => ({
+        data: {
+          ...state.data,
+          AllItems: data,
         },
       }));
     },
