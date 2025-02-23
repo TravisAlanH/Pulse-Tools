@@ -236,7 +236,7 @@ export default function HoldQuestions() {
         <div className="ButtonMain" onClick={() => setQRModal(true)}>
           Scan
         </div>
-        <div>{QRModal ? <QRScanner setQRModal={setQRModal} setHoldItem={setHoldItem} setHoldUserInputs={setHoldUserInputs} /> : null}</div>
+        <div>{QRModal ? <QRScanner setQRModal={setQRModal} setHoldItem={setHoldItem} setHoldUserInputs={setHoldUserInputs} key={key} /> : null}</div>
       </div>
     );
   }

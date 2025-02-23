@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Html5QrcodeScanner } from "html5-qrcode";
 
-export default function QRScanner({ setQRModal, setHoldItem, setHoldUserInputs }) {
+export default function QRScanner({ setQRModal, setHoldItem, setHoldUserInputs, key }) {
   const [readerData, setReaderData] = React.useState("");
 
   useEffect(() => {
@@ -13,14 +13,14 @@ export default function QRScanner({ setQRModal, setHoldItem, setHoldUserInputs }
       setHoldItem((prevState) => {
         return {
           ...prevState,
-          [key]: newValue,
+          [key]: readerData,
         };
       });
       if (!Questions.Items[key].required) {
         setHoldUserInputs((prevState) => {
           return {
             ...prevState,
-            [key]: newValue,
+            [key]: readerData,
           };
         });
       }
