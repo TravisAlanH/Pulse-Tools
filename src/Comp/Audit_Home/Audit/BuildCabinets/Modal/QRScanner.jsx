@@ -1,7 +1,10 @@
 import React, { useEffect } from "react";
 import { Html5QrcodeScanner } from "html5-qrcode";
+import { CurrentLocation } from "../../../../../../Store/Store";
 
-export default function QRScanner({ setQRModal, setHoldItem, setHoldUserInputs, key }) {
+export default function QRScanner({ setQRModal, NamedKey }) {
+  const setHoldItem = CurrentLocation((state) => state.setHoldItem);
+  const holdItem = CurrentLocation((state) => state.data.HoldItem);
   const [readerData, setReaderData] = React.useState("");
 
   useEffect(() => {
@@ -10,25 +13,10 @@ export default function QRScanner({ setQRModal, setHoldItem, setHoldUserInputs, 
     function onScanSuccess(decodedText, decodedResult) {
       console.log(`Code matched = ${decodedText}`, decodedResult);
       setReaderData(decodedText);
-      setHoldItem((prevState) => {
-        return {
-          ...prevState,
-          [key]: readerData,
-        };
-      });
-      if (!Questions.Items[key].required) {
-        setHoldUserInputs((prevState) => {
-          return {
-            ...prevState,
-            [key]: readerData,
-          };
-        });
-      }
-      setQRModal(false);
     }
 
     function onScanFailure(error) {
-      console.warn(`Code scan error = ${error}`);
+      //   console.warn(`Code scan error = ${error}`);
     }
 
     html5QrcodeScanner.render(onScanSuccess, onScanFailure);
@@ -38,6 +26,8 @@ export default function QRScanner({ setQRModal, setHoldItem, setHoldUserInputs, 
       html5QrcodeScanner.clear();
     };
   }, []);
+
+  console.log(NamedKey);
 
   return (
     <div id="AuditModal" className="MainModalClass">
@@ -50,6 +40,15 @@ export default function QRScanner({ setQRModal, setHoldItem, setHoldUserInputs, 
         </div>
         <div className="flex flex-row overflow-auto h-full">{readerData}</div>
         <div id="reader" width="600px"></div>
+        <div
+          className="ButtonMain"
+          onClick={() => {
+            setHoldItem({ ...holdItem, [NamedKey]: readerData });
+            setQRModal(false);
+          }}
+        >
+          Save
+        </div>
       </div>
     </div>
   );

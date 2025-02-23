@@ -96,7 +96,7 @@ export const Questions = {
     },
     "Asset Tag": {
       type: "QRScan",
-      required: true,
+      required: false,
       placeholder: "Asset Tag",
     },
     "U Position **": {

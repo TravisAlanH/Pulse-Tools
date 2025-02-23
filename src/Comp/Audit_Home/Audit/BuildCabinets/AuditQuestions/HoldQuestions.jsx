@@ -41,7 +41,7 @@ export default function HoldQuestions() {
   React.useEffect(() => {
     let LocationCode = "";
     Object.keys(AllItems).map((item) => {
-      if (AllItems[item]["Object *"] === "Location") {
+      if (AllItems[item]["Object *"] === "Location" || AllItems[item]["Object *"] === "LOCATION") {
         LocationCode = AllItems[item]["dcTrack Location Code*"];
       }
       Location.current = LocationCode;
@@ -236,7 +236,7 @@ export default function HoldQuestions() {
         <div className="ButtonMain" onClick={() => setQRModal(true)}>
           Scan
         </div>
-        <div>{QRModal ? <QRScanner setQRModal={setQRModal} setHoldItem={setHoldItem} setHoldUserInputs={setHoldUserInputs} key={key} /> : null}</div>
+        <div>{QRModal ? <QRScanner setQRModal={setQRModal} setHoldItem={setHoldItem} setHoldUserInputs={setHoldUserInputs} NamedKey={key} /> : null}</div>
       </div>
     );
   }
