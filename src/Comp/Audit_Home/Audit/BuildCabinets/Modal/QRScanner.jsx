@@ -10,6 +10,21 @@ export default function QRScanner({ setQRModal, setHoldItem, setHoldUserInputs }
     function onScanSuccess(decodedText, decodedResult) {
       console.log(`Code matched = ${decodedText}`, decodedResult);
       setReaderData(decodedText);
+      setHoldItem((prevState) => {
+        return {
+          ...prevState,
+          [key]: newValue,
+        };
+      });
+      if (!Questions.Items[key].required) {
+        setHoldUserInputs((prevState) => {
+          return {
+            ...prevState,
+            [key]: newValue,
+          };
+        });
+      }
+      setQRModal(false);
     }
 
     function onScanFailure(error) {
@@ -39,18 +54,3 @@ export default function QRScanner({ setQRModal, setHoldItem, setHoldUserInputs }
     </div>
   );
 }
-
-// setHoldItem((prevState) => {
-//               return {
-//                 ...prevState,
-//                 [key]: newValue,
-//               };
-//             });
-//             if (!Questions.Items[key].required) {
-//               setHoldUserInputs((prevState) => {
-//                 return {
-//                   ...prevState,
-//                   [key]: newValue,
-//                 };
-//               });
-//             }
