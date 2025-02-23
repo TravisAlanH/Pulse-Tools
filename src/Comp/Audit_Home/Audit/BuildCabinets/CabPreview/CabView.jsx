@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { act, useState } from "react";
 import { CurrentLocation } from "../../../../../../Store/Store";
 import { RoutingStore } from "../../../../../../Store/Store";
 import CabFront from "./CabFront";
@@ -6,21 +6,32 @@ import CabBack from "./CabBack";
 import CabPDU from "./CabPDU";
 
 export default function CabView() {
-  const Cabinet = CurrentLocation((state) => state.data.Cabinet);
   const setAuditModal = RoutingStore((state) => state.setAuditModal);
+  const AllItems = CurrentLocation((state) => state.data.AllItems);
+  const setCabinet = CurrentLocation((state) => state.setCabinet);
+  const setActive = CurrentLocation((state) => state.setActive);
+  const activeCabinet = CurrentLocation((state) => state.data.Cabinet);
 
+  console.log(activeCabinet, "activeCabinet");
+
+  const Cablist = [];
+
+  Object.keys(AllItems).forEach((key) => {
+    if (AllItems[key]["Object *"] === "Cabinet") {
+      Cablist.push(key);
+    }
+  });
   const [view, setView] = React.useState(1);
 
   // Keep track of the rotation degrees in React state
 
   // Function to update degrees when the button is clicked
 
-  if (Cabinet === 0) {
+  if (activeCabinet === 0) {
     return (
       <div className="flex flex-col gap-4 justify-center items-center mt-[50%]">
-        <p>No Cabinet Built</p>
         <div className="flex flex-col gap-2 p-3 rounded-lg items-center bg-[#cacaca]">
-          <p>Add a Cabinet Above</p>
+          <p>Add/Select a Cabinet Above</p>
           <p>or</p>
           <button className="ButtonMain" onClick={() => setAuditModal(8)}>
             Import All Location Assets
@@ -29,6 +40,9 @@ export default function CabView() {
       </div>
     );
   }
+
+  // setCabinet(Cablist[0]);
+  setActive(Cablist[0]);
 
   return (
     <div className="h-full w-full">

@@ -8,6 +8,7 @@ import { HeaderConversions } from "../../../../../../dcT_Objects/Data/HeaderConv
 import { AllLocationsStore } from "../../../../../../Store/Store";
 import { UniqueOrder } from "../../../../../../dcT_Objects/ObjectsArrays";
 import { ObjectListing } from "../../../../../../dcT_Objects/ObjectsArrays";
+import QRScanner from "../Modal/QRScanner";
 
 export default function HoldQuestions() {
   const holdItem = CurrentLocation((state) => state.data.HoldItem);
@@ -22,6 +23,7 @@ export default function HoldQuestions() {
   const [OrderedHoldItem, setOrderedHoldItem] = React.useState(UniqueOrder.filter((key) => holdItem.hasOwnProperty(key)));
   const [holdUserInputs, setHoldUserInputs] = React.useState({});
   const [hideNonRequired, setHideNonRequired] = React.useState(true);
+  const [QRModal, setQRModal] = React.useState(false);
   const Location = React.useRef();
   const setActiveItems = CurrentLocation((state) => state.setActive);
   const PriorMLTHoldItem = React.useRef({});
@@ -182,7 +184,19 @@ export default function HoldQuestions() {
                       key
                     )}
                   </label>
-                  <div className="w-[100%]">{Questions.Items[key].type === "text" ? TextInput(key) : Questions.Items[key].type === "number" ? NumberInput(key) : Questions.Items[key].type === "date" ? DateInput(key) : Questions.Items[key].type === "select" ? SelectInput(key) : TextInput(key)}</div>
+                  <div className="w-[100%]">
+                    {Questions.Items[key].type === "text"
+                      ? TextInput(key)
+                      : Questions.Items[key].type === "number"
+                      ? NumberInput(key)
+                      : Questions.Items[key].type === "date"
+                      ? DateInput(key)
+                      : Questions.Items[key].type === "select"
+                      ? SelectInput(key)
+                      : Questions.Items[key].type === "QRScan"
+                      ? QRScan(key)
+                      : TextInput(key)}
+                  </div>
                 </div>
               );
             })}
@@ -191,6 +205,41 @@ export default function HoldQuestions() {
       </form>
     </div>
   );
+
+  function QRScan(key) {
+    return (
+      <div className="flex flex-row gap-3">
+        <input
+          className="w-full LableInputMainBelow"
+          type="text"
+          value={holdItem[key]}
+          id={key}
+          required={Questions.Items[key].required}
+          onChange={(e) => {
+            const newValue = e.target.value;
+            setHoldItem((prevState) => {
+              return {
+                ...prevState,
+                [key]: newValue,
+              };
+            });
+            if (!Questions.Items[key].required) {
+              setHoldUserInputs((prevState) => {
+                return {
+                  ...prevState,
+                  [key]: newValue,
+                };
+              });
+            }
+          }}
+        />
+        <div className="ButtonMain" onClick={() => setQRModal(true)}>
+          Scan
+        </div>
+        <div>{QRModal ? <QRScanner setQRModal={setQRModal} /> : null}</div>
+      </div>
+    );
+  }
 
   function SelectInput(key) {
     return (

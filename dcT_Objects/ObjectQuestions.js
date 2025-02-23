@@ -94,6 +94,11 @@ export const Questions = {
       required: true,
       placeholder: "Cabinet",
     },
+    "Asset Tag": {
+      type: "QRScan",
+      required: true,
+      placeholder: "Asset Tag",
+    },
     "U Position **": {
       type: "text",
       required: true,

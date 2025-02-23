@@ -118,8 +118,8 @@ export default function CabinetSet() {
             setFilters(Payload);
             setHoldItem(ObjectListing.Cabinet);
             setHoldMLTItem({});
-            setActive(0);
-            setCabinetActive(0);
+            // setActive(0);
+            // setCabinetActive(0);
             setHoldItemTrigger();
             setAuditModal(0);
           }}
