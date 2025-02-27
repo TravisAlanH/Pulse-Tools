@@ -69,6 +69,12 @@ export default function LocationOptions() {
         <button className="ButtonMain w-[10rem]">Edit</button>
       </div>
       <div className="flex flex-row justify-center items-center w-full">
+        <label className="LableMain w-[10rem]">Export</label>
+        <button className="ButtonMain w-[10rem]" onClick={() => {
+          setAuditModal(9)
+        }}>Data</button>
+      </div>
+      <div className="flex flex-row justify-center items-center w-full">
         <label className="LableMain w-[10rem]">Open This Location</label>
         <button
           className="ButtonMain  w-[10rem]"
