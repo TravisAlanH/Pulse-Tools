@@ -3,7 +3,6 @@ import React from "react";
 import { MLTStore } from "../../../../../Store/Store";
 import { CurrentLocation } from "../../../../../Store/Store";
 import { RoutingStore } from "../../../../../Store/Store";
-import { AllLocationsStore } from "../../../../../Store/Store";
 
 import FiltersView from "../FiltersViewer/FiltersView";
 import SortFinishedTable from "../MLTView/SortFinishedTable";
@@ -12,9 +11,7 @@ export default function ModelsTable() {
   // const [checkedIndex, setCheckedIndex] = React.useState(null);
   const checkedIndex = MLTStore((state) => state.data.checkedIndex);
   const setCheckedIndex = MLTStore((state) => state.setCheckedIndex);
-  const MLT = MLTStore((state) => state.data.rows);
-  const Custom = AllLocationsStore((state) => state.data.CustomMLTItmes);
-  const Common = AllLocationsStore((state) => state.data.CommonMLTItems);
+  const rows = MLTStore((state) => state.data.rows);
   const MLTFilterAndSort = MLTStore((state) => state.data);
   const [clicked, setClicked] = React.useState(null);
   const setSearchInput = MLTStore((state) => state.setSearchInput);
@@ -24,8 +21,7 @@ export default function ModelsTable() {
   const AllItems = CurrentLocation((state) => state.data.AllItems);
   const setHoldMLTItem = MLTStore((state) => state.setHoldMLTItem);
   const setAuditModal = RoutingStore((state) => state.setAuditModal);
-  const MLTView = RoutingStore((state) => state.data.MLTView);
-  const [rows, setRows] = React.useState(MLT);
+  const MLTView = MLTStore((state) => state.data.MLTView);
 
   const headerStyle = "border-2 border-[#F2ECE6] px-2 h-[2.5rem] bg-[#F2ECE6] text-nowrap font-normal text-sm";
   const rowStyle = "border-2 border-[#F2ECE6] px-2 w-[12rem] h-[2rem] text-nowrap overflow-clip";
@@ -36,18 +32,9 @@ export default function ModelsTable() {
   const [SelectedHoldItem, setSelectedHoldItem] = React.useState({});
   const [SpliceEnd, setSpliceEnd] = React.useState(15);
 
-  console.log(Custom);
-  React.useEffect(() => {
-    if (MLTView === 0) {
-      setRows(MLT);
-    }
-    if (MLTView === 1) {
-      setRows(Common);
-    }
-    if (MLTView === 2) {
-      setRows(Custom);
-    }
-  }, [MLTView]);
+  const OriginRowsCount = React.useRef(Object.keys(rows).length);
+
+  React.useEffect(() => {}, [MLTView]);
 
   React.useEffect(() => {
     if (AllItems.hasOwnProperty(Active)) {
@@ -64,79 +51,64 @@ export default function ModelsTable() {
     }
   }, []);
 
-  console.log(rows);
-  let filteredRows = [];
-  if (rows !== undefined || rows.length > 0) {
-    filteredRows = rows
-      .filter((row) => {
-        return Object.keys(Filters).every((key) => {
-          if (Filters[key].length === 0) {
-            return true;
-          }
-          return Filters[key].includes(row[key]);
-        });
-      })
-      .filter((row) => {
-        return Object.keys(SearchInput).every((key) => {
-          if (SearchInput[key] === "") {
-            return true;
-          }
-          return String(row[key]).toLowerCase().includes(String(SearchInput[key]).toLowerCase());
-        });
-      })
-      .sort((a, b) => {
-        const SortedBy = MLTFilterAndSort.sortType;
-        const SortedOrder = MLTFilterAndSort.sortDirection;
-        if (SortedOrder === 0) {
-          return a.index - b.index;
+  const [filteredCount, setFilteredCount] = React.useState(Object.keys(rows).length);
+
+  const filteredRows = rows
+    .filter((row) => {
+      return Object.keys(Filters).every((key) => {
+        if (Filters[key].length === 0) {
+          return true;
         }
-        const aValue = a[SortedBy];
-        const bValue = b[SortedBy];
-
-        if (SortedBy === "accuracyOne") {
-          if (SortedOrder === 1) {
-            return parseFloat(bValue) - parseFloat(aValue);
-          } else if (SortedOrder === -1) {
-            return parseFloat(aValue) - parseFloat(bValue);
-          }
+        return Filters[key].includes(row[key]);
+      });
+    })
+    .filter((row) => {
+      return Object.keys(SearchInput).every((key) => {
+        if (SearchInput[key] === "") {
+          return true;
         }
+        return String(row[key]).toLowerCase().includes(String(SearchInput[key]).toLowerCase());
+      });
+    })
+    .sort((a, b) => {
+      const SortedBy = MLTFilterAndSort.sortType;
+      const SortedOrder = MLTFilterAndSort.sortDirection;
+      if (SortedOrder === 0) {
+        return a.index - b.index;
+      }
+      const aValue = a[SortedBy];
+      const bValue = b[SortedBy];
 
-        if (typeof aValue === "number" && typeof bValue === "number") {
-          if (SortedOrder === 1) {
-            return bValue - aValue;
-          } else if (SortedOrder === -1) {
-            return aValue - bValue;
-          }
+      if (SortedBy === "accuracyOne") {
+        if (SortedOrder === 1) {
+          return parseFloat(bValue) - parseFloat(aValue);
+        } else if (SortedOrder === -1) {
+          return parseFloat(aValue) - parseFloat(bValue);
         }
+      }
 
-        if (typeof aValue === "string" && typeof bValue === "string") {
-          if (SortedOrder === 1) {
-            return bValue.localeCompare(String(aValue));
-          } else if (SortedOrder === -1) {
-            return aValue.localeCompare(String(bValue));
-          }
+      if (typeof aValue === "number" && typeof bValue === "number") {
+        if (SortedOrder === 1) {
+          return bValue - aValue;
+        } else if (SortedOrder === -1) {
+          return aValue - bValue;
         }
-        return 0;
-      })
-      .slice(0, SpliceEnd);
-  }
+      }
 
-  const OriginRowsCount = React.useRef(Object.keys(rows).length) || React.useRef(0);
+      if (typeof aValue === "string" && typeof bValue === "string") {
+        if (SortedOrder === 1) {
+          return bValue.localeCompare(String(aValue));
+        } else if (SortedOrder === -1) {
+          return aValue.localeCompare(String(bValue));
+        }
+      }
+      return 0;
+    })
+    .slice(0, SpliceEnd);
 
-  if (rows.length === 0) {
-    return (
-      <div className="flex flex-col  justify-center items-center">
-        <FiltersView ShownCount={0} OriginRowsCount={0} setSpliceEnd={setSpliceEnd} SpliceEnd={SpliceEnd} />
-        <div className="flex flex-col gap-2 p-3 rounded-lg items-center bg-[#cacaca]">
-          <p>Loading Models...</p>
-          <p>or</p>
-          <button className="ButtonMain" onClick={() => setAuditModal(8)}>
-            Import All Location Assets
-          </button>
-        </div>
-      </div>
-    );
-  }
+  React.useEffect(() => {
+    setFilteredCount(filteredRows.length);
+  }, [SearchInput, MLTFilterAndSort, rows]);
 
   return (
     // <div className="flex-grow flex flex-col justify-start items-start w-full h-full">
@@ -144,7 +116,7 @@ export default function ModelsTable() {
 
     <div className="max-h-full flex flex-col gap-2 items-start w-full h-full">
       <div className="flex flex-row justify-start w-full">
-        <FiltersView OriginRowsCount={OriginRowsCount.current} setSpliceEnd={setSpliceEnd} SpliceEnd={SpliceEnd} />
+        <FiltersView ShownCount={filteredCount} OriginRowsCount={OriginRowsCount.current} setSpliceEnd={setSpliceEnd} SpliceEnd={SpliceEnd} />
       </div>
       {/* <div class=" overflow-y-auto w-full max-h-[90%]" id="tableDiv"> */}
       <div className="max-h-[90%] overflow-y-auto">

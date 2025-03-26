@@ -25,8 +25,6 @@ function App() {
   const userStatus = UserStore((state) => state.data.Status);
   // ! THIS WILL BE CHANGES TO THE ROUTEING IN THE STORE
 
-  console.log(Loading, "Loading");
-
   const CurrentPage = [
     <HomePage />,
     <AuditHome />,

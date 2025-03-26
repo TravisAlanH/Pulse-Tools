@@ -70,8 +70,6 @@ export default function CabinetSet() {
           disabled={cabinetUUID === 0}
           onClick={() => {
             const MLTRow = rows[rows.findIndex((obj) => obj.Model === AllItems[cabinetUUID]["Model *"])];
-            console.log("AllItems[cabinetUUID]", AllItems[cabinetUUID]);
-            console.log("uuid", cabinetUUID);
             setHoldMLTItem({ MLTRow });
             setHoldItem(AllItems[cabinetUUID]);
             setActive(cabinetUUID);
@@ -132,13 +130,11 @@ export default function CabinetSet() {
 
   function CabinetSelections() {
     let cabinetList = [];
-    console.log("AllItems", AllItems);
     Object.keys(AllItems).forEach((key) => {
       if (AllItems[key]["Object *"] === "Cabinet") {
         cabinetList.push(key);
       }
     });
-    console.log(cabinetList);
     // setCabinets(cabinetList);
     return (
       <div>

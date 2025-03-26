@@ -102,5 +102,6 @@ export const initState = {
     CurrentPage: 0,
     AuditPage: 0,
     AuditModal: -1,
+    MLTView: 0,
   },
 };

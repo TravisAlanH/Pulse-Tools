@@ -12,8 +12,6 @@ export default function CabView() {
   const setActive = CurrentLocation((state) => state.setActive);
   const activeCabinet = CurrentLocation((state) => state.data.Cabinet);
 
-  console.log(activeCabinet, "activeCabinet");
-
   const Cablist = [];
 
   Object.keys(AllItems).forEach((key) => {
@@ -22,10 +20,6 @@ export default function CabView() {
     }
   });
   const [view, setView] = React.useState(1);
-
-  // Keep track of the rotation degrees in React state
-
-  // Function to update degrees when the button is clicked
 
   if (activeCabinet === 0) {
     return (
@@ -41,8 +35,7 @@ export default function CabView() {
     );
   }
 
-  // setCabinet(Cablist[0]);
-  setActive(Cablist[0]);
+  // setActive(Cablist[0]);
 
   return (
     <div className="h-full w-full">

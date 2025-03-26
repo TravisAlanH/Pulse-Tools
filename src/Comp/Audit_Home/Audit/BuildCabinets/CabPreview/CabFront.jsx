@@ -45,6 +45,7 @@ export default function CabFront() {
   assetsInCabinet = holdAssetsInCabinet;
 
   async function handleAddToCab(RU) {
+    await setActive(0);
     const FilledSlots = [];
     let OpenPositions = -1;
     // Determine Open Posistion Over Selected RU
@@ -60,8 +61,7 @@ export default function CabFront() {
     if (index !== -1) {
       OpenPositions = SortedFilledSlots[SortedFilledSlots.indexOf(SortedFilledSlots[index])] - RU;
     }
-    console.log(SortedFilledSlots);
-    console.log("OpenPositions", OpenPositions);
+
     setOpenUP(OpenPositions);
 
     await isLoading(true);
@@ -81,7 +81,6 @@ export default function CabFront() {
     holdItemCopy["Rails Used **"] = "Both";
     holdItemCopy["Orientation **"] = `Front Faces Cabinet ${Orintation}`;
     setHoldItem(holdItemCopy);
-    setActive(0);
     setHoldItemTrigger();
 
     await setAuditModal(0);
@@ -113,8 +112,6 @@ export default function CabFront() {
     transition: "all 0.5s",
   };
 
-  console.log(cabinetView);
-
   return (
     <div className=" h-full w-full flex flex-col">
       {AboveBelow("Above")}
@@ -133,10 +130,9 @@ export default function CabFront() {
               const ruHeightToSkip = parseInt(assetsInCabinet[cabinetView["RUHeight"] - iCopy]["RUHeight"]);
               const rails = assetsInCabinet[cabinetView["RUHeight"] - iCopy]["Rails Used **"];
               skipRUs = ruHeightToSkip - 1;
-              // console.log("inCab", Object.entries(AllItems).find(([_, value]) => value === assetsInCabinet[cabinetView["RUHeight"] - iCopy])?.[0]);
               // ! ITEM IN CABINET
               const MLTRow = rows[rows.findIndex((obj) => obj.Model === assetsInCabinet[cabinetView["RUHeight"] - iCopy]["Model *"])];
-              console.log(MLTRow);
+
               if (assetsInCabinet[cabinetView["RUHeight"] - iCopy]["Rails Used **"] !== Orintation && assetsInCabinet[cabinetView["RUHeight"] - iCopy]["Rails Used **"] !== "Both") {
                 return otherSideView(cabinetView["RUHeight"] - parseInt(assetsInCabinet[cabinetView["RUHeight"] - iCopy]["RUHeight"]) - iCopy + 1);
               }

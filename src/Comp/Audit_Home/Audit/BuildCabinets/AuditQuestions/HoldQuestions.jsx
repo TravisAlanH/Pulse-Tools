@@ -90,10 +90,14 @@ export default function HoldQuestions() {
     setOrderedHoldItem(HoldOrderedHoldItem);
   }, [holdItem]);
 
+  console.log("holdItems", holdItem);
+  console.log("AllItems", AllItems);
+
   function handleSubmitAdd(e) {
     e.preventDefault();
     console.log(holdItem["RUHeight"]);
     if (OpenUP != -1 && holdItem["RUHeight"] > OpenUP) {
+      console.log("NNNNNNNNNNNNNNNNNNNNNNN");
       setHoldItem({});
       setActiveItems(0);
       setOpenUP(-1);
@@ -105,6 +109,7 @@ export default function HoldQuestions() {
       type: holdItem["Object *"],
       value: holdItem,
     };
+    console.log("YYYYYYYYYYYYYYYYYYYYYYYYYYYYYY");
     addToItems(Payload);
     addCommonMLTItem(holdMLTItem);
     setHoldItem({});
@@ -115,6 +120,7 @@ export default function HoldQuestions() {
   }
 
   function handleSubmitEdit(e) {
+    console.log("EDDDDDDDDDDDDDD");
     e.preventDefault();
     const Payload = {
       type: holdItem["Object *"],
@@ -129,6 +135,8 @@ export default function HoldQuestions() {
   if (Object.keys(holdItem).length === 0 || Object.keys(holdMLTItem) === undefined) {
     return <div></div>;
   }
+
+  console.log("ActiveUUID", ActiveUUID);
 
   return (
     <div className="h-full w-[95%] flex flex-col items-center gap-4">

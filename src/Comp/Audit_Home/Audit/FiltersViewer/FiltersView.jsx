@@ -1,24 +1,17 @@
 import React from "react";
 import { MLTStore } from "../../../../../Store/Store";
+import { RoutingStore } from "../../../../../Store/Store";
 
 export default function FiltersView({ ShownCount, OriginRowsCount, setSpliceEnd, SpliceEnd }) {
   const sortType = MLTStore((state) => state.data.sortType);
   const sortDirection = MLTStore((state) => state.data.sortDirection);
   const searchInput = MLTStore((state) => state.data.searchInput);
   const filters = MLTStore((state) => state.data.filters);
-  const [CommonMLTSelected, setCommonMLTSelected] = React.useState(false);
-  const [StandardMLTSelected, setStandardMLTSelected] = React.useState(true);
-  const [CustomMLTSelected, setCustomMLTSelected] = React.useState(false);
+  const setMLTView = RoutingStore((state) => state.setMLTView);
+  const MLTView = RoutingStore((state) => state.data.MLTView);
 
   function handleTableView(index) {
-    const actions = [setStandardMLTSelected, setCommonMLTSelected, setCustomMLTSelected];
-    actions.forEach((action, i) => {
-      if (i === index) {
-        action(true);
-      } else {
-        action(false);
-      }
-    });
+    setMLTView(index);
   }
 
   const ShownOptions = [10, 15, 20, 50, 100];
@@ -72,7 +65,7 @@ export default function FiltersView({ ShownCount, OriginRowsCount, setSpliceEnd,
       <div className="h-[2rem] flex flex-row justify-between gap-3">
         <div className="flex flex-row gap-3">
           <button
-            className={` ${StandardMLTSelected ? "ButtonMainNonWhite" : "ButtonMain"}`}
+            className={` ${MLTView === 0 ? "ButtonMainNonWhite" : "ButtonMain"}`}
             onClick={() => {
               handleTableView(0);
             }}
@@ -80,7 +73,7 @@ export default function FiltersView({ ShownCount, OriginRowsCount, setSpliceEnd,
             Library
           </button>
           <button
-            className={` ${CommonMLTSelected ? "ButtonMainNonWhite" : "ButtonMain"}`}
+            className={` ${MLTView === 1 ? "ButtonMainNonWhite" : "ButtonMain"}`}
             onClick={() => {
               handleTableView(1);
             }}
@@ -88,7 +81,7 @@ export default function FiltersView({ ShownCount, OriginRowsCount, setSpliceEnd,
             Common
           </button>
           <button
-            className={` ${CustomMLTSelected ? "ButtonMainNonWhite" : "ButtonMain"}`}
+            className={` ${MLTView === 2 ? "ButtonMainNonWhite" : "ButtonMain"}`}
             onClick={() => {
               handleTableView(2);
             }}

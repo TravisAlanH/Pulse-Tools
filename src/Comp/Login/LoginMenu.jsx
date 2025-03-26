@@ -7,6 +7,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../../Firebase/Firebase";
 import { RoutingStore } from "../../../Store/Store";
 import { getMLT } from "../../../dcT_Objects/MLT/getMLT";
+import { AllLocationsStore } from "../../../Store/Store";
 
 export default function LoginMenu() {
   const [email, setEmail] = useState("");
@@ -17,6 +18,8 @@ export default function LoginMenu() {
   const setLoginPage = RoutingStore((state) => state.setLoginPage);
   const setLoginModal = RoutingStore((state) => state.setLoginModal);
   const UnvarifiedUser = UserStore((state) => state.UnvarifiedUser);
+  const setCustomMLTItems = AllLocationsStore((state) => state.setCustomMLTItems);
+  const setCommonMLTItems = AllLocationsStore((state) => state.setCommonMLTItems);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -27,6 +30,10 @@ export default function LoginMenu() {
       const user = userCredential.user;
       const docRef = doc(db, "Users", user.uid);
       const docSnap = await getDoc(docRef);
+      const docCustomMLTRef = doc(db, "Users", user.uid, "LibraryData", "Custom");
+      const docCustomMLTSnap = await getDoc(docCustomMLTRef);
+      const docCommonMLTRef = doc(db, "Users", user.uid, "LibraryData", "CommonUsed");
+      const docCommonMLTSnap = await getDoc(docCommonMLTRef);
       console.log("USER", user);
       if (user.email !== "sunbirdadmin@sunbirddcim.com") {
         if (!user.emailVerified) {
@@ -52,12 +59,21 @@ export default function LoginMenu() {
             console.log("Logged IN");
             getMLT();
           } else {
-            // doc.data() will be undefined in this case
+            console.log("No such document!");
+          }
+          if (docCustomMLTSnap.exists()) {
+            console.log("Document data:", docCustomMLTSnap.data());
+            setCustomMLTItems(docCustomMLTSnap.data().CustomMLTItmes);
+          }
+          if (docCommonMLTSnap.exists()) {
+            console.log("Document data:", docCommonMLTSnap.data());
+            setCommonMLTItems(docCommonMLTSnap.data().CommonMLTItems);
+          } else {
             console.log("No such document!");
           }
         }
       } else {
-        setLoginModal(2)
+        setLoginModal(2);
         setUser(user);
       }
       // Handle success case (e.g., navigate to another page or show success message)
