@@ -299,5 +299,160 @@ export const Questions = {
       required: false,
       placeholder: "Capacity(kW)",
     },
+    // NEW MODELS
+    Object: {
+      type: "text",
+      required: true,
+      placeholder: "Unique object identifier",
+    },
+    Make: {
+      type: "text",
+      required: true,
+      placeholder: "Manufacturer name",
+    },
+    "Model Name": {
+      type: "text",
+      required: true,
+      placeholder: "Official model name",
+    },
+    "Part Number": {
+      type: "text",
+      required: false,
+      placeholder: "Original part number",
+    },
+    "New Part Number": {
+      type: "text",
+      required: false,
+      placeholder: "Updated part number (if applicable)",
+    },
+    Description: {
+      type: "text",
+      required: false,
+      placeholder: "Short description of item",
+    },
+    "Made in": {
+      type: "text",
+      required: false,
+      placeholder: "Country of origin",
+    },
+    "Warranty Period": {
+      type: "text",
+      required: false,
+      placeholder: "Warranty duration (e.g., 3 years)",
+    },
+    Class: {
+      type: "select",
+      required: false,
+      options: ["Select", "Server", "Storage", "Network", "Power", "Peripheral"],
+      startValue: "Select",
+    },
+    Subclass: {
+      type: "select",
+      required: false,
+      options: ["Select", "Rack Server", "Blade Server", "Tower Server", "SAN", "NAS", "Switch", "Router", "UPS", "PDU", "Monitor"],
+      startValue: "Select",
+    },
+    Mounting: {
+      type: "select",
+      required: false,
+      options: ["Select", "Rack-mounted", "Wall-mounted", "Free-standing", "Chassis"],
+      startValue: "Select",
+    },
+    "Form Factor": {
+      type: "select",
+      required: false,
+      options: ["Select", "1U", "2U", "3U", "4U", "Blade", "Tower"],
+      startValue: "Select",
+    },
+    "Rack Units": {
+      type: "number",
+      required: true,
+      placeholder: "Number of rack units",
+    },
+    Height: {
+      type: "text",
+      required: false,
+      placeholder: "Height in inches or cm",
+    },
+    Width: {
+      type: "text",
+      required: false,
+      placeholder: "Width in inches or cm",
+    },
+    Depth: {
+      type: "text",
+      required: false,
+      placeholder: "Depth in inches or cm",
+    },
+    Weight: {
+      type: "text",
+      required: false,
+      placeholder: "Weight in lbs or kg",
+    },
+    Units: {
+      type: "text",
+      required: false,
+      placeholder: "Measurement units (e.g., lbs, kg)",
+    },
+    "Version (read-only)": {
+      type: "text",
+      required: false,
+      placeholder: "Software/hardware version",
+    },
+    "Do Not Update": {
+      type: "select",
+      required: false,
+      options: ["Select", "Yes", "No"],
+      startValue: "Select",
+    },
+    "My Company Standard": {
+      type: "select",
+      required: false,
+      options: ["Select", "Yes", "No"],
+      startValue: "Select",
+    },
+    "Front Image File Included": {
+      type: "select",
+      required: false,
+      options: ["Select", "Yes", "No"],
+      startValue: "Select",
+    },
+    "Back Image File Included": {
+      type: "select",
+      required: false,
+      options: ["Select", "Yes", "No"],
+      startValue: "Select",
+    },
+    Status: {
+      type: "select",
+      required: false,
+      options: ["Select", "Active", "Inactive", "Obsolete"],
+      startValue: "Select",
+    },
+    Notes: {
+      type: "text",
+      required: false,
+      placeholder: "Additional information or comments",
+    },
+    DataPortsCount: {
+      type: "number",
+      required: false,
+      placeholder: "Number of data ports",
+    },
+    PowerPortsCount: {
+      type: "number",
+      required: false,
+      placeholder: "Number of power ports",
+    },
+    FrontSlotsCount: {
+      type: "number",
+      required: false,
+      placeholder: "Number of front slots",
+    },
+    BackSlotsCount: {
+      type: "number",
+      required: false,
+      placeholder: "Number of back slots",
+    },
   },
 };

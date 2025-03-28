@@ -13,7 +13,7 @@ export default function ModelsTable() {
   const checkedIndex = MLTStore((state) => state.data.checkedIndex);
   const setCheckedIndex = MLTStore((state) => state.setCheckedIndex);
   const MLT = MLTStore((state) => state.data.rows);
-  const Custom = AllLocationsStore((state) => state.data.CustomMLTItmes);
+  const Custom = AllLocationsStore((state) => state.data.CustomMLTItems);
   const Common = AllLocationsStore((state) => state.data.CommonMLTItems);
   const MLTFilterAndSort = MLTStore((state) => state.data);
   const [clicked, setClicked] = React.useState(null);
@@ -45,7 +45,37 @@ export default function ModelsTable() {
       setRows(Common);
     }
     if (MLTView === 2) {
-      setRows(Custom);
+      const keyTranlation = {
+        Make: "Make",
+        "Model Name": "Model",
+        "Rack Units": "RUHeight",
+        Object: "Object",
+        Height: "Height",
+        Width: "Width",
+        Depth: "Depth",
+        Class: "Class",
+        Subclass: "Subclass",
+        Mounting: "Mounting",
+        "Data Ports Count": "DataPortsCount",
+        "Power Ports Count": "PowerPortsCount",
+        "Front Slots Count": "FrontSlotsCount",
+        "Back Slots Count": "BackSlotsCount",
+      };
+      let holdCustomModels = [];
+      for (let i = 0; i < Custom.length; i++) {
+        let holdItem = {};
+        Object.keys(Custom[i]).map((key) => {
+          if (keyTranlation.hasOwnProperty(key)) {
+            holdItem[keyTranlation[key]] = Custom[i][key];
+          } else {
+            holdItem[key] = Custom[i][key];
+          }
+        });
+        holdItem["index"] = i;
+        holdCustomModels.push(holdItem);
+      }
+      console.log(holdCustomModels);
+      setRows(holdCustomModels);
     }
   }, [MLTView]);
 
@@ -64,7 +94,6 @@ export default function ModelsTable() {
     }
   }, []);
 
-  console.log(rows);
   let filteredRows = [];
   if (rows !== undefined || rows.length > 0) {
     filteredRows = rows
@@ -125,14 +154,16 @@ export default function ModelsTable() {
 
   if (rows.length === 0) {
     return (
-      <div className="flex flex-col  justify-center items-center">
+      <div className="flex flex-col  justify-center items-center ">
         <FiltersView ShownCount={0} OriginRowsCount={0} setSpliceEnd={setSpliceEnd} SpliceEnd={SpliceEnd} />
-        <div className="flex flex-col gap-2 p-3 rounded-lg items-center bg-[#cacaca]">
-          <p>Loading Models...</p>
-          <p>or</p>
-          <button className="ButtonMain" onClick={() => setAuditModal(8)}>
-            Import All Location Assets
-          </button>
+        <div className="h-[40rem] flex flex-col justify-center items-center">
+          <div className="flex flex-col gap-2 p-3 rounded-lg items-center bg-[#f2ece6]">
+            <p>There are no Custom Models Added</p>
+
+            <button className="ButtonMain" onClick={() => setAuditModal(10)}>
+              Create a Model
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -146,8 +177,15 @@ export default function ModelsTable() {
       <div className="flex flex-row justify-start w-full">
         <FiltersView OriginRowsCount={OriginRowsCount.current} setSpliceEnd={setSpliceEnd} SpliceEnd={SpliceEnd} />
       </div>
+      {MLTView === 2 ? (
+        <div>
+          <button className="ButtonMain" onClick={() => setAuditModal(10)}>
+            Create a Model
+          </button>
+        </div>
+      ) : null}
       {/* <div class=" overflow-y-auto w-full max-h-[90%]" id="tableDiv"> */}
-      <div className="max-h-[90%] overflow-y-auto">
+      <div className="max-h-[90%] overflow-y-auto h-[60rem]">
         <table className="border-0 border-[#F2ECE6]">
           <thead>
             <tr>

@@ -31,7 +31,7 @@ export const initState = {
     "Email Verified": false,
   },
   AllLocations: {
-    CustomMLTItmes: [],
+    CustomMLTItems: [],
     CommonMLTItems: [],
     Location: [],
   },

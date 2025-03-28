@@ -30,7 +30,7 @@ export default function LoginMenu() {
       const user = userCredential.user;
       const docRef = doc(db, "Users", user.uid);
       const docSnap = await getDoc(docRef);
-      const docCustomMLTRef = doc(db, "Users", user.uid, "LibraryData", "Custom");
+      const docCustomMLTRef = doc(db, "Users", user.uid, "LibraryData", "CustomModels");
       const docCustomMLTSnap = await getDoc(docCustomMLTRef);
       const docCommonMLTRef = doc(db, "Users", user.uid, "LibraryData", "CommonUsed");
       const docCommonMLTSnap = await getDoc(docCommonMLTRef);
@@ -63,7 +63,7 @@ export default function LoginMenu() {
           }
           if (docCustomMLTSnap.exists()) {
             console.log("Document data:", docCustomMLTSnap.data());
-            setCustomMLTItems(docCustomMLTSnap.data().CustomMLTItmes);
+            setCustomMLTItems(docCustomMLTSnap.data().CustomModels);
           }
           if (docCommonMLTSnap.exists()) {
             console.log("Document data:", docCommonMLTSnap.data());

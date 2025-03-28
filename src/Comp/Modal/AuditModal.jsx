@@ -12,13 +12,14 @@ import Below from "../Audit_Home/Audit/BuildCabinets/CabPreview/Below";
 import ImportModal from "../Audit_Home/Audit/BuildCabinets/Modal/ImportModal";
 import ImportModalItems from "../Audit_Home/Audit/BuildCabinets/Modal/ImportModalItems";
 import Export from "../Audit_Home/Audit/Export";
+import CreateModel from "../../../dcT_Objects/MLT/CreateModels/CreateModel";
 
 export default function LoginModal() {
   const Modal = RoutingStore((state) => state.data.AuditModal);
   const setAuditModal = RoutingStore((state) => state.setAuditModal);
 
-  const pages = [<MLT />, <HoldQuestions />, <LocationOptions />, <CreateLocationInputs />, <DeleteModal />, <Above />, <Below />, <ImportModal />, <ImportModalItems />, <Export />];
-  const Header = ["Models List", "Fill in Headers", "Location Options", "Create Location", "Delete", "Above", "Below", "Import Locations", "Import Items","Export Data"];
+  const pages = [<MLT />, <HoldQuestions />, <LocationOptions />, <CreateLocationInputs />, <DeleteModal />, <Above />, <Below />, <ImportModal />, <ImportModalItems />, <Export />, <CreateModel />];
+  const Header = ["Models List", "Fill in Headers", "Location Options", "Create Location", "Delete", "Above", "Below", "Import Locations", "Import Items", "Export Data", "Create Model"];
 
   return (
     <div id="AuditModal" className="MainModalClass">

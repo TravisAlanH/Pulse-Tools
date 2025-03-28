@@ -731,7 +731,7 @@ const Translate = {
   "TRANSFORMER-RACKABLE": "TRANSFORMER-RACKABLE", //
   UPS: "UPS", //
   "UPS BANK": "UPS Bank", //
-  "Asset Tag": "Asset Tag"
+  "Asset Tag": "Asset Tag",
 };
 
 // export const UniqueOrder = [
@@ -875,3 +875,32 @@ export const UniqueOrder = [
   "Line Side",
   "Load Side",
 ];
+
+export const NewModel = {
+  Object: "",
+  Make: "",
+  "Model Name": "",
+  "Part Number": "",
+  Description: "",
+  "Made in": "",
+  "Warranty Period": "",
+  // Class: "",
+  // Subclass: "",
+  // Mounting: "",
+  // "Form Factor": "",
+  "Rack Units": "",
+  Height: "",
+  Width: "",
+  Depth: "",
+  Weight: "",
+  Units: "",
+  DataPortsCount: "",
+  PowerPortsCount: "",
+  FrontSlotsCount: "",
+  BackSlotsCount: "",
+  "Do Not Update": "",
+  "My Company Standard": "",
+  "Front Image File Included": "",
+  "Back Image File Included": "",
+  Notes: "",
+};
