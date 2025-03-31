@@ -63,7 +63,7 @@ export default function SelectStandardQuestions() {
   }
   return (
     <div className="flex flex-col gap-4 p-4 h-[40rem]">
-      <p className="text-sm text-gray-600">Click on a site to expand and select questions.</p>
+      <p className="text-sm text-gray-600">Select a section to expand and select questions.</p>
 
       {QuestionsHeaders.map((header, index) => (
         <div key={index}>
@@ -81,7 +81,12 @@ export default function SelectStandardQuestions() {
       <div className=" w-full">
         <div className="w-full border-gray-200 border-2 rounded-md shadow-md overflow-hidden">
           <div className="flex flex-row justify-between items-center gap-4 p-2 bg-gray-200">
-            <p></p>
+            <div className="flex flex-row gap-1 text-xs">
+              <p>Selected: {Object.keys(QuestionsList[index]).filter((key) => allQuestions.hasOwnProperty(key)).length}</p>
+              <p>of</p>
+              <p>{Object.keys(QuestionsList[index]).length}</p>
+            </div>
+
             <button
               id={`${QuestionsHeaders[index]}Drop`}
               onClick={() => handleShrink(`${QuestionsHeaders[index]}Questions`, index)}
