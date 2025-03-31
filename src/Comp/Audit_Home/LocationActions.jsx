@@ -1,16 +1,24 @@
 import React from "react";
 import { RoutingStore } from "../../../Store/Store";
 
-export default function AuditActions() {
+export default function LocationActions() {
   const setAuditPage = RoutingStore((state) => state.setAuditPage);
   const Pages = {
     "Rack Elevations": {
       page: 1,
       title: "Rack Elevations",
-      discription: "Create Rack Elevations for Current Location, Front / Back / Zero U PDU",
+      discription: "Create Rack Elevations for Current Location, Front / Back / Zero U PDU.",
       //   icon: <BsHddRackFill className="text-[3.5rem] text-[#4B4F54]" />,
       icon: "",
       index: 0,
+    },
+    "Site Survey": {
+      page: 3,
+      title: "Site Survey",
+      discription: "Survey Current Lcoation for General Conditions, Safety, and other Custom Built Questions.",
+      //   icon: <BsHddRackFill className="text-[3.5rem] text-[#4B4F54]" />,
+      icon: "",
+      index: 1,
     },
   };
 

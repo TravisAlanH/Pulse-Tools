@@ -30,6 +30,7 @@ export default function CabFront() {
 
   let assetsInCabinet = [];
   let cabinetView = AllItems[Cabinet];
+
   // setCabinetView(AllItems[Cabinet]);
   let holdAssetsInCabinet = {};
   Object.keys(AllItems).forEach((item) => {

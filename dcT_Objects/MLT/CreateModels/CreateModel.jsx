@@ -5,12 +5,14 @@ import { NewModel } from "../../ObjectsArrays";
 import { AllLocationsStore } from "../../../Store/Store";
 import { doc, setDoc } from "firebase/firestore";
 import { auth, db } from "../../../Firebase/Firebase";
+import { RoutingStore } from "../../../Store/Store";
 
 export default function CreateModel() {
   const [ObjectType, setObjectType] = React.useState({});
   const [ModelDetails, setModelDetails] = React.useState(JSON.parse(JSON.stringify(NewModel)));
   const CustomModels = AllLocationsStore((state) => state.data.CustomMLTItems);
   const setCustomMLTItems = AllLocationsStore((state) => state.setCustomMLTItems);
+  const setAuditModal = RoutingStore((state) => state.setAuditModal);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -21,6 +23,7 @@ export default function CreateModel() {
     setDoc(CustomModelList, { ["CustomModels"]: holdItemCopy })
       .then(() => {
         setCustomMLTItems(holdItemCopy);
+        setAuditModal(-1);
         console.log("Document successfully written!");
       })
       .catch((error) => {
@@ -99,7 +102,7 @@ export default function CreateModel() {
           setModelDetails((prevState) => {
             return {
               ...prevState,
-              [key]: newValue,
+              [key]: parseInt(newValue),
             };
           });
         }}

@@ -58,18 +58,20 @@ export default function AuditTopMenu() {
     <div className="w-full flex flex-col justify-center items-center pt-3">
       <div className="flex flex-row justify-center items-between w-full px-6">
         <div className="flex flex-row gap-3 w-full">
-          <button className="ButtonMain" onClick={() => setCurrentPage(0)}>
-            Tools
-          </button>
           {AuditPage === 0 ? (
             <button className="ButtonMain" onClick={() => setAuditModal(7)}>
-              Import Locations
+              Import Location
             </button>
           ) : (
             <button className="ButtonMain" onClick={() => setAuditPage(0)}>
               Locations
             </button>
           )}
+          {AuditPage !== 0 && AuditPage !== 2 ? (
+            <button className="ButtonMain" onClick={() => setAuditPage(2)}>
+              Tools
+            </button>
+          ) : null}
         </div>
 
         <div className="flex flex-row justify-center items-center h-full">

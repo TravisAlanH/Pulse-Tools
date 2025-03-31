@@ -31,6 +31,7 @@ export default function HoldQuestions() {
   const setAuditModal = RoutingStore((state) => state.setAuditModal);
   const setOpenUP = MLTStore((state) => state.setOpenUP);
   const OpenUP = MLTStore((state) => state.data.OpenUP);
+  const MLTView = MLTStore((state) => state.data.MLTView);
 
   React.useEffect(() => {
     if (AllItems.hasOwnProperty(ActiveUUID)) {
@@ -97,7 +98,6 @@ export default function HoldQuestions() {
     e.preventDefault();
     console.log(holdItem["RUHeight"]);
     if (OpenUP != -1 && holdItem["RUHeight"] > OpenUP) {
-      console.log("NNNNNNNNNNNNNNNNNNNNNNN");
       setHoldItem({});
       setActiveItems(0);
       setOpenUP(-1);
@@ -109,9 +109,9 @@ export default function HoldQuestions() {
       type: holdItem["Object *"],
       value: holdItem,
     };
-    console.log("YYYYYYYYYYYYYYYYYYYYYYYYYYYYYY");
+
     addToItems(Payload);
-    addCommonMLTItem(holdMLTItem);
+    if (MLTView !== 2) addCommonMLTItem(holdMLTItem);
     setHoldItem({});
     setActiveItems(0);
     setOpenUP(-1);
@@ -120,7 +120,6 @@ export default function HoldQuestions() {
   }
 
   function handleSubmitEdit(e) {
-    console.log("EDDDDDDDDDDDDDD");
     e.preventDefault();
     const Payload = {
       type: holdItem["Object *"],
