@@ -645,6 +645,14 @@ export const RoutingStore = create(
           },
         }));
       },
+      setSurveyModal: (data) => {
+        set((state) => ({
+          data: {
+            ...state.data,
+            SurveyModal: data,
+          },
+        }));
+      },
       setMLTView: (data) => {
         set((state) => ({
           data: {

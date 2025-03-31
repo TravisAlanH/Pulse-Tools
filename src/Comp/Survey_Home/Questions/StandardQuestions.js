@@ -1,10 +1,11 @@
-const SiteSurveyQuestions = {
+export const SiteSurveyQuestions = {
   "78879e38-32ef-4a5b-8943-3f46d2031424": {
     Name: "Survey Date",
     type: "date",
     value: "",
     options: [],
     required: true,
+    group: "Site Survey",
   },
   "9829f21b-fa2a-4a5d-a29f-8ab7c367d059": {
     Name: "Company Surveying",
@@ -12,6 +13,7 @@ const SiteSurveyQuestions = {
     value: "",
     options: [],
     required: true,
+    group: "Site Survey",
   },
   "a2223f36-2012-4374-8c4e-8aabfd0b22a4": {
     Name: "Survey Tech Name",
@@ -19,6 +21,7 @@ const SiteSurveyQuestions = {
     value: "",
     options: [],
     required: true,
+    group: "Site Survey",
   },
   "f31fd9b0-cba3-43f2-82d2-fcd58eae86d9": {
     Name: "Survey Tech Phone",
@@ -26,6 +29,7 @@ const SiteSurveyQuestions = {
     value: "",
     options: [],
     required: true,
+    group: "Site Survey",
   },
   "61f74b9a-452f-411f-a696-f7af6af89163": {
     Name: "Survey Tech Email",
@@ -33,6 +37,7 @@ const SiteSurveyQuestions = {
     value: "",
     options: [],
     required: true,
+    group: "Site Survey",
   },
   "4bd05cbe-6c3b-46d0-9632-39e7da9f7dee": {
     Name: "Site",
@@ -40,6 +45,7 @@ const SiteSurveyQuestions = {
     value: "",
     options: [],
     required: true,
+    group: "Site Survey",
   },
   "0084542b-347f-434a-b516-fefe420cb389": {
     Name: "Building",
@@ -47,6 +53,7 @@ const SiteSurveyQuestions = {
     value: "",
     options: [],
     required: true,
+    group: "Site Survey",
   },
   "80ad1ff9-980e-4d11-9476-6a01a78e7723": {
     Name: "Floor",
@@ -54,6 +61,7 @@ const SiteSurveyQuestions = {
     value: "",
     options: [],
     required: true,
+    group: "Site Survey",
   },
   "83d4b3c7-7247-4eca-9e98-f745d819bb64": {
     Name: "ATG Room Number",
@@ -61,6 +69,7 @@ const SiteSurveyQuestions = {
     value: "",
     options: [],
     required: true,
+    group: "Site Survey",
   },
   "f047bca0-7dae-4e3e-b67d-1570f7fa54da": {
     Name: "ATG Room Name",
@@ -68,6 +77,7 @@ const SiteSurveyQuestions = {
     value: "",
     options: [],
     required: true,
+    group: "Site Survey",
   },
   "680f4a3c-97aa-4519-b250-bc178ee492ef": {
     Name: "Alias Room Name",
@@ -75,6 +85,7 @@ const SiteSurveyQuestions = {
     value: "",
     options: [],
     required: true,
+    group: "Site Survey",
   },
   "ebe722d1-1da0-4501-9eee-3644a26142d1": {
     Name: "Barcode",
@@ -82,6 +93,7 @@ const SiteSurveyQuestions = {
     value: "",
     options: [],
     required: true,
+    group: "Site Survey",
   },
   "1a1925c7-15f1-451b-a55a-5fc4262c4a5f": {
     Name: "Survey Tech Role",
@@ -89,6 +101,7 @@ const SiteSurveyQuestions = {
     value: "",
     options: ["Client Staff - Non Technical", "Client Staff Technical", "Client Venders"],
     required: true,
+    group: "Site Survey",
   },
   "6fc03240-2dfa-45ab-9490-da9835c1c615": {
     Name: "Site Type",
@@ -96,6 +109,7 @@ const SiteSurveyQuestions = {
     value: "",
     options: ["Acute", "Health Center", "Clinic", "Corp Office"],
     required: true,
+    group: "Site Survey",
   },
   "36b6cf85-065d-4d98-8f77-d8bb5901a55b": {
     Name: "Site Name",
@@ -103,6 +117,7 @@ const SiteSurveyQuestions = {
     value: "",
     options: [],
     required: true,
+    group: "Site Survey",
   },
   "08bbb92b-7167-4eb0-9b59-bc7cb2e54833": {
     Name: "Site Address",
@@ -110,6 +125,7 @@ const SiteSurveyQuestions = {
     value: "",
     options: [],
     required: true,
+    group: "Site Survey",
   },
   "3d18e390-d706-499b-9f2a-dbca73526efe": {
     Name: "Site Country",
@@ -117,6 +133,7 @@ const SiteSurveyQuestions = {
     value: "",
     options: [],
     required: true,
+    group: "Site Survey",
   },
   "2c3c6d35-074e-4d6a-adc5-baa8d69cc171": {
     Name: "Local Site Contact",
@@ -124,6 +141,7 @@ const SiteSurveyQuestions = {
     value: "",
     options: [],
     required: true,
+    group: "Site Survey",
   },
   "0444590a-53d8-4f3e-9379-83ae4471167d": {
     Name: "Site Contact Role",
@@ -131,6 +149,7 @@ const SiteSurveyQuestions = {
     value: "",
     options: ["Client Staff - Non Technical", "Client Staff Technical"],
     required: true,
+    group: "Site Survey",
   },
   "490e9f06-2c50-405d-99e6-5643b728d1d9": {
     Name: "Site Contact Email",
@@ -138,6 +157,7 @@ const SiteSurveyQuestions = {
     value: "",
     options: [],
     required: true,
+    group: "Site Survey",
   },
   "be010860-c5bc-41d9-a657-86040e25bb01": {
     Name: "Site Contact Phone",
@@ -145,6 +165,7 @@ const SiteSurveyQuestions = {
     value: "",
     options: [],
     required: true,
+    group: "Site Survey",
   },
   "ed6c014c-fe52-41e5-accc-e8fef19dce0c": {
     Name: "Access Times",
@@ -152,16 +173,18 @@ const SiteSurveyQuestions = {
     value: "",
     options: [],
     required: true,
+    group: "Site Survey",
   },
 };
 
-const GlobalSurveyQuestions = {
+export const GlobalSurveyQuestions = {
   "7b3fdc5e-82a3-4c3e-98f6-29e4d79d9a1b": {
     Name: "Key Holder Record",
     type: "select",
     value: "Not Started",
     options: ["Not Started", "Complete", "In Process"],
     required: true,
+    group: "Global Survey",
   },
   "1e5b8e72-3e3f-4bde-b4b3-5b0e3ef94b47": {
     Name: "Access Records",
@@ -169,6 +192,7 @@ const GlobalSurveyQuestions = {
     value: "Not Started",
     options: ["Not Started", "Complete", "In Process"],
     required: true,
+    group: "Global Survey",
   },
   "e6a5d7b1-8742-4a74-8b7b-8d69fabc127a": {
     Name: "Visitor Access Records",
@@ -176,6 +200,7 @@ const GlobalSurveyQuestions = {
     value: "Not Started",
     options: ["Not Started", "Complete", "In Process"],
     required: true,
+    group: "Global Survey",
   },
   "4f816d13-93e9-47b3-9ad6-94e374d542ef": {
     Name: "Visitor Log Contains",
@@ -183,6 +208,7 @@ const GlobalSurveyQuestions = {
     value: "Not Started",
     options: ["Not Started", "Complete", "In Process"],
     required: true,
+    group: "Global Survey",
   },
   "c209afd6-5d97-4a1b-86e1-c682a4db50d4": {
     Name: "Visitor Log Retention",
@@ -190,6 +216,7 @@ const GlobalSurveyQuestions = {
     value: "Not Started",
     options: ["Not Started", "Complete", "In Process"],
     required: true,
+    group: "Global Survey",
   },
   "98e9d91e-56c8-4b34-8d82-5b8df1dcf6d0": {
     Name: "Auto Expiring Badges",
@@ -197,6 +224,7 @@ const GlobalSurveyQuestions = {
     value: "Not Started",
     options: ["Not Started", "Complete", "In Process"],
     required: true,
+    group: "Global Survey",
   },
   "34c9a5bb-69b2-4d6c-b226-69f5b83954c8": {
     Name: "Visitor Escort Required",
@@ -204,27 +232,31 @@ const GlobalSurveyQuestions = {
     value: "Not Started",
     options: ["Not Started", "Complete", "In Process"],
     required: true,
+    group: "Global Survey",
   },
 };
 
-const roomSurveyQuestions = {
+export const RoomSurveyQuestions = {
   "8a5d4f92-2b37-4b6e-9f8c-46b6d8a17cbb": {
     Name: "Room Number *",
     type: "text",
     value: "",
     required: false,
+    group: "Room Survey",
   },
   "f4c51b77-81d9-47ff-a431-f6f89c9e5dc3": {
     Name: "GPS Coordinates *",
     type: "GPS",
     value: "GPS Coordinates",
     required: false,
+    group: "Room Survey",
   },
   "0db156df-03b2-4e71-b649-316b6f6e3ae1": {
     Name: "Area *",
     type: "number",
     value: "",
     required: false,
+    group: "Room Survey",
   },
   "c6d571be-5c3c-45a5-b89e-fb2f9ee2a25d": {
     Name: "Data Panel Grade *",
@@ -232,6 +264,7 @@ const roomSurveyQuestions = {
     value: "",
     options: ["Cat5e", "Cat6", "Cat6a", "Cat7", "Cat8", "OM1", "OM2", "OM3", "OM4", "OS2"],
     required: false,
+    group: "Room Survey",
   },
   "e8bfa3bd-78b9-45cf-850c-88bdfb7c7c17": {
     Name: "Busbar",
@@ -239,12 +272,14 @@ const roomSurveyQuestions = {
     value: "",
     options: ["Select", "Yes", "No"],
     required: false,
+    group: "Room Survey",
   },
   "31a4fc44-3d82-41e8-bb14-c755815ae6bb": {
     Name: "Ceiling Type *",
     type: "select",
     value: "",
     required: false,
+    group: "Room Survey",
   },
   "75229a3b-4182-4fa0-822c-b81a2c5549b6": {
     Name: "Ceiling Condition *",
@@ -252,12 +287,14 @@ const roomSurveyQuestions = {
     value: "",
     options: ["Select", "Good", "Fair", "Poor", "Water Damage", "Gaps"],
     required: false,
+    group: "Room Survey",
   },
   "9df6bc90-93b1-4850-9fd5-4ebee5cfce9d": {
     Name: "Floor Type *",
     type: "select",
     value: "",
     required: false,
+    group: "Room Survey",
   },
   "1c4e4d88-c0cb-4488-bdd9-40bfe3aa3ea4": {
     Name: "Floor Condition *",
@@ -265,12 +302,14 @@ const roomSurveyQuestions = {
     value: "",
     options: ["Select", "Good", "Fair", "Poor", "Water Damage", "Gaps"],
     required: false,
+    group: "Room Survey",
   },
   "6f74b7c6-496f-4d73-8b92-0743a89cb690": {
     Name: "Wall Type *",
     type: "select",
     value: "",
     required: false,
+    group: "Room Survey",
   },
   "7b6d5805-f99c-42b7-9131-7df0a19d92fd": {
     Name: "Wall Condition *",
@@ -278,6 +317,7 @@ const roomSurveyQuestions = {
     value: "",
     options: ["Select", "Good", "Fair", "Poor", "Water Damage", "Gaps"],
     required: false,
+    group: "Room Survey",
   },
   "b2b840a5-0a6d-4e97-bdcb-31942cc062b1": {
     Name: "Cleanliness *",
@@ -285,98 +325,121 @@ const roomSurveyQuestions = {
     value: "",
     options: ["Select", "Clean", "Fair", "Dirty"],
     required: false,
+    group: "Room Survey",
   },
-  "0f5b10c1-cfa1-4b25-a709-7c74c71c1771": {
+  "a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d": {
+    // Changed from duplicate "0f5b10c1-cfa1-4b25-a709-7c74c71c1771"
     Name: "Room Notes",
     type: "textarea",
     value: "",
     required: false,
+    group: "Room Survey",
   },
 };
 
-const securitySurveyQuestions = {
-  "0f5b10c1-cfa1-4b25-a709-7c74c71c1771": {
+export const SecuritySurveyQuestions = {
+  "d1e2f3g4-h5i6-4j7k-8l9m-0n1o2p3q4r5": {
+    // Changed from duplicate "0f5b10c1-cfa1-4b25-a709-7c74c71c1771"
     Name: "Access Door Control",
     type: "select",
     value: "",
     placeholder: "Input Here",
     options: ["Complies", "Does Not Comply", "N/A"],
     required: true,
+    group: "Security Survey",
   },
-  "28cfa3e5-681f-4608-9515-f947f9399077": {
+  "s6t7u8v9-w0x1-4y2z-3a4b-5c6d7e8f9g0h": {
+    // Changed from duplicate "28cfa3e5-681f-4608-9515-f947f9399077"
     Name: "Is the Room Secure?",
     type: "select",
     value: "",
     placeholder: "Input Here",
     options: ["Complies", "Does Not Comply", "N/A"],
     required: true,
+    group: "Security Survey",
   },
-  "f4e0a36f-5596-4a29-bb78-6d25f35cb92d": {
+  "i1j2k3l4-m5n6-4o7p-8q9r-0s1t2u3v4w5": {
+    // Changed from duplicate "f4e0a36f-5596-4a29-bb78-6d25f35cb92d"
     Name: "Available Key Access",
     type: "select",
     value: "",
     placeholder: "Input Here",
     options: ["Complies", "Does Not Comply", "N/A"],
     required: true,
+    group: "Security Survey",
   },
-  "2a870a72-3c81-4096-a5a3-5d6354ab6b18": {
+  "x6y7z8a9-b0c1-4d2e-3f4g-5h6i7j8k9l0m": {
+    // Changed from duplicate "2a870a72-3c81-4096-a5a3-5d6354ab6b18"
     Name: "Door Manual Unlocking",
     type: "select",
     value: "",
     placeholder: "Input Here",
     options: ["Complies", "Does Not Comply", "N/A"],
     required: true,
+    group: "Security Survey",
   },
-  "41036d9d-cb5b-493f-b05a-2d60a088ea47": {
+  "n1o2p3q4-r5s6-4t7u-8v9w-0x1y2z3a4b5": {
+    // Changed from duplicate "41036d9d-cb5b-493f-b05a-2d60a088ea47"
     Name: "Avigilon camera Present?",
     type: "select",
     value: "",
     placeholder: "Input Here",
     options: ["Complies", "Does Not Comply", "N/A"],
     required: true,
+    group: "Security Survey",
   },
 };
 
-const safetySurveyQuestions = {
-  "0f5b10c1-cfa1-4b25-a709-7c74c71c1771": {
+export const SafetySurveyQuestions = {
+  "c6d7e8f9-g0h1-4i2j-3k4l-5m6n7o8p9q0": {
+    // Changed from duplicate "0f5b10c1-cfa1-4b25-a709-7c74c71c1771"
     Name: "Fire Extinguishers?",
     type: "select",
     value: "",
     placeholder: "Type of Extinguishers",
     options: ["Complies", "Does Not Comply", "N/A"],
     required: true,
+    group: "Safety Survey",
   },
-  "28cfa3e5-681f-4608-9515-f947f9399077": {
+  "r1s2t3u4-v5w6-4x7y-8z9a-0b1c2d3e4f5": {
+    // Changed from duplicate "28cfa3e5-681f-4608-9515-f947f9399077"
     Name: "Phone for EMS?",
     type: "select",
     value: "",
     placeholder: "Notes",
     options: ["Complies", "Does Not Comply", "N/A"],
     required: true,
+    group: "Safety Survey",
   },
-  "f4e0a36f-5596-4a29-bb78-6d25f35cb92d": {
+  "g6h7i8j9-k0l1-4m2n-3o4p-5q6r7s8t9u0": {
+    // Changed from duplicate "f4e0a36f-5596-4a29-bb78-6d25f35cb92d"
     Name: "Fire Suppression System?",
     type: "select",
     value: "",
     placeholder: "Type of Suppression",
     options: ["Complies", "Does Not Comply", "N/A"],
     required: true,
+    group: "Safety Survey",
   },
-  "2a870a72-3c81-4096-a5a3-5d6354ab6b18": {
+  "v1w2x3y4-z5a6-4b7c-8d9e-0f1g2h3i4j5": {
+    // Changed from duplicate "2a870a72-3c81-4096-a5a3-5d6354ab6b18"
     Name: "Smoke Detectors Present?",
     type: "select",
     value: "",
     placeholder: "Type of Suppression",
     options: ["Complies", "Does Not Comply", "N/A"],
     required: true,
+    group: "Safety Survey",
   },
-  "41036d9d-cb5b-493f-b05a-2d60a088ea47": {
+  "k6l7m8n9-o0p1-4q2r-3s4t-5u6v7w8x9y0": {
+    // Changed from duplicate "41036d9d-cb5b-493f-b05a-2d60a088ea47"
     Name: "Fire Indicators Present?",
     type: "select",
     value: "",
     placeholder: "Notes",
     options: ["Complies", "Does Not Comply", "N/A"],
     required: true,
+    group: "Safety Survey",
   },
   "62f157ab-52c9-4e3b-9125-26bc6de7c3c7": {
     Name: "Emergency Power / Lighting?",
@@ -385,6 +448,7 @@ const safetySurveyQuestions = {
     placeholder: "Notes",
     options: ["Complies", "Does Not Comply", "N/A"],
     required: true,
+    group: "Safety Survey",
   },
   "8d11accc-4016-43b8-b6f5-b51e2457d524": {
     Name: "Emergency Frog Lights?",
@@ -393,6 +457,7 @@ const safetySurveyQuestions = {
     placeholder: "Notes",
     options: ["Complies", "Does Not Comply", "N/A"],
     required: true,
+    group: "Safety Survey",
   },
   "d7f1d9de-8a89-4d4c-92d0-8209f8fbdff1": {
     Name: "Validate Conduit Penetrations",
@@ -401,6 +466,7 @@ const safetySurveyQuestions = {
     placeholder: "Notes",
     options: ["Complies", "Does Not Comply", "N/A"],
     required: true,
+    group: "Safety Survey",
   },
   "55e4bb76-dc8f-4eb7-8c10-b72d5bafcf92": {
     Name: "Validate Maintenance Penetrations",
@@ -409,6 +475,7 @@ const safetySurveyQuestions = {
     placeholder: "Notes",
     options: ["Complies", "Does Not Comply", "N/A"],
     required: true,
+    group: "Safety Survey",
   },
   "b0741cb5-6db7-468b-a5d7-5d9b6e8f73ff": {
     Name: '36" Clearance Fire / Power Panels',
@@ -417,6 +484,7 @@ const safetySurveyQuestions = {
     placeholder: "Notes",
     options: ["Complies", "Does Not Comply", "N/A"],
     required: true,
+    group: "Safety Survey",
   },
   "d05d3ff0-006e-43ff-aec6-51763ea6e6d7": {
     Name: "Room State",
@@ -425,6 +493,7 @@ const safetySurveyQuestions = {
     placeholder: "Notes",
     options: ["Complies", "Does Not Comply", "N/A"],
     required: true,
+    group: "Safety Survey",
   },
   "c3c6c85a-2fe9-4753-9121-b2825773f813": {
     Name: "Tripping / Clothesline Hazards",
@@ -433,6 +502,7 @@ const safetySurveyQuestions = {
     placeholder: "Notes",
     options: ["Complies", "Does Not Comply", "N/A"],
     required: true,
+    group: "Safety Survey",
   },
   "7b457bb5-bb3d-4200-89a2-9f10d071cbb4": {
     Name: "Room Used for Storage?",
@@ -441,6 +511,7 @@ const safetySurveyQuestions = {
     placeholder: "Notes",
     options: ["Complies", "Does Not Comply", "N/A"],
     required: true,
+    group: "Safety Survey",
   },
   "084bb49e-2ffb-4b5a-b1e2-1e62eb839559": {
     Name: "Trash Disposeal Loction?",
@@ -449,6 +520,7 @@ const safetySurveyQuestions = {
     placeholder: "Notes",
     options: ["Complies", "Does Not Comply", "N/A"],
     required: true,
+    group: "Safety Survey",
   },
   "42f8a6f4-25ac-4f79-90f0-e0cfdfbd1a64": {
     Name: "Empty Trash Car?",
@@ -457,5 +529,6 @@ const safetySurveyQuestions = {
     placeholder: "Notes",
     options: ["Complies", "Does Not Comply", "N/A"],
     required: true,
+    group: "Safety Survey",
   },
 };

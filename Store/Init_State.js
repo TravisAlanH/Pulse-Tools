@@ -1,3 +1,5 @@
+import SurveyModal from "../src/Comp/Survey_Home/Modals/SurveyModal";
+
 export const BlankCurrentLocation = {
   Location: 0,
   Active: 0,
@@ -95,6 +97,9 @@ export const initState = {
     checkedIndex: -1,
     OpenUP: -1,
   },
+  Survey: {
+    Questions: {},
+  },
   Routing: {
     Loading: false,
     Login: 0,
@@ -102,6 +107,7 @@ export const initState = {
     CurrentPage: 0,
     AuditPage: 0,
     AuditModal: -1,
+    SurveyModal: -1,
     MLTView: 0,
   },
 };
