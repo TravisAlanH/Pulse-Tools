@@ -14,6 +14,9 @@ export default function EditQuestion() {
   const addCustomStandardQuestions = SurveyQuestionsStore((state) => state.addCustomStandardQuestion);
   const setSurveyModal = RoutingStore((state) => state.setSurveyModal);
   const CustomStandardQuestions = SurveyQuestionsStore((state) => state.data.CustomStandardQuestions);
+  const removeCustomStandardQuestion = SurveyQuestionsStore((state) => state.removeCustomStandardQuestion);
+  const CustomQuestions = SurveyQuestionsStore((state) => state.data.CustomQuestions);
+  const setCustomQuestions = SurveyQuestionsStore((state) => state.setCustomQuestion);
   const allQuestions = {
     ...SiteSurveyQuestions,
     ...GlobalSurveyQuestions,
@@ -21,6 +24,7 @@ export default function EditQuestion() {
     ...SecuritySurveyQuestions,
     ...SafetySurveyQuestions,
     ...CustomStandardQuestions,
+    ...CustomQuestions,
   };
   const resetQuestions = {
     ...SiteSurveyQuestions,
@@ -34,14 +38,33 @@ export default function EditQuestion() {
   const [type, setType] = useState(allQuestions[UUID].type);
   const [options, setOptions] = useState(allQuestions[UUID].options);
   const [required, setRequired] = useState(allQuestions[UUID].Required);
+  const [group, setGroup] = useState(allQuestions[UUID].group);
   const [questionHold, setQuestionHold] = useState();
+  const [reset, setReset] = useState(false);
 
   const handleSubmit = () => {
-    const payload = {
-      value: { Name: name, type: type, options: options, Required: required },
+    console.log("reset", reset);
+    let payload = {
+      value: { Name: name, type: type, options: options, Required: required, group: group },
       UUID: UUID,
     };
-    addCustomStandardQuestions(payload);
+    console.log(UUID);
+    console.log(CustomQuestions);
+    if (reset) {
+      if (CustomQuestions !== undefined && CustomQuestions.hasOwnProperty(UUID)) {
+        console.log("triggering");
+        let holdQuestions = CustomQuestions;
+        delete holdQuestions[UUID];
+        holdQuestions[UUID] = { Name: name, type: type, options: options, Required: required };
+        setCustomQuestions(holdQuestions);
+      } else {
+        if (CustomStandardQuestions !== undefined && CustomStandardQuestions.hasOwnProperty(UUID)) {
+          removeCustomStandardQuestion(UUID);
+          addCustomStandardQuestions(payload);
+        }
+        addCustomStandardQuestions(payload);
+      }
+    }
     setSurveyModal(1); // Close the modal after saving
   };
 
@@ -54,6 +77,8 @@ export default function EditQuestion() {
     setType(resetQuestions[UUID].type);
     setOptions(resetQuestions[UUID].options);
     setRequired(resetQuestions[UUID].Required);
+    removeCustomStandardQuestion(UUID);
+    setReset(false);
     setQuestionHold(null);
   };
 
@@ -62,18 +87,25 @@ export default function EditQuestion() {
       {/* Pass props to child components */}
       <div className="border-[1px] p-2 rounded-md">
         <lable className="LableMain">Question Name:</lable>
-        <NameInput value={name} onChange={setName} setQuestionHold={setQuestionHold} />
+        <NameInput value={name} onChange={setName} setQuestionHold={setQuestionHold} setReset={setReset} />
       </div>
 
       <div className="flex flex-row gap-4 border-[1px] p-2 rounded-md">
         <lable className="LableMain">Required:</lable>
-        <RequiredInput value={required} onChange={setRequired} setQuestionHold={setQuestionHold} />
+        <RequiredInput value={required} onChange={setRequired} setQuestionHold={setQuestionHold} setReset={setReset} />
       </div>
 
       <div className="border-[1px] p-2 rounded-md">
         <lable className="LableMain">Input Type:</lable>
-        <TypeInput value={type} onChange={setType} setQuestionHold={setQuestionHold} />
-        <OptionsInput type={type} options={options} setOptions={setOptions} setQuestionHold={setQuestionHold} />
+        <TypeInput value={type} onChange={setType} setQuestionHold={setQuestionHold} setReset={setReset} />
+        <OptionsInput
+          type={type}
+          options={options}
+          setOptions={setOptions}
+          setQuestionHold={setQuestionHold}
+          setReset={setReset}
+          v
+        />
       </div>
       {questionHold && <pre className="mt-4 p-2 border w-full">{QuestionPreview(questionHold)}</pre>}
       <div className="flex flex-row w-full justify-end">
@@ -130,12 +162,13 @@ export default function EditQuestion() {
 }
 
 // Move components outside to prevent re-renders
-const NameInput = React.memo(({ value, onChange, setQuestionHold }) => (
+const NameInput = React.memo(({ value, onChange, setQuestionHold, setReset }) => (
   <input
     type="text"
     placeholder="Question Name"
     value={value}
     onChange={(e) => {
+      setReset(true);
       setQuestionHold(null); // Reset the preview when the name changes
       onChange(e.target.value);
     }}
@@ -143,10 +176,11 @@ const NameInput = React.memo(({ value, onChange, setQuestionHold }) => (
   />
 ));
 
-const TypeInput = React.memo(({ value, onChange, setQuestionHold }) => (
+const TypeInput = React.memo(({ value, onChange, setQuestionHold, setReset }) => (
   <select
     value={value}
     onChange={(e) => {
+      setReset(true);
       setQuestionHold(null);
       onChange(e.target.value);
     }}
@@ -159,7 +193,7 @@ const TypeInput = React.memo(({ value, onChange, setQuestionHold }) => (
   </select>
 ));
 
-const OptionsInput = React.memo(({ type, options, setOptions, setQuestionHold }) => {
+const OptionsInput = React.memo(({ type, options, setOptions, setQuestionHold, setReset }) => {
   if (type === "select") {
     const moveOption = (index, direction) => {
       setOptions((prevOptions) => {
@@ -182,6 +216,7 @@ const OptionsInput = React.memo(({ type, options, setOptions, setQuestionHold })
               type="text"
               value={option}
               onChange={(e) => {
+                setReset(true);
                 setQuestionHold(null);
                 setOptions((prevOptions) => prevOptions.map((opt, i) => (i === index ? e.target.value : opt)));
               }}
@@ -189,6 +224,7 @@ const OptionsInput = React.memo(({ type, options, setOptions, setQuestionHold })
             />
             <button
               onClick={() => {
+                setReset(true);
                 setQuestionHold(null);
                 moveOption(index, -1);
               }}
@@ -199,6 +235,7 @@ const OptionsInput = React.memo(({ type, options, setOptions, setQuestionHold })
             </button>
             <button
               onClick={() => {
+                setReset(true);
                 setQuestionHold(null);
                 moveOption(index, 1);
               }}
@@ -209,6 +246,7 @@ const OptionsInput = React.memo(({ type, options, setOptions, setQuestionHold })
             </button>
             <button
               onClick={() => {
+                setReset(true);
                 setQuestionHold(null);
                 setOptions((prevOptions) => prevOptions.filter((_, i) => i !== index));
               }}
@@ -218,7 +256,13 @@ const OptionsInput = React.memo(({ type, options, setOptions, setQuestionHold })
             </button>
           </div>
         ))}
-        <button onClick={() => setOptions((prevOptions) => [...prevOptions, ""])} className="p-2 bg-blue-500 text-white rounded">
+        <button
+          onClick={() => {
+            setReset(true);
+            setOptions((prevOptions) => [...prevOptions, ""]);
+          }}
+          className="p-2 bg-blue-500 text-white rounded"
+        >
           Add Option
         </button>
       </div>
@@ -227,9 +271,17 @@ const OptionsInput = React.memo(({ type, options, setOptions, setQuestionHold })
   return null;
 });
 
-const RequiredInput = React.memo(({ value, onChange }) => (
+const RequiredInput = React.memo(({ value, onChange, setReset }) => (
   <label className="flex items-center">
-    <input type="checkbox" checked={value} onChange={(e) => onChange(e.target.checked)} className="mr-2" />
+    <input
+      type="checkbox"
+      checked={value}
+      onChange={(e) => {
+        setReset(true);
+        onChange(e.target.checked);
+      }}
+      className="mr-2"
+    />
     Required
   </label>
 ));

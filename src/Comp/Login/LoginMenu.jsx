@@ -34,7 +34,6 @@ export default function LoginMenu() {
       const docCustomMLTSnap = await getDoc(docCustomMLTRef);
       const docCommonMLTRef = doc(db, "Users", user.uid, "LibraryData", "CommonUsed");
       const docCommonMLTSnap = await getDoc(docCommonMLTRef);
-      console.log("USER", user);
       if (user.email !== "sunbirdadmin@sunbirddcim.com") {
         if (!user.emailVerified) {
           // Send email verification
@@ -48,25 +47,19 @@ export default function LoginMenu() {
           setLoginModal(0);
           await signOut(auth);
         } else if (user.emailVerified && docSnap.data().AccountInformation.Status === "Pending") {
-          console.log("Pending");
           setLoginModal(1);
         } else {
           setUser(user);
-          console.log(User);
           if (docSnap.exists()) {
-            console.log("Document data:", docSnap.data());
             setAccountInformation(docSnap.data().AccountInformation);
-            console.log("Logged IN");
             getMLT();
           } else {
             console.log("No such document!");
           }
           if (docCustomMLTSnap.exists()) {
-            console.log("Document data:", docCustomMLTSnap.data());
             setCustomMLTItems(docCustomMLTSnap.data().CustomModels);
           }
           if (docCommonMLTSnap.exists()) {
-            console.log("Document data:", docCommonMLTSnap.data());
             setCommonMLTItems(docCommonMLTSnap.data().CommonMLTItems);
           } else {
             console.log("No such document!");
@@ -94,8 +87,19 @@ export default function LoginMenu() {
             <p className="text-sm">Enter the details below</p>
           </div>
           <form onSubmit={handleLogin} className="flex flex-col w-full gap-6">
-            <input className="LoginInputs " type="text" placeholder="Your e-mail address" onChange={(e) => setEmail(e.target.value)} />
-            <input className="LoginInputs " placeholder="Password" autoComplete="selection-blue password" type="password" onChange={(e) => setPassword(e.target.value)} />
+            <input
+              className="LoginInputs "
+              type="text"
+              placeholder="Your e-mail address"
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <input
+              className="LoginInputs "
+              placeholder="Password"
+              autoComplete="selection-blue password"
+              type="password"
+              onChange={(e) => setPassword(e.target.value)}
+            />
             <div className="flex flex-row gap-2">
               <input className="border-2 " type="checkbox" onChange={() => {}} />
               <p className="text-sm">Remember me on this device</p>
@@ -119,7 +123,10 @@ export default function LoginMenu() {
           >
             Sign up with us
           </button>
-          <p>Once you sign up and gain access you will have full access to the project tools including the on-site audit tool and data center survey tool</p>
+          <p>
+            Once you sign up and gain access you will have full access to the project tools including the on-site audit tool and
+            data center survey tool
+          </p>
         </div>
       </div>
     </div>

@@ -17,22 +17,27 @@ export default function SelectStandardQuestions() {
   const setSurveyModal = RoutingStore((state) => state.setSurveyModal);
   const setEditQuestion = SurveyQuestionsStore((state) => state.setEditQuestion);
   const CustomStandardQuestions = SurveyQuestionsStore((state) => state.data.CustomStandardQuestions);
-  console.log(CustomStandardQuestions);
+  const setBaseQuestions = SurveyQuestionsStore((state) => state.SetBaseQuestions);
+  const BaseQuestions = SurveyQuestionsStore((state) => state.data.Questions);
   // Combine all standard questions into a single object
   const [allQuestions, setAllQuestions] = React.useState({});
   React.useEffect(() => {
-    const combinedQuestions = {
-      ...SiteSurveyQuestions,
-      ...GlobalSurveyQuestions,
-      ...RoomSurveyQuestions,
-      ...SecuritySurveyQuestions,
-      ...SafetySurveyQuestions,
-      ...CustomQuestions,
-    };
-    setAllQuestions(combinedQuestions);
-  }, []);
+    let combinedQuestions = BaseQuestions;
+    if (BaseQuestions === undefined) {
+      combinedQuestions = {
+        ...SiteSurveyQuestions,
+        ...GlobalSurveyQuestions,
+        ...RoomSurveyQuestions,
+        ...SecuritySurveyQuestions,
+        ...SafetySurveyQuestions,
+        ...CustomQuestions,
+      };
+    }
 
-  console.log(allQuestions);
+    setAllQuestions(combinedQuestions);
+  }, [BaseQuestions]);
+
+  console.log("all questions: SelectStandardQuestions", allQuestions);
 
   const QuestionsList = [
     SiteSurveyQuestions,
@@ -50,6 +55,25 @@ export default function SelectStandardQuestions() {
     "Safety Survey",
     "Custom Questions",
   ];
+
+  function handleSave() {
+    // setAllQuestions({
+    //   ...SiteSurveyQuestions,
+    //   ...GlobalSurveyQuestions,
+    //   ...RoomSurveyQuestions,
+    //   ...SecuritySurveyQuestions,
+    //   ...SafetySurveyQuestions,
+    //   ...CustomQuestions,
+    //   ...CustomStandardQuestions,
+    // });
+    let holdAllquestions = allQuestions;
+    if (CustomStandardQuestions !== undefined) {
+      Object.keys(CustomStandardQuestions).map((key) => {
+        holdAllquestions[key] = CustomStandardQuestions[key];
+      });
+    }
+    setBaseQuestions(holdAllquestions);
+  }
 
   function handleShrink(sectionId, index) {
     const sections = document.querySelectorAll(".QuestionSection");
@@ -81,15 +105,32 @@ export default function SelectStandardQuestions() {
   return (
     <div className="flex flex-col gap-4 p-4 h-[40rem]">
       <p className="text-sm text-gray-600">Select a section to expand and select questions.</p>
-
-      {QuestionsHeaders.map((header, index) => (
-        <div key={index}>
-          <h3 className="text-lg font-semibold">{header}</h3>
-          {QuestionsListing(index)}
+      <div className="flex flex-row justify-end gap-3">
+        <button
+          className="OrangeButton"
+          onClick={() => {
+            setAllQuestions({});
+          }}
+        >
+          Deselect All
+        </button>
+      </div>
+      <div className="">
+        {QuestionsHeaders.map((header, index) => (
+          <div key={index}>
+            <h3 className="text-lg font-semibold">{header}</h3>
+            {QuestionsListing(index)}
+          </div>
+        ))}
+        <div className="flex flex-row gap-3">
+          <button className="OrangeButton mt-4" onClick={handleSave}>
+            Save Questions
+          </button>
+          {/* <button className="OrangeButton mt-4" disabled={true}>
+            Import Questions
+          </button> */}
         </div>
-      ))}
-
-      {Object.keys(allQuestions).length === 0 && <p>No questions available.</p>}
+      </div>
     </div>
   );
 

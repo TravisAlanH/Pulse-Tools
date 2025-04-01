@@ -25,18 +25,11 @@ export const SurveyQuestionsStore = create(
   devtools(
     (set) => ({
       data: () => initState.Survey,
-      GenerateBaseQuestions: () => {
-        const BaseQuestions = {
-          ...SiteSurveyQuestions,
-          ...GlobalSurveyQuestions,
-          ...RoomSurveyQuestions,
-          ...SecuritySurveyQuestions,
-          ...SafetySurveyQuestions,
-        };
+      SetBaseQuestions: (data) => {
         set((state) => ({
           data: {
             ...state.data,
-            Questions: BaseQuestions,
+            Questions: data,
           },
         }));
       },
@@ -49,6 +42,14 @@ export const SurveyQuestionsStore = create(
           },
         }));
       },
+      setCustomQuestion: (data) => {
+        set((state) => ({
+          data: {
+            ...state.data,
+            CustomQuestions: data,
+          },
+        }));
+      },
       addCustomStandardQuestion: (data) => {
         set((state) => ({
           data: {
@@ -58,6 +59,7 @@ export const SurveyQuestionsStore = create(
         }));
       },
       removeCustomStandardQuestion: (uuid) => {
+        console.log(uuid);
         set((state) => {
           const { [uuid]: removed, ...rest } = state.data.CustomStandardQuestions;
           return {

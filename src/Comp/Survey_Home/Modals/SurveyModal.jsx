@@ -11,8 +11,6 @@ export default function SurveyModal() {
   const pages = [<NewQuestion />, <SelectStandardQuestions />, <EditQuestion />];
   const Header = ["New Question", "Select Standard Questions", "Edit Question"];
 
-  console.log(pages);
-
   return (
     <div id="SurveyModal" className="MainModalClass">
       <div className="ModalContent flex flex-col w-full py-4">
