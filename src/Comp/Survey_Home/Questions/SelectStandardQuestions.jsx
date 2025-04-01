@@ -7,9 +7,17 @@ import {
   SafetySurveyQuestions,
 } from "../Questions/StandardQuestions";
 import { IoIosArrowDown } from "react-icons/io";
+import { SurveyQuestionsStore } from "../Store/SurveyStore";
+import { RoutingStore } from "../../../../Store/Store";
 import { doc } from "firebase/firestore";
+import { FaEdit } from "react-icons/fa";
 
 export default function SelectStandardQuestions() {
+  const CustomQuestions = SurveyQuestionsStore((state) => state.data.CustomQuestions);
+  const setSurveyModal = RoutingStore((state) => state.setSurveyModal);
+  const setEditQuestion = SurveyQuestionsStore((state) => state.setEditQuestion);
+  const CustomStandardQuestions = SurveyQuestionsStore((state) => state.data.CustomStandardQuestions);
+  console.log(CustomStandardQuestions);
   // Combine all standard questions into a single object
   const [allQuestions, setAllQuestions] = React.useState({});
   React.useEffect(() => {
@@ -19,6 +27,7 @@ export default function SelectStandardQuestions() {
       ...RoomSurveyQuestions,
       ...SecuritySurveyQuestions,
       ...SafetySurveyQuestions,
+      ...CustomQuestions,
     };
     setAllQuestions(combinedQuestions);
   }, []);
@@ -31,8 +40,16 @@ export default function SelectStandardQuestions() {
     RoomSurveyQuestions,
     SecuritySurveyQuestions,
     SafetySurveyQuestions,
+    CustomQuestions,
   ];
-  const QuestionsHeaders = ["Site Survey", "Global Survey", "Room Survey", "Security Survey", "Safety Survey"];
+  const QuestionsHeaders = [
+    "Site Survey",
+    "Global Survey",
+    "Room Survey",
+    "Security Survey",
+    "Safety Survey",
+    "Custom Questions",
+  ];
 
   function handleShrink(sectionId, index) {
     const sections = document.querySelectorAll(".QuestionSection");
@@ -79,13 +96,17 @@ export default function SelectStandardQuestions() {
   function QuestionsListing(index) {
     return (
       <div className=" w-full">
-        <div className="w-full border-gray-200 border-2 rounded-md shadow-md overflow-hidden">
+        <div className="w-full border-gray-200 border-2 rounded-md shadow-md overflow-hidden text-xs">
           <div className="flex flex-row justify-between items-center gap-4 p-2 bg-gray-200">
-            <div className="flex flex-row gap-1 text-xs">
-              <p>Selected: {Object.keys(QuestionsList[index]).filter((key) => allQuestions.hasOwnProperty(key)).length}</p>
-              <p>of</p>
-              <p>{Object.keys(QuestionsList[index]).length}</p>
-            </div>
+            {QuestionsList[index] !== undefined ? (
+              <div className="flex flex-row gap-1 text-xs">
+                <p>Selected: {Object.keys(QuestionsList[index]).filter((key) => allQuestions.hasOwnProperty(key)).length}</p>
+                <p>of</p>
+                <p>{Object.keys(QuestionsList[index]).length}</p>
+              </div>
+            ) : (
+              <div></div>
+            )}
 
             <button
               id={`${QuestionsHeaders[index]}Drop`}
@@ -96,51 +117,91 @@ export default function SelectStandardQuestions() {
             </button>
           </div>
           <div
-            className="QuestionSection grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 transition-all overflow-hidden opacity-0 max-h-0 p-2 w-full"
+            className="QuestionSection transition-all overflow-hidden opacity-0 max-h-0 p-2 w-full"
             id={`${QuestionsHeaders[index]}Questions`}
           >
-            <button className="ButtonMain" onClick={() => setAllQuestions({ ...QuestionsList[index] })}>
-              Select All
-            </button>
-            <button
-              className="ButtonMain"
-              onClick={() => {
-                setAllQuestions((prev) => {
-                  // Create a copy of the current allQuestions state
-                  const updatedQuestions = { ...prev };
-
-                  // Loop through QuestionsList[index] and remove those that exist in allQuestions
-                  Object.keys(QuestionsList[index]).forEach((key) => {
-                    if (updatedQuestions.hasOwnProperty(key)) {
-                      delete updatedQuestions[key]; // Remove the question
-                    }
-                  });
-
-                  return updatedQuestions;
-                });
-              }}
-            >
-              Deselect All
-            </button>
-            {Object.keys(QuestionsList[index]).map((item) => {
-              const question = QuestionsList[index][item];
-              return (
-                <div
-                  key={item}
-                  className={"border p-2 rounded-md" + (allQuestions.hasOwnProperty(item) ? " bg-[#eea24a]" : "")}
+            {index === 5 ? (
+              <button
+                className="OrangeButton w-full mb-4"
+                onClick={() => {
+                  setSurveyModal(0); // Open the modal for creating a new question
+                }}
+              >
+                Create New Question
+              </button>
+            ) : null}
+            {QuestionsList[index] !== undefined ? (
+              <div className=" grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 ">
+                <button
+                  className="ButtonMain"
+                  onClick={() =>
+                    setAllQuestions((prev) => ({
+                      ...prev, // Keep existing selections
+                      ...QuestionsList[index], // Add all questions from the current section
+                    }))
+                  }
+                >
+                  Select All
+                </button>
+                <button
+                  className="ButtonMain"
                   onClick={() => {
-                    if (!allQuestions.hasOwnProperty(item)) {
-                      setAllQuestions((prev) => ({ ...prev, [item]: question }));
-                    } else {
-                      const { [item]: _, ...remainingQuestions } = allQuestions;
-                      setAllQuestions(remainingQuestions);
-                    }
+                    setAllQuestions((prev) => {
+                      const updatedQuestions = { ...prev };
+                      Object.keys(QuestionsList[index]).forEach((key) => {
+                        if (updatedQuestions.hasOwnProperty(key)) {
+                          delete updatedQuestions[key]; // Remove the question
+                        }
+                      });
+
+                      return updatedQuestions;
+                    });
                   }}
                 >
-                  <p className="text-sm">{question.Name}</p>
-                </div>
-              );
-            })}
+                  Deselect All
+                </button>
+                {Object.keys(QuestionsList[index]).map((item) => {
+                  const question = QuestionsList[index][item];
+                  return (
+                    <div
+                      key={item}
+                      className={
+                        "border p-2 rounded-md flex flex-col items-start justify-start" +
+                        (allQuestions.hasOwnProperty(item) ? " bg-[#eea24a]" : "") +
+                        (CustomStandardQuestions !== undefined && CustomStandardQuestions.hasOwnProperty(item)
+                          ? " border-blue-600 border-2"
+                          : "")
+                      }
+                      onClick={() => {
+                        if (!allQuestions.hasOwnProperty(item)) {
+                          setAllQuestions((prev) => ({ ...prev, [item]: question }));
+                        } else {
+                          const { [item]: _, ...remainingQuestions } = allQuestions;
+                          setAllQuestions(remainingQuestions);
+                        }
+                      }}
+                    >
+                      <p className="text-xs">
+                        {CustomStandardQuestions !== undefined && CustomStandardQuestions.hasOwnProperty(item)
+                          ? CustomStandardQuestions[item].Name
+                          : question.Name}
+                      </p>
+                      <div className="flex flex-row justify-end w-full">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setEditQuestion(item);
+                            setSurveyModal(2);
+                          }}
+                        >
+                          <FaEdit />
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : null}
           </div>
         </div>
       </div>

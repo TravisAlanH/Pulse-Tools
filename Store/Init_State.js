@@ -99,6 +99,9 @@ export const initState = {
   },
   Survey: {
     Questions: {},
+    CustomQuestions: {},
+    CustomStandardQuestions: {},
+    editQuestionHold: {},
   },
   Routing: {
     Loading: false,

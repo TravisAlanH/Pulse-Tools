@@ -276,7 +276,7 @@ export const RoomSurveyQuestions = {
   },
   "31a4fc44-3d82-41e8-bb14-c755815ae6bb": {
     Name: "Ceiling Type *",
-    type: "select",
+    type: "text",
     value: "",
     required: false,
     group: "Room Survey",
@@ -291,7 +291,7 @@ export const RoomSurveyQuestions = {
   },
   "9df6bc90-93b1-4850-9fd5-4ebee5cfce9d": {
     Name: "Floor Type *",
-    type: "select",
+    type: "text",
     value: "",
     required: false,
     group: "Room Survey",
@@ -306,7 +306,7 @@ export const RoomSurveyQuestions = {
   },
   "6f74b7c6-496f-4d73-8b92-0743a89cb690": {
     Name: "Wall Type *",
-    type: "select",
+    type: "text",
     value: "",
     required: false,
     group: "Room Survey",

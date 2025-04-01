@@ -2,13 +2,14 @@ import React from "react";
 import { RoutingStore } from "../../../../Store/Store";
 import NewQuestion from "../Questions/CreateQuestions/NewQuestion";
 import SelectStandardQuestions from "../Questions/SelectStandardQuestions";
+import EditQuestion from "../Questions/EditQuestions/EditQuestion";
 
 export default function SurveyModal() {
   const Modal = RoutingStore((state) => state.data.SurveyModal);
   const setSurveyModal = RoutingStore((state) => state.setSurveyModal);
 
-  const pages = [<NewQuestion />, <SelectStandardQuestions />];
-  const Header = ["New Question", "Select Standard Questions"];
+  const pages = [<NewQuestion />, <SelectStandardQuestions />, <EditQuestion />];
+  const Header = ["New Question", "Select Standard Questions", "Edit Question"];
 
   console.log(pages);
 

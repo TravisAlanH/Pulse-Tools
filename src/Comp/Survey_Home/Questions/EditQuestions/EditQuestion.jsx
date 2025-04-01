@@ -1,18 +1,47 @@
 import React, { useState } from "react";
 import { RoutingStore } from "../../../../../Store/Store";
 import { SurveyQuestionsStore } from "../../Store/SurveyStore";
+import {
+  GlobalSurveyQuestions,
+  RoomSurveyQuestions,
+  SafetySurveyQuestions,
+  SecuritySurveyQuestions,
+  SiteSurveyQuestions,
+} from "../StandardQuestions";
 
-export default function NewQuestion() {
-  const addCustomQuestion = SurveyQuestionsStore((state) => state.addCustomQuestion);
+export default function EditQuestion() {
+  const UUID = SurveyQuestionsStore((state) => state.data.EditQuestionHold); // Assuming you have a way to get the current question to edit
+  const addCustomStandardQuestions = SurveyQuestionsStore((state) => state.addCustomStandardQuestion);
   const setSurveyModal = RoutingStore((state) => state.setSurveyModal);
-  const [name, setName] = useState("");
-  const [type, setType] = useState("");
-  const [options, setOptions] = useState([]);
-  const [required, setRequired] = useState(false);
-  const [questionHold, setQuestionHold] = useState(null);
+  const CustomStandardQuestions = SurveyQuestionsStore((state) => state.data.CustomStandardQuestions);
+  const allQuestions = {
+    ...SiteSurveyQuestions,
+    ...GlobalSurveyQuestions,
+    ...RoomSurveyQuestions,
+    ...SecuritySurveyQuestions,
+    ...SafetySurveyQuestions,
+    ...CustomStandardQuestions,
+  };
+  const resetQuestions = {
+    ...SiteSurveyQuestions,
+    ...GlobalSurveyQuestions,
+    ...RoomSurveyQuestions,
+    ...SecuritySurveyQuestions,
+    ...SafetySurveyQuestions,
+  };
+
+  const [name, setName] = useState(allQuestions[UUID].Name);
+  const [type, setType] = useState(allQuestions[UUID].type);
+  const [options, setOptions] = useState(allQuestions[UUID].options);
+  const [required, setRequired] = useState(allQuestions[UUID].Required);
+  const [questionHold, setQuestionHold] = useState();
 
   const handleSubmit = () => {
-    addCustomQuestion({ Name: name, type: type, options: options, Required: required });
+    const payload = {
+      value: { Name: name, type: type, options: options, Required: required },
+      UUID: UUID,
+    };
+    addCustomStandardQuestions(payload);
     setSurveyModal(1); // Close the modal after saving
   };
 
@@ -20,9 +49,16 @@ export default function NewQuestion() {
     setQuestionHold({ Name: name, type: type, options: options, Required: required });
   };
 
+  const handleReset = () => {
+    setName(resetQuestions[UUID].Name);
+    setType(resetQuestions[UUID].type);
+    setOptions(resetQuestions[UUID].options);
+    setRequired(resetQuestions[UUID].Required);
+    setQuestionHold(null);
+  };
+
   return (
     <div className="flex flex-col gap-2">
-      <h2 className="text-xl font-bold">Create a New Question</h2>
       {/* Pass props to child components */}
       <div className="border-[1px] p-2 rounded-md">
         <lable className="LableMain">Question Name:</lable>
@@ -40,6 +76,16 @@ export default function NewQuestion() {
         <OptionsInput type={type} options={options} setOptions={setOptions} setQuestionHold={setQuestionHold} />
       </div>
       {questionHold && <pre className="mt-4 p-2 border w-full">{QuestionPreview(questionHold)}</pre>}
+      <div className="flex flex-row w-full justify-end">
+        <button
+          disabled={questionHold === null} // Disable if no questionHold is set
+          onClick={handleReset}
+          className={"ButtonMainRed w-[50%]" + (questionHold === null ? " opacity-50 cursor-not-allowed" : "")} // Add classes for disabled state
+        >
+          Reset
+        </button>
+      </div>
+
       <div className="flex flex-row justify-center h-[2.5rem] gap-4">
         <button onClick={handlePreview} className="OrangeButton w-[50%]">
           Preview

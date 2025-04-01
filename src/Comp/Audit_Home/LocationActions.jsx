@@ -1,7 +1,9 @@
 import React from "react";
 import { RoutingStore } from "../../../Store/Store";
+import { SurveyQuestionsStore } from "../Survey_Home/Store/SurveyStore";
 
 export default function LocationActions() {
+  // const addCustomStandardQuestions = SurveyQuestionsStore((state) => state.addCustomStandardQuestion);
   const setAuditPage = RoutingStore((state) => state.setAuditPage);
   const Pages = {
     "Rack Elevations": {
@@ -37,7 +39,16 @@ export default function LocationActions() {
             {Object.keys(Pages).map((pageKey, index) => {
               const page = Pages[pageKey];
               return (
-                <div key={index} className="mx-3 rounded-lg w-[17.313rem] h-[12.3rem] shadow-custom transform hover:scale-105 transition-transform duration-200 hover:cursor-pointer bg-white" onClick={() => setAuditActionPage(page.page)}>
+                <div
+                  key={index}
+                  className="mx-3 rounded-lg w-[17.313rem] h-[12.3rem] shadow-custom transform hover:scale-105 transition-transform duration-200 hover:cursor-pointer bg-white"
+                  onClick={() => {
+                    // if (page.page === 3) {
+                    //   addCustomStandardQuestions({});
+                    // }
+                    setAuditActionPage(page.page);
+                  }}
+                >
                   <div className="w-full h-full flex flex-col justify-center items-center gap-6 ">
                     {page.icon}
                     <p className="text-[#863594] text-[1.5rem] font-bold">{page.title}</p>
