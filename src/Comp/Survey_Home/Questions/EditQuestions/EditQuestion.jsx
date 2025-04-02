@@ -27,11 +27,11 @@ export default function EditQuestion() {
     ...CustomQuestions,
   };
   const resetQuestions = {
-    ...SiteSurveyQuestions,
-    ...GlobalSurveyQuestions,
-    ...RoomSurveyQuestions,
-    ...SecuritySurveyQuestions,
-    ...SafetySurveyQuestions,
+    ...JSON.parse(JSON.stringify(SiteSurveyQuestions)),
+    ...JSON.parse(JSON.stringify(GlobalSurveyQuestions)),
+    ...JSON.parse(JSON.stringify(RoomSurveyQuestions)),
+    ...JSON.parse(JSON.stringify(SecuritySurveyQuestions)),
+    ...JSON.parse(JSON.stringify(SafetySurveyQuestions)),
   };
 
   const [name, setName] = useState(allQuestions[UUID].Name);
@@ -77,7 +77,7 @@ export default function EditQuestion() {
     setType(resetQuestions[UUID].type);
     setOptions(resetQuestions[UUID].options);
     setRequired(resetQuestions[UUID].Required);
-    removeCustomStandardQuestion(UUID);
+    removeCustomStandardQuestion(UUID, resetQuestions[UUID]);
     setReset(false);
     setQuestionHold(null);
   };

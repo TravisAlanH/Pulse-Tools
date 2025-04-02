@@ -8,7 +8,7 @@ import {
 } from "../Questions/StandardQuestions";
 import { IoIosArrowDown } from "react-icons/io";
 import { SurveyQuestionsStore } from "../Store/SurveyStore";
-import { RoutingStore } from "../../../../Store/Store";
+import { CurrentLocation, RoutingStore } from "../../../../Store/Store";
 import { doc } from "firebase/firestore";
 import { FaEdit } from "react-icons/fa";
 
@@ -19,6 +19,7 @@ export default function SelectStandardQuestions() {
   const CustomStandardQuestions = SurveyQuestionsStore((state) => state.data.CustomStandardQuestions);
   const setBaseQuestions = SurveyQuestionsStore((state) => state.SetBaseQuestions);
   const BaseQuestions = SurveyQuestionsStore((state) => state.data.Questions);
+  const setHoldItemTrigger = CurrentLocation((state) => state.setHoldItemTrigger);
   // Combine all standard questions into a single object
   const [allQuestions, setAllQuestions] = React.useState({});
   React.useEffect(() => {
@@ -73,6 +74,8 @@ export default function SelectStandardQuestions() {
       });
     }
     setBaseQuestions(holdAllquestions);
+    setHoldItemTrigger();
+    setSurveyModal(-1);
   }
 
   function handleShrink(sectionId, index) {

@@ -1,5 +1,6 @@
 import React from "react";
 import { SurveyQuestionsStore } from "../Store/SurveyStore";
+import { CurrentLocation } from "../../../../Store/Store";
 import {
   SiteSurveyQuestions,
   GlobalSurveyQuestions,
@@ -12,6 +13,7 @@ export default function QuestionsInput() {
   const Question = SurveyQuestionsStore((state) => state.data.Questions);
   const CustomStandardQuestions = SurveyQuestionsStore((state) => state.data.CustomStandardQuestions);
   const CustomQuestions = SurveyQuestionsStore((state) => state.data.CustomQuestions);
+  const HoldItemTrigger = CurrentLocation((state) => state.data.HoldItemTrigger);
   const [sortedQuestions, setSortedQuestions] = React.useState(Question);
   const [splitQuestions, setSplitQuestions] = React.useState({});
 
@@ -68,7 +70,7 @@ export default function QuestionsInput() {
     });
 
     setSplitQuestions(orderedGroups);
-  }, [Question, CustomStandardQuestions, CustomQuestions]);
+  }, [Question, CustomStandardQuestions, CustomQuestions, HoldItemTrigger]);
 
   if (Question !== undefined && Object.keys(Question).length === 0) return <div className="p-3">No Questions</div>;
 

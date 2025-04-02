@@ -58,14 +58,20 @@ export const SurveyQuestionsStore = create(
           },
         }));
       },
-      removeCustomStandardQuestion: (uuid) => {
+      removeCustomStandardQuestion: (uuid, standardQuestion) => {
         console.log(uuid);
+
         set((state) => {
-          const { [uuid]: removed, ...rest } = state.data.CustomStandardQuestions;
+          const { [uuid]: removed, ...updatedCustomStandardQuestions } = state.data.CustomStandardQuestions || {};
+
           return {
             data: {
               ...state.data,
-              CustomStandardQuestions: rest,
+              CustomStandardQuestions: updatedCustomStandardQuestions,
+              Questions: {
+                ...state.data.Questions,
+                [uuid]: standardQuestion, // Re-adding to Questions
+              },
             },
           };
         });
