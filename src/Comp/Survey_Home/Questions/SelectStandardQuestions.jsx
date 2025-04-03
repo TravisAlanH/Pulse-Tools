@@ -20,25 +20,32 @@ export default function SelectStandardQuestions() {
   const setBaseQuestions = SurveyQuestionsStore((state) => state.SetBaseQuestions);
   const BaseQuestions = SurveyQuestionsStore((state) => state.data.Questions);
   const setHoldItemTrigger = CurrentLocation((state) => state.setHoldItemTrigger);
+  // !
+  const bulkRemoveFromSelectedQuestionsList = SurveyQuestionsStore((state) => state.bulkRemoveFromSelectedQuestionsList);
+  const bulkAddToSelectedQuestionsList = SurveyQuestionsStore((state) => state.bulkAddToSelectedQuestionsList);
+  const resetSelectedQuestionsList = SurveyQuestionsStore((state) => state.resetSelectedQuestionsList);
+  const addToSelectedQuestionsList = SurveyQuestionsStore((state) => state.addToSelectedQuestionsList);
+  const removeFromSelectedQuestionsList = SurveyQuestionsStore((state) => state.removeFromSelectedQuestionsList);
+  const SaveAllQuestionsToRedux = SurveyQuestionsStore((state) => state.SaveAllQuestionsToRedux);
+  const SelectedQuestions = SurveyQuestionsStore((state) => state.data.SelectedQuestionsList);
+  // !
   // Combine all standard questions into a single object
-  const [allQuestions, setAllQuestions] = React.useState({});
-  React.useEffect(() => {
-    let combinedQuestions = BaseQuestions;
-    if (BaseQuestions === undefined) {
-      combinedQuestions = {
-        ...SiteSurveyQuestions,
-        ...GlobalSurveyQuestions,
-        ...RoomSurveyQuestions,
-        ...SecuritySurveyQuestions,
-        ...SafetySurveyQuestions,
-        ...CustomQuestions,
-      };
-    }
+  // const [allQuestions, setAllQuestions] = React.useState({});
+  // React.useEffect(() => {
+  //   let combinedQuestions = BaseQuestions;
+  //   if (BaseQuestions === undefined) {
+  //     combinedQuestions = {
+  //       ...SiteSurveyQuestions,
+  //       ...GlobalSurveyQuestions,
+  //       ...RoomSurveyQuestions,
+  //       ...SecuritySurveyQuestions,
+  //       ...SafetySurveyQuestions,
+  //       ...CustomQuestions,
+  //     };
+  //   }
 
-    setAllQuestions(combinedQuestions);
-  }, [BaseQuestions]);
-
-  console.log("all questions: SelectStandardQuestions", allQuestions);
+  //   setAllQuestions(combinedQuestions);
+  // }, [BaseQuestions]);
 
   const QuestionsList = [
     SiteSurveyQuestions,
@@ -57,26 +64,27 @@ export default function SelectStandardQuestions() {
     "Custom Questions",
   ];
 
-  function handleSave() {
-    // setAllQuestions({
-    //   ...SiteSurveyQuestions,
-    //   ...GlobalSurveyQuestions,
-    //   ...RoomSurveyQuestions,
-    //   ...SecuritySurveyQuestions,
-    //   ...SafetySurveyQuestions,
-    //   ...CustomQuestions,
-    //   ...CustomStandardQuestions,
-    // });
-    let holdAllquestions = allQuestions;
-    if (CustomStandardQuestions !== undefined) {
-      Object.keys(CustomStandardQuestions).map((key) => {
-        holdAllquestions[key] = CustomStandardQuestions[key];
-      });
-    }
-    setBaseQuestions(holdAllquestions);
-    setHoldItemTrigger();
-    setSurveyModal(-1);
-  }
+  // function handleSave() {
+  //   // setAllQuestions({
+  //   //   ...SiteSurveyQuestions,
+  //   //   ...GlobalSurveyQuestions,
+  //   //   ...RoomSurveyQuestions,
+  //   //   ...SecuritySurveyQuestions,
+  //   //   ...SafetySurveyQuestions,
+  //   //   ...CustomQuestions,
+  //   //   ...CustomStandardQuestions,
+  //   // });
+  //   let holdAllquestions = allQuestions;
+  //   console.log("allQuestions", holdAllquestions);
+  //   if (CustomStandardQuestions !== undefined) {
+  //     Object.keys(CustomStandardQuestions).map((key) => {
+  //       holdAllquestions[key] = CustomStandardQuestions[key];
+  //     });
+  //   }
+  //   setBaseQuestions(holdAllquestions);
+  //   setHoldItemTrigger();
+  //   setSurveyModal(-1);
+  // }
 
   function handleShrink(sectionId, index) {
     const sections = document.querySelectorAll(".QuestionSection");
@@ -106,16 +114,25 @@ export default function SelectStandardQuestions() {
     });
   }
   return (
-    <div className="flex flex-col gap-4 p-4 h-[40rem]">
+    <div className="flex flex-col gap-4 p-x h-[45rem]">
       <p className="text-sm text-gray-600">Select a section to expand and select questions.</p>
       <div className="flex flex-row justify-end gap-3">
         <button
-          className="OrangeButton"
+          className="ButtonMain"
           onClick={() => {
-            setAllQuestions({});
+            resetSelectedQuestionsList();
           }}
         >
           Deselect All
+        </button>
+        <button
+          className="ButtonMain"
+          onClick={() => {
+            const QuestionsUUIDArray = Object.keys(BaseQuestions);
+            bulkAddToSelectedQuestionsList(QuestionsUUIDArray);
+          }}
+        >
+          Select All
         </button>
       </div>
       <div className="">
@@ -126,7 +143,13 @@ export default function SelectStandardQuestions() {
           </div>
         ))}
         <div className="flex flex-row gap-3">
-          <button className="OrangeButton mt-4" onClick={handleSave}>
+          <button
+            className="OrangeButton mt-4"
+            onClick={() => {
+              SaveAllQuestionsToRedux();
+              setSurveyModal(-1);
+            }}
+          >
             Save Questions
           </button>
           {/* <button className="OrangeButton mt-4" disabled={true}>
@@ -141,10 +164,10 @@ export default function SelectStandardQuestions() {
     return (
       <div className=" w-full">
         <div className="w-full border-gray-200 border-2 rounded-md shadow-md overflow-hidden text-xs">
-          <div className="flex flex-row justify-between items-center gap-4 p-2 bg-gray-200">
+          <div className="flex flex-row justify-between items-center gap-4 p-2 bg-[#f2ece6] border-b-2 border-[#f2ece6]">
             {QuestionsList[index] !== undefined ? (
               <div className="flex flex-row gap-1 text-xs">
-                <p>Selected: {Object.keys(QuestionsList[index]).filter((key) => allQuestions.hasOwnProperty(key)).length}</p>
+                <p>Selected: {Object.keys(QuestionsList[index]).filter((key) => SelectedQuestions.includes(key)).length}</p>
                 <p>of</p>
                 <p>{Object.keys(QuestionsList[index]).length}</p>
               </div>
@@ -178,28 +201,18 @@ export default function SelectStandardQuestions() {
               <div className=" grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 ">
                 <button
                   className="ButtonMain"
-                  onClick={() =>
-                    setAllQuestions((prev) => ({
-                      ...prev, // Keep existing selections
-                      ...QuestionsList[index], // Add all questions from the current section
-                    }))
-                  }
+                  onClick={() => {
+                    const QuestionsUUIDArray = Object.keys(QuestionsList[index]);
+                    bulkAddToSelectedQuestionsList(QuestionsUUIDArray);
+                  }}
                 >
                   Select All
                 </button>
                 <button
                   className="ButtonMain"
                   onClick={() => {
-                    setAllQuestions((prev) => {
-                      const updatedQuestions = { ...prev };
-                      Object.keys(QuestionsList[index]).forEach((key) => {
-                        if (updatedQuestions.hasOwnProperty(key)) {
-                          delete updatedQuestions[key]; // Remove the question
-                        }
-                      });
-
-                      return updatedQuestions;
-                    });
+                    const QuestionsUUIDArray = Object.keys(QuestionsList[index]);
+                    bulkRemoveFromSelectedQuestionsList(QuestionsUUIDArray);
                   }}
                 >
                   Deselect All
@@ -211,17 +224,16 @@ export default function SelectStandardQuestions() {
                       key={item}
                       className={
                         "border p-2 rounded-md flex flex-col items-start justify-start" +
-                        (allQuestions.hasOwnProperty(item) ? " bg-[#eea24a]" : "") +
+                        (SelectedQuestions.includes(item) ? " bg-[#eea24a]" : "") +
                         (CustomStandardQuestions !== undefined && CustomStandardQuestions.hasOwnProperty(item)
                           ? " border-blue-600 border-2"
                           : "")
                       }
                       onClick={() => {
-                        if (!allQuestions.hasOwnProperty(item)) {
-                          setAllQuestions((prev) => ({ ...prev, [item]: question }));
+                        if (!SelectedQuestions.includes(item)) {
+                          addToSelectedQuestionsList(item);
                         } else {
-                          const { [item]: _, ...remainingQuestions } = allQuestions;
-                          setAllQuestions(remainingQuestions);
+                          removeFromSelectedQuestionsList(item);
                         }
                       }}
                     >

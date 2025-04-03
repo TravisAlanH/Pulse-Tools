@@ -12,12 +12,12 @@ export default function NewQuestion() {
   const [questionHold, setQuestionHold] = useState(null);
 
   const handleSubmit = () => {
-    addCustomQuestion({ Name: name, type: type, options: options, required: required });
+    addCustomQuestion({ Name: name, type: type, options: options, required: required || false });
     setSurveyModal(1); // Close the modal after saving
   };
 
   const handlePreview = () => {
-    setQuestionHold({ Name: name, type: type, options: options, required: required });
+    setQuestionHold({ Name: name, type: type, options: options, required: required || false });
   };
 
   return (

@@ -1,6 +1,6 @@
 import React from "react";
 import { v4 as uuidv4 } from "uuid";
-import { doc, setDoc } from "firebase/firestore";
+import { collection, doc, setDoc } from "firebase/firestore";
 import { auth, db } from "../../../../../Firebase/Firebase";
 import { CurrentLocation, RoutingStore } from "../../../../../Store/Store";
 import { Questions } from "../../../../../dcT_Objects/ObjectQuestions";
@@ -16,23 +16,24 @@ export default function CreateLocationInputs() {
     e.preventDefault();
     const UUID = uuidv4().replace(/[\/[\]~*.]/g, "_");
 
-    const LocationsList = doc(db, "Users", auth.currentUser.uid, "LocationData", "LocationsSnapshot");
+    const LocationSnapshot = doc(db, "Users", auth.currentUser.uid, "LocationData", "LocationsSnapshot");
     await setDoc(
-      LocationsList,
+      LocationSnapshot,
       {
         [`${UUID}`]: holdItem,
       },
       { merge: true }
     )
       .then(() => {
-        const LocationsList = doc(db, "Users", auth.currentUser.uid, "LocationData", "LocationsFullData");
+        const LocationsList = collection(db, "Users", auth.currentUser.uid, "LocationData");
         let InicialStateCopy = JSON.parse(JSON.stringify(BlankCurrentLocation));
         InicialStateCopy.Location = UUID;
         InicialStateCopy.AllItems[UUID] = holdItem;
+        const sendDocRef = doc(LocationsList, UUID);
         setDoc(
-          LocationsList,
+          sendDocRef,
           {
-            [`${UUID}`]: InicialStateCopy,
+            ["data"]: InicialStateCopy,
           },
           { merge: true }
         );
@@ -63,7 +64,15 @@ export default function CreateLocationInputs() {
                     key
                   )}
                 </label>
-                {Questions.Items[key].type === "text" ? TextInput(key) : Questions.Items[key].type === "number" ? NumberInput(key) : Questions.Items[key].type === "date" ? DateInput(key) : Questions.Items[key].type === "select" ? SelectInput(key) : TextInput(key)}
+                {Questions.Items[key].type === "text"
+                  ? TextInput(key)
+                  : Questions.Items[key].type === "number"
+                  ? NumberInput(key)
+                  : Questions.Items[key].type === "date"
+                  ? DateInput(key)
+                  : Questions.Items[key].type === "select"
+                  ? SelectInput(key)
+                  : TextInput(key)}
               </div>
             );
           })}

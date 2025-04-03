@@ -3,8 +3,9 @@ import { RoutingStore } from "../../../Store/Store";
 import { CurrentLocation } from "../../../Store/Store";
 import { PiFloppyDiskBack } from "react-icons/pi";
 import { db, auth } from "../../../Firebase/Firebase";
-import { doc, updateDoc } from "firebase/firestore";
+import { collection, doc, setDoc, updateDoc } from "firebase/firestore";
 import { trueLoad, falseLoad } from "../../../Store/Store";
+import { SurveyQuestionsStore } from "../Survey_Home/Store/SurveyStore";
 
 export default function AuditTopMenu() {
   const AllItems = RoutingStore((state) => state.data.AllItems);
@@ -15,6 +16,7 @@ export default function AuditTopMenu() {
   const LocationUUID = CurrentLocation((state) => state.data.Location);
   const AuditPage = RoutingStore((state) => state.data.AuditPage);
   const setAuditModal = RoutingStore((state) => state.setAuditModal);
+  const saveAllQuestions = SurveyQuestionsStore((state) => state.SaveAllQuestions);
 
   // console.log(LocationUUID.toString(), "LocationUUID");
   // console.log(CurrentLocationData, "CurrentLocationData");
@@ -36,13 +38,19 @@ export default function AuditTopMenu() {
       }
 
       // Define the document reference in Firestore
-      const document = doc(db, "Users", auth.currentUser.uid, "LocationData", "LocationsFullData");
+      // const document = doc(db, "Users", auth.currentUser.uid, "LocationData", "LocationsFullData");
 
-      // Attempt to update the document
-      await updateDoc(document, {
-        [`${LocationUUID}`]: CurrentLocationData,
+      // // Attempt to update the document
+      // await updateDoc(document, {
+      //   [`${LocationUUID}`]: CurrentLocationData,
+      // });
+      saveAllQuestions(LocationUUID);
+
+      const docRef = collection(db, "Users", auth.currentUser.uid, "LocationData");
+      const sendDocRef = doc(docRef, LocationUUID);
+      await setDoc(sendDocRef, {
+        ["data"]: CurrentLocationData,
       });
-
       console.log("Data successfully saved!");
     } catch (error) {
       // Log the error and provide meaningful feedback
@@ -75,7 +83,11 @@ export default function AuditTopMenu() {
         </div>
 
         <div className="flex flex-row justify-center items-center h-full">
-          <button disabled={LocationUUID === 0} className={`text-[1.5rem] ${LocationUUID !== 0 ? "text-[#00B188]" : "text-[#f2ece6]"}`} onClick={() => handleSaveData()}>
+          <button
+            disabled={LocationUUID === 0}
+            className={`text-[1.5rem] ${LocationUUID !== 0 ? "text-[#00B188]" : "text-[#f2ece6]"}`}
+            onClick={() => handleSaveData()}
+          >
             <PiFloppyDiskBack />
           </button>
         </div>

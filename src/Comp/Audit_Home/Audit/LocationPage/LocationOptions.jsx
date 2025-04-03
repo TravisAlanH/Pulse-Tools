@@ -2,7 +2,7 @@ import React from "react";
 import { RoutingStore } from "../../../../../Store/Store";
 import { auth, db } from "../../../../../Firebase/Firebase";
 // import { deleteField, updateDoc, doc } from "firebase/firestore";
-import { doc, updateDoc, deleteField } from "firebase/firestore";
+import { doc, updateDoc, deleteField, collection, deleteDoc } from "firebase/firestore";
 
 import { CurrentLocation } from "../../../../../Store/Store";
 import LoadingSpinner from "../../../LoadingSpinner/Spinner";
@@ -17,11 +17,15 @@ export default function LocationOptions() {
   async function deleteLocation() {
     try {
       setLoading(true);
-      const LocationRef = doc(db, "Users", auth.currentUser.uid, "LocationData", "LocationsFullData");
-      const data = { [`${Location}`]: deleteField() };
-      updateDoc(LocationRef, data).catch((error) => {
-        console.error("Error deleting location data:", error);
-      });
+      const docRef = collection(db, "Users", auth.currentUser.uid, "LocationData");
+      const sendDocRef = doc(docRef, Location); // Reference to the specific document
+
+      try {
+        await deleteDoc(sendDocRef);
+        console.log(`Document with ID ${Location} deleted successfully.`);
+      } catch (error) {
+        console.error("Error deleting document:", error);
+      }
 
       const LocationRef2 = doc(db, "Users", auth.currentUser.uid, "LocationData", "LocationsSnapshot");
       const data2 = { [`${Location}`]: deleteField() };
@@ -70,9 +74,14 @@ export default function LocationOptions() {
       </div>
       <div className="flex flex-row justify-center items-center w-full">
         <label className="LableMain w-[10rem]">Export</label>
-        <button className="ButtonMain w-[10rem]" onClick={() => {
-          setAuditModal(9)
-        }}>Data</button>
+        <button
+          className="ButtonMain w-[10rem]"
+          onClick={() => {
+            setAuditModal(9);
+          }}
+        >
+          Data
+        </button>
       </div>
       <div className="flex flex-row justify-center items-center w-full">
         <label className="LableMain w-[10rem]">Open This Location</label>

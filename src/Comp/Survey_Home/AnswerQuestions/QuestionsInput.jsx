@@ -8,14 +8,19 @@ import {
   SecuritySurveyQuestions,
   SafetySurveyQuestions,
 } from "../Questions/StandardQuestions";
+import { IoIosArrowDown } from "react-icons/io";
 
 export default function QuestionsInput() {
   const Question = SurveyQuestionsStore((state) => state.data.Questions);
+  const EditQuestionValue = SurveyQuestionsStore((state) => state.EditQuestionValue);
   const CustomStandardQuestions = SurveyQuestionsStore((state) => state.data.CustomStandardQuestions);
   const CustomQuestions = SurveyQuestionsStore((state) => state.data.CustomQuestions);
   const HoldItemTrigger = CurrentLocation((state) => state.data.HoldItemTrigger);
   const [sortedQuestions, setSortedQuestions] = React.useState(Question);
-  const [splitQuestions, setSplitQuestions] = React.useState({});
+  let splitQuestions = {};
+
+  // !
+  const SelectedQuestions = SurveyQuestionsStore((state) => state.data.SelectedQuestionsList);
 
   //!for Sorting Only
   const sortOrder = ["Site Survey", "Global Survey", "Room Survey", "Security Survey", "Safety Survey"];
@@ -28,63 +33,99 @@ export default function QuestionsInput() {
   };
   //!for Sorting Only
 
-  console.log("QuestionsInput splitQuestions", splitQuestions);
-  //   ! PAGE NOT REFRESHING ON QUESTION COSTOMIZATION
-
-  //   ? REMOVING FROM LIST AND SAVING IN SelectStandardQuestions Breaks it
+  const [site, setSite] = React.useState({});
+  const [global, setGlobal] = React.useState({});
+  const [room, setRoom] = React.useState({});
+  const [security, setSecurity] = React.useState({});
+  const [safety, setSafety] = React.useState({});
+  const [custom, setCustom] = React.useState({});
 
   React.useEffect(() => {
-    if (!Question) return;
+    if (!Question || typeof Question !== "object") {
+      console.error("Invalid Question data:", Question);
+      return;
+    }
 
-    // Step 1: Initialize groupedQuestions with empty arrays for defined groups
-    const groupedQuestions = {};
-    sortOrder.forEach((group) => (groupedQuestions[group] = []));
-    groupedQuestions["Custom"] = []; // "Other" will always be included at the end
+    // Helper function to filter by group name
+    const filterByGroup = (groupName) =>
+      Object.fromEntries(Object.entries(Question).filter(([_, value]) => value.group === groupName));
 
-    // Step 2: Assign questions to their respective groups
-    Object.entries(Question).forEach(([key, value]) => {
-      const group = value.group || "Custom"; // Default to "Other" if no group exists
-      if (!groupedQuestions[group]) groupedQuestions[group] = [];
-      groupedQuestions[group].push({ uuid: key, ...value });
-    });
+    const filterCustomQuestions = () =>
+      Object.fromEntries(
+        Object.entries(Question).filter(([_, value]) => !value.group) // ✅ No group assigned
+      );
 
-    // Step 3: Sort questions within each group based on questionTranslation order
-    Object.keys(groupedQuestions).forEach((group) => {
-      if (questionTranslation[group]) {
-        const questionKeysOrder = Object.keys(questionTranslation[group]);
+    // Set state for each category
+    setSite(filterByGroup("Site Survey"));
+    setGlobal(filterByGroup("Global Survey"));
+    setRoom(filterByGroup("Room Survey"));
+    setSecurity(filterByGroup("Security Survey"));
+    setSafety(filterByGroup("Safety Survey"));
+    setCustom(filterCustomQuestions());
+  }, [Question]); // Runs whenever `Question` changes
 
-        groupedQuestions[group].sort((a, b) => {
-          const indexA = questionKeysOrder.indexOf(a.uuid);
-          const indexB = questionKeysOrder.indexOf(b.uuid);
-          return (indexA === -1 ? questionKeysOrder.length : indexA) - (indexB === -1 ? questionKeysOrder.length : indexB);
-        });
+  const QuestionsArray = [
+    { name: "Site Survey", data: site },
+    { name: "Global Survey", data: global },
+    { name: "Room Survey", data: room },
+    { name: "Security Survey", data: security },
+    { name: "Safety Survey", data: safety },
+    { name: "Custom Questions", data: custom },
+  ];
+
+  console.log("QuestionsArray", QuestionsArray);
+  console.log("Question", Question);
+
+  function handleShrink(sectionId, dropID) {
+    console.log(sectionId);
+    const sections = document.querySelectorAll(".InputSection");
+    const drop = document.getElementById(dropID);
+
+    sections.forEach((section) => {
+      if (section.id === sectionId) {
+        const isCollapsed = section.style.maxHeight === "0px" || !section.style.maxHeight;
+
+        section.style.transition = "max-height 0.3s ease-in-out, opacity 0.3s ease-in-out";
+        section.style.overflow = "hidden"; // Prevents content overflow
+
+        if (isCollapsed) {
+          section.style.maxHeight = section.scrollHeight + "px"; // Expand
+          section.style.opacity = "1";
+          drop.style.transform = "rotate(180deg)"; // Rotate dropdown
+        } else {
+          section.style.maxHeight = "0px"; // Collapse
+          section.style.opacity = "0";
+          drop.style.transform = "rotate(0deg)"; // Reset rotation
+        }
       }
+      //   else {
+      //     section.style.maxHeight = "0px"; // Hide other sections
+      //     section.style.opacity = "0";
+      //   }
     });
-
-    // Step 4: Reorder the groups based on sortOrder, ensuring "Other" is last
-    const orderedGroups = {};
-    [...sortOrder, "Custom"].forEach((group) => {
-      if (groupedQuestions[group]?.length > 0) {
-        orderedGroups[group] = groupedQuestions[group];
-      }
-    });
-
-    setSplitQuestions(orderedGroups);
-  }, [Question, CustomStandardQuestions, CustomQuestions, HoldItemTrigger]);
-
-  if (Question !== undefined && Object.keys(Question).length === 0) return <div className="p-3">No Questions</div>;
+  }
 
   return (
-    <div className="p-3">
-      <div>
-        {Object.keys(splitQuestions).map((Group) => {
+    <div className="m-4">
+      <div className="flex flex-col gap-3">
+        {QuestionsArray.map((item, index) => {
+          if (Object.keys(item.data).length === 0) return null; // Skip empty groups
           return (
-            <div key={Group} className="p-4 border-2 m-2 rounded-xl">
-              <h2>{Group}</h2>
-              <div className="flex flex-col gap-4">
-                {splitQuestions[Group].map((question, index) => {
+            <div key={index} className=" flex flex-col gap-3 border-2 border-[#f2ece6] rounded-md">
+              <div className="flex flex-row justify-between items-center border-b-2 bg-[#f2ece6] border-[#f2ece6]">
+                <p className="LableMain">{item.name}</p>
+                <button
+                  id={`${item.name}InputSectionDrop`}
+                  onClick={() => handleShrink(`${item.name}InputSection`, `${item.name}InputSectionDrop`)}
+                  className="transition-all flex items-center gap-2"
+                >
+                  <IoIosArrowDown className="text-gray-600 text-xl" />
+                </button>
+              </div>
+              <div className="InputSection px-2 pb-2 flex flex-col gap-2" id={`${item.name}InputSection`}>
+                {Object.entries(item.data).map(([key, question]) => {
                   return (
-                    <div key={index} className="flex flex-col">
+                    <div key={key} className="flex flex-col">
                       <label className="LableMain w-[100%]">
                         {question.required ? (
                           <div className="flex flex-row gap-3">
@@ -96,12 +137,12 @@ export default function QuestionsInput() {
                         )}
                       </label>
                       {question.type === "select"
-                        ? SelectInput(question.uuid, Group)
+                        ? SelectInput(key, question)
                         : question.type === "date"
-                        ? DateInput(question.uuid, Group)
+                        ? DateInput(key, question)
                         : question.type === "number"
-                        ? NumberInput(question.uuid, Group)
-                        : TextInput(question.uuid, Group)}
+                        ? NumberInput(key, question)
+                        : TextInput(key, question)}
                     </div>
                   );
                 })}
@@ -148,16 +189,41 @@ export default function QuestionsInput() {
   //     );
   //   }
 
-  function SelectInput(uuid, group) {
+  // return (
+  //   <div key={index} className="flex flex-col">
+  //     <label className="LableMain w-[100%]">
+  //       {question.required ? (
+  //         <div className="flex flex-row gap-3">
+  //           <p className="text-red-500">*</p>
+  //           <p>{question.Name}</p>
+  //         </div>
+  //       ) : (
+  //         question.Name
+  //       )}
+  //     </label>
+  //     {question.type === "select"
+  //       ? SelectInput(question.uuid, Group)
+  //       : question.type === "date"
+  //       ? DateInput(question.uuid, Group)
+  //       : question.type === "number"
+  //       ? NumberInput(question.uuid, Group)
+  //       : TextInput(question.uuid, Group)}
+  //   </div>
+  // );
+
+  function SelectInput(uuid, item) {
+    console.log(item);
     return (
       <select
         className="w-full LableInputMainBelow"
-        value={Question[uuid].value}
+        value={item.value}
         id={uuid}
-        required={Question[uuid].required}
-        onChange={(e) => {}}
+        required={item.required}
+        onChange={(e) => {
+          EditQuestionValue(uuid, e.target.value);
+        }}
       >
-        {Question[uuid].options.map((option) => (
+        {item.options.map((option) => (
           <option key={option} value={option}>
             {option}
           </option>
@@ -166,41 +232,47 @@ export default function QuestionsInput() {
     );
   }
 
-  function DateInput(uuid, group) {
+  function DateInput(uuid, item) {
     return (
       <input
         className="w-full LableInputMainBelow"
         type="date"
-        value={Question[uuid].value || ""}
+        value={item.value || ""}
         id={uuid}
-        required={Question[uuid].required}
-        onChange={(e) => {}}
+        required={item.required}
+        onChange={(e) => {
+          EditQuestionValue(uuid, e.target.value);
+        }}
       />
     );
   }
 
-  function NumberInput(uuid, group) {
+  function NumberInput(uuid, item) {
     return (
       <input
         className="w-full LableInputMainBelow"
         type="number"
-        value={Question[uuid].value}
+        value={item.value}
         id={uuid}
-        required={Question[uuid].required}
-        onChange={(e) => {}}
+        required={item.required}
+        onChange={(e) => {
+          EditQuestionValue(uuid, e.target.value);
+        }}
       />
     );
   }
 
-  function TextInput(uuid, group) {
+  function TextInput(uuid, item) {
     return (
       <input
         className="w-full LableInputMainBelow"
         type="text"
-        value={Question[uuid].value}
+        value={item.value}
         id={uuid}
-        required={Question[uuid].required}
-        onChange={(e) => {}}
+        required={item.required}
+        onChange={(e) => {
+          EditQuestionValue(uuid, e.target.value);
+        }}
       />
     );
   }

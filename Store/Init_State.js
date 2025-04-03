@@ -101,6 +101,7 @@ export const initState = {
     Questions: {},
     CustomQuestions: {},
     CustomStandardQuestions: {},
+    SelectedQuestionsList: [],
     editQuestionHold: {},
   },
   Routing: {

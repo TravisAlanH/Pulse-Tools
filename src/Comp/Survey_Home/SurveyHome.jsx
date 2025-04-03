@@ -3,6 +3,8 @@ import React from "react";
 import SurveyModal from "./Modals/SurveyModal";
 import { RoutingStore } from "../../../Store/Store";
 import QuestionsInput from "./AnswerQuestions/QuestionsInput";
+import { SurveyQuestionsStore } from "./Store/SurveyStore";
+import { CurrentLocation } from "../../../Store/Store";
 
 export default function SurveyHome() {
   const surveyModalShow = RoutingStore((state) => state.data.SurveyModal);
@@ -14,7 +16,7 @@ export default function SurveyHome() {
         <button
           className="OrangeButton"
           onClick={() => {
-            setSurveyModal(1); // Generate the base questions when clicked
+            setSurveyModal(1);
           }}
         >
           Create / Edit Questions

@@ -8,6 +8,7 @@ import {
   SecuritySurveyQuestions,
   SiteSurveyQuestions,
 } from "../StandardQuestions";
+import { GrLikeFill } from "react-icons/gr";
 
 export default function EditQuestion() {
   const UUID = SurveyQuestionsStore((state) => state.data.EditQuestionHold); // Assuming you have a way to get the current question to edit
@@ -17,6 +18,13 @@ export default function EditQuestion() {
   const removeCustomStandardQuestion = SurveyQuestionsStore((state) => state.removeCustomStandardQuestion);
   const CustomQuestions = SurveyQuestionsStore((state) => state.data.CustomQuestions);
   const setCustomQuestions = SurveyQuestionsStore((state) => state.setCustomQuestion);
+
+  // !
+  const EditCustomQuestion = SurveyQuestionsStore((state) => state.EditCustomQuestion);
+  const AddToCustomStandardQuestions = SurveyQuestionsStore((state) => state.addCustomStandardQuestion);
+  const EditCustomStandardQuestion = SurveyQuestionsStore((state) => state.EditCustomStandardQuestion);
+  // !
+
   const allQuestions = {
     ...SiteSurveyQuestions,
     ...GlobalSurveyQuestions,
@@ -37,46 +45,45 @@ export default function EditQuestion() {
   const [name, setName] = useState(allQuestions[UUID].Name);
   const [type, setType] = useState(allQuestions[UUID].type);
   const [options, setOptions] = useState(allQuestions[UUID].options);
-  const [required, setRequired] = useState(allQuestions[UUID].Required);
+  const [required, setRequired] = useState(allQuestions[UUID].Required || false);
   const [group, setGroup] = useState(allQuestions[UUID].group);
   const [questionHold, setQuestionHold] = useState();
   const [reset, setReset] = useState(false);
 
-  const handleSubmit = () => {
-    console.log("reset", reset);
+  function handleSubmit() {
+    if (!reset) {
+      handleResetSave(); // Call handleResetSave if reset is true
+      return;
+    }
+    const Standard = resetQuestions.hasOwnProperty(UUID); // Check if the question is a standard question
+    const isInCustopmStandardQuestions = CustomStandardQuestions.hasOwnProperty(UUID); // Check if the question is in CustomStandardQuestions
     let payload = {
       value: { Name: name, type: type, options: options, Required: required, group: group },
       UUID: UUID,
     };
-    console.log(UUID);
-    console.log(CustomQuestions);
-    if (reset) {
-      if (CustomQuestions !== undefined && CustomQuestions.hasOwnProperty(UUID)) {
-        console.log("triggering");
-        let holdQuestions = CustomQuestions;
-        delete holdQuestions[UUID];
-        holdQuestions[UUID] = { Name: name, type: type, options: options, Required: required };
-        setCustomQuestions(holdQuestions);
-      } else {
-        if (CustomStandardQuestions !== undefined && CustomStandardQuestions.hasOwnProperty(UUID)) {
-          removeCustomStandardQuestion(UUID);
-          addCustomStandardQuestions(payload);
-        }
-        addCustomStandardQuestions(payload);
-      }
+    if (!Standard) {
+      EditCustomQuestion(payload);
+    } else if (!isInCustopmStandardQuestions) {
+      EditCustomStandardQuestion(payload);
+    } else {
+      AddToCustomStandardQuestions(payload);
     }
     setSurveyModal(1); // Close the modal after saving
-  };
+  }
 
   const handlePreview = () => {
-    setQuestionHold({ Name: name, type: type, options: options, Required: required });
+    setQuestionHold({ Name: name, type: type, options: options, Required: required || false });
   };
+
+  function handleResetSave() {
+    setSurveyModal(1); // Close the modal after saving
+  }
 
   const handleReset = () => {
     setName(resetQuestions[UUID].Name);
     setType(resetQuestions[UUID].type);
     setOptions(resetQuestions[UUID].options);
-    setRequired(resetQuestions[UUID].Required);
+    setRequired(resetQuestions[UUID].Required || false);
     removeCustomStandardQuestion(UUID, resetQuestions[UUID]);
     setReset(false);
     setQuestionHold(null);
@@ -86,17 +93,17 @@ export default function EditQuestion() {
     <div className="flex flex-col gap-2">
       {/* Pass props to child components */}
       <div className="border-[1px] p-2 rounded-md">
-        <lable className="LableMain">Question Name:</lable>
+        <label className="LableMain">Question Name:</label>
         <NameInput value={name} onChange={setName} setQuestionHold={setQuestionHold} setReset={setReset} />
       </div>
 
       <div className="flex flex-row gap-4 border-[1px] p-2 rounded-md">
-        <lable className="LableMain">Required:</lable>
+        <label className="LableMain">Required:</label>
         <RequiredInput value={required} onChange={setRequired} setQuestionHold={setQuestionHold} setReset={setReset} />
       </div>
 
       <div className="border-[1px] p-2 rounded-md">
-        <lable className="LableMain">Input Type:</lable>
+        <label className="LableMain">Input Type:</label>
         <TypeInput value={type} onChange={setType} setQuestionHold={setQuestionHold} setReset={setReset} />
         <OptionsInput
           type={type}
@@ -104,18 +111,19 @@ export default function EditQuestion() {
           setOptions={setOptions}
           setQuestionHold={setQuestionHold}
           setReset={setReset}
-          v
         />
       </div>
       {questionHold && <pre className="mt-4 p-2 border w-full">{QuestionPreview(questionHold)}</pre>}
       <div className="flex flex-row w-full justify-end">
-        <button
-          disabled={questionHold === null} // Disable if no questionHold is set
-          onClick={handleReset}
-          className={"ButtonMainRed w-[50%]" + (questionHold === null ? " opacity-50 cursor-not-allowed" : "")} // Add classes for disabled state
-        >
-          Reset
-        </button>
+        {group ? (
+          <button
+            disabled={questionHold === null} // Disable if no questionHold is set
+            onClick={handleReset}
+            className={"ButtonMainRed w-[50%]" + (questionHold === null ? " opacity-50 cursor-not-allowed" : "")} // Add classes for disabled state
+          >
+            Reset
+          </button>
+        ) : null}
       </div>
 
       <div className="flex flex-row justify-center h-[2.5rem] gap-4">
@@ -124,7 +132,7 @@ export default function EditQuestion() {
         </button>
         <button
           disabled={questionHold === null} // Disable if no questionHold is set
-          onClick={handleSubmit}
+          onClick={() => handleSubmit()}
           className={"OrangeButton w-[50%]" + (questionHold === null ? " opacity-50 cursor-not-allowed" : "")} // Add classes for disabled state
         >
           Save
@@ -146,7 +154,7 @@ export default function EditQuestion() {
           )}
         </label>
         {questionHold.type === "select" ? (
-          <select className="LableInputMainBelow w-full">
+          <select className="labelInputMainBelow w-full">
             {questionHold.options.map((option, index) => (
               <option key={index} value={option}>
                 {option}
@@ -154,7 +162,7 @@ export default function EditQuestion() {
             ))}
           </select>
         ) : (
-          <input type="text" className="LableInputMainBelow" value={`input`} />
+          <input type="text" className="labelInputMainBelow" value={`input`} />
         )}
       </div>
     );

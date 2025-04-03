@@ -3,10 +3,11 @@ import { CurrentLocation, RoutingStore } from "../../../../../Store/Store";
 import { MLTStore } from "../../../../../Store/Store";
 import SortFinishedTable from "../MLTView/SortFinishedTable";
 import { FaCloudDownloadAlt, FaEllipsisH, FaSave } from "react-icons/fa";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { collection, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { auth, db } from "../../../../../Firebase/Firebase";
 import { HoldLocationStore } from "../../../../../Store/Store";
 import FiltersView from "../FiltersViewer/FiltersView";
+import { SurveyQuestionsStore } from "../../../Survey_Home/Store/SurveyStore";
 
 export default function HomeTable({ LocationsList }) {
   // set LocationsList Location Area values to Numbers
@@ -35,6 +36,8 @@ export default function HomeTable({ LocationsList }) {
   const checkboxStyle = "border-2 px-2 h-[1.5rem] w-[1.5rem] ActiveItemCheckbox";
   const setHoldLocation = HoldLocationStore((state) => state.setHoldLocation);
   const HoldLocation = HoldLocationStore((state) => state.data);
+  const SaveAllQuestions = SurveyQuestionsStore((state) => state.SaveAllQuestions);
+  const setInicialSurveryState = SurveyQuestionsStore((state) => state.setInicialSurveryState);
 
   // const [trOrder, setTrOrder] = React.useState(["dcTrack Location Name*", "dcTrack Location Code*", "Data Center Area*", "dcTrack Location Parent"]);
   // const [thOrder, setThOrder] = React.useState(["Location Name", "Location Code", "Location Area", "Location Parent"]);
@@ -99,22 +102,58 @@ export default function HomeTable({ LocationsList }) {
       alert("Save your Data first");
       return;
     }
-    const docRef = doc(db, "Users", auth.currentUser.uid, "LocationData", "LocationsFullData");
+    const docRef = doc(db, "Users", auth.currentUser.uid, "LocationData", uuid);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
-      replaceCurrentLocation(docSnap.data()[uuid]);
-      setHoldLocation(docSnap.data()[uuid]);
+      console.log(docSnap.data());
+      replaceCurrentLocation(docSnap.data()["data"]);
+      setHoldLocation(docSnap.data()["data"]);
       // setAuditPage(1);
     } else {
       console.log("No such document!");
     }
+    const SurveyData = {
+      Questions: {},
+      CustomQuestions: {},
+      CustomStandardQuestions: {},
+      SelectedQuestionsList: [],
+    };
+    const QuestionsRef = doc(db, "Users", auth.currentUser.uid, "SurveyData", uuid);
+    const docSnapQuestions = await getDoc(QuestionsRef);
+    if (docSnapQuestions.exists()) {
+      SurveyData.Questions = docSnapQuestions.data().Questions;
+    }
+    const CustomQuestionsRef = doc(db, "Users", auth.currentUser.uid, "SurveyData", uuid);
+    const docSnapCustomQuestions = await getDoc(CustomQuestionsRef);
+    if (docSnapCustomQuestions.exists()) {
+      SurveyData.CustomQuestions = docSnapCustomQuestions.data().CustomQuestions;
+    }
+    const CustomStandardQuestionsRef = doc(db, "Users", auth.currentUser.uid, "SurveyData", uuid);
+    const docSnapCustomStandardQuestions = await getDoc(CustomStandardQuestionsRef);
+    if (docSnapCustomStandardQuestions.exists()) {
+      SurveyData.CustomStandardQuestions = docSnapCustomStandardQuestions.data().CustomStandardQuestions;
+    }
+    let SelectedQuestionsList = [];
+    Object.keys(SurveyData.Questions).map((key) => {
+      SelectedQuestionsList.push(key);
+    });
+    SurveyData.SelectedQuestionsList = SelectedQuestionsList;
+    setInicialSurveryState(SurveyData);
   }
 
   async function handleSaveData(uuid) {
-    const document = doc(db, "Users", auth.currentUser.uid, "LocationData", "LocationsFullData");
-    await updateDoc(document, {
-      [`${uuid}`]: CurrentLocationData,
+    // const document = doc(db, "Users", auth.currentUser.uid, "LocationData", "LocationsFullData");
+    const docRef = collection(db, "Users", auth.currentUser.uid, "LocationData");
+    const sendDocRef = doc(docRef, uuid);
+    await setDoc(sendDocRef, {
+      ["data"]: CurrentLocationData,
+    }).then(() => {
+      console.log("save Survey");
+      SaveAllQuestions(uuid);
     });
+    // await updateDoc(document, {
+    //   [`${uuid}`]: CurrentLocationData,
+    // });
   }
 
   const ActionButtonStyle = "h-[1.5rem] w-[1.5rem]";
@@ -126,7 +165,9 @@ export default function HomeTable({ LocationsList }) {
   return (
     <div className="overflow-y-scroll flex flex-col justify-start items-center h-full">
       <div className="flex flex-col items-center h-auto">
-        <div className="flex flex-row justify-start w-full">{/* <FiltersView ShownCount={filteredCount} OriginRowsCount={OriginRowsCount.current} /> */}</div>
+        <div className="flex flex-row justify-start w-full">
+          {/* <FiltersView ShownCount={filteredCount} OriginRowsCount={OriginRowsCount.current} /> */}
+        </div>
         <table>
           <thead>
             <tr>
@@ -144,7 +185,11 @@ export default function HomeTable({ LocationsList }) {
           <tbody>
             {filteredRows.map((row, index) => {
               return (
-                <tr key={index} className={`text-sm border-2 px-2 h-full ${clicked === row ? "bg-gray-300" : ""}`} onClick={() => setClicked(row)}>
+                <tr
+                  key={index}
+                  className={`text-sm border-2 px-2 h-full ${clicked === row ? "bg-gray-300" : ""}`}
+                  onClick={() => setClicked(row)}
+                >
                   {trOrder.map((header, index) => {
                     return (
                       <td key={index} className={rowStyle}>
@@ -183,7 +228,15 @@ export default function HomeTable({ LocationsList }) {
     return (
       <div className="flex flex-col justify-center">
         <div className="flex flex-row items-center justify-between gap-3">
-          <p>{Header}</p> <SortFinishedTable Type={Header} thOrder={thOrder} setThOrder={setThOrder} trOrder={trOrder} setTrOrder={setTrOrder} index={index} />
+          <p>{Header}</p>{" "}
+          <SortFinishedTable
+            Type={Header}
+            thOrder={thOrder}
+            setThOrder={setThOrder}
+            trOrder={trOrder}
+            setTrOrder={setTrOrder}
+            index={index}
+          />
         </div>
         <input
           type="text"
